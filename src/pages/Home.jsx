@@ -4,35 +4,36 @@ import QuizList from "../components/QuizList";
 
 const Home = () => {
   return (
-    <HomeWrapper>
-      <Contents>
+    <HomeContainer>
+      <HomeContents>
         <AdBanner>광고영역</AdBanner>
         <CategoryBar>
           <Category>
-            <CategoryItem>전체</CategoryItem>
+            <CategoryItem selected>전체</CategoryItem>
             <CategoryItem>상식퀴즈</CategoryItem>
             <CategoryItem>초성퀴즈</CategoryItem>
-            <CategoryItem>맞춤법퀴즈</CategoryItem>
+            <CategoryItem>국어퀴즈</CategoryItem>
+            <CategoryItem>추억퀴즈</CategoryItem>
           </Category>
         </CategoryBar>
         <QuizList />
-      </Contents>
-    </HomeWrapper>
+      </HomeContents>
+    </HomeContainer>
   );
 };
 
 export default Home;
 
-const HomeWrapper = styled.div`
+const HomeContainer = styled.div`
   display: grid;
-  border-top: 1px solid lightgray;
 `;
 
-const Contents = styled.div`
-  width: 1100px;
-  margin: 0 auto;
+const HomeContents = styled.div`
+  max-width: 1100px;
+  margin: 0px auto 50px auto;
   display: grid;
   row-gap: 25px;
+  padding: 0 16px;
 `;
 
 const AdBanner = styled.div`
@@ -41,18 +42,30 @@ const AdBanner = styled.div`
 
 const CategoryBar = styled.div`
   display: flex;
-  height: 70px;
-  font-size: 17px;
+  height: 80px;
   justify-content: space-between;
   align-items: center;
 `;
 
 const Category = styled.div`
   display: flex;
-  gap: 15px;
+  gap: 10px;
+  flex-wrap: wrap;
 `;
 
-const CategoryItem = styled.div`
-  //background-color: #b1dffacf;
-  padding: 0 1px;
+const CategoryItem = styled.button`
+  padding: 4px 9px;
+  border: none;
+  border-radius: 4px;
+  font-family: "Noto Sans KR", sans-serif;
+  font-size: 17px;
+  font-weight: 600;
+  color: #343434;
+  cursor: pointer;
+  background-color: ${({ selected }) => (selected ? "#b3e1fd" : "transparent")};
+
+  &:hover {
+    background-color: ${({ selected }) =>
+      selected ? "" : "rgb(240, 240, 240)"};
+  }
 `;

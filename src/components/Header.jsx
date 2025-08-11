@@ -1,20 +1,35 @@
 import React from "react";
 import styled from "styled-components";
+import { useNavigate } from "react-router-dom";
 
 const Header = () => {
+  const navigate = useNavigate();
+
+  const handleLogoClick = () => {
+    navigate("/");
+  };
+
   return (
-    <HeaderWrapper>
-      <Logo>PickQ</Logo>
-      <Login>로그인</Login>
-    </HeaderWrapper>
+    <HeaderContainer>
+      <HeaderContents>
+        <Logo onClick={handleLogoClick}>PickQ</Logo>
+        <Login>로그인</Login>
+      </HeaderContents>
+    </HeaderContainer>
   );
 };
 
 export default Header;
 
-const HeaderWrapper = styled.div`
+const HeaderContainer = styled.div`
+  width: 100%;
+  height: 82px;
+  border-bottom: 1px solid lightgray;
+`;
+
+const HeaderContents = styled.div`
   display: flex;
-  width: 1100px;
+  max-width: 1100px;
   margin: 0 auto;
   height: 82px;
   justify-content: space-between;
@@ -37,7 +52,7 @@ const Login = styled.button`
   background-color: transparent;
   border: 1px solid #7e7e7e;
   border-radius: 6px;
-  color: #4b4b4b;
+  color: #202020;
   cursor: pointer;
 
   &:hover {

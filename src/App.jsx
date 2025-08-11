@@ -1,22 +1,31 @@
 import React from "react";
 import styled from "styled-components";
-import Home from "./pages/Home";
 import Header from "./components/Header";
+import Home from "./pages/Home";
+import QuizStart from "./pages/quiz/QuizStart";
+import QuizPlay from "./pages/quiz/QuizPlay";
+import QuizResult from "./pages/quiz/QuizResult";
+import { Routes, Route } from "react-router-dom";
 
 function App() {
   return (
-    <Wrapper>
+    <Layout>
       <Header />
       <Main>
-        <Home />
+        <Routes>
+          <Route path="/" element={<Home />} />
+          <Route path="/quiz/:id/start" element={<QuizStart />} />
+          <Route path="/quiz/play" element={<QuizPlay />} />
+          <Route path="/quiz/result" element={<QuizResult />} />
+        </Routes>
       </Main>
-    </Wrapper>
+    </Layout>
   );
 }
 
 export default App;
 
-const Wrapper = styled.div`
+const Layout = styled.div`
   width: 100%;
   display: grid;
   grid-template-rows: 82px auto;
