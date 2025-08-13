@@ -1,4 +1,3 @@
-import React from "react";
 import styled from "styled-components";
 import QuizList from "../components/QuizList";
 
@@ -10,10 +9,8 @@ const Home = () => {
         <CategoryBar>
           <Category>
             <CategoryItem selected>전체</CategoryItem>
-            <CategoryItem>상식퀴즈</CategoryItem>
-            <CategoryItem>초성퀴즈</CategoryItem>
-            <CategoryItem>국어퀴즈</CategoryItem>
-            <CategoryItem>추억퀴즈</CategoryItem>
+            <CategoryItem>퀴즈</CategoryItem>
+            <CategoryItem>성격테스트</CategoryItem>
           </Category>
         </CategoryBar>
         <QuizList />
@@ -32,7 +29,7 @@ const HomeContents = styled.div`
   max-width: 1100px;
   margin: 0px auto 50px auto;
   display: grid;
-  row-gap: 25px;
+  row-gap: 30px;
   padding: 0 16px;
 `;
 
@@ -49,7 +46,7 @@ const CategoryBar = styled.div`
 
 const Category = styled.div`
   display: flex;
-  gap: 10px;
+  gap: 13px;
   flex-wrap: wrap;
 `;
 
@@ -60,12 +57,13 @@ const CategoryItem = styled.button`
   font-family: "Noto Sans KR", sans-serif;
   font-size: 17px;
   font-weight: 600;
-  color: #343434;
+  color: ${({ selected }) => (selected ? "#ffffff" : "#343434")};
   cursor: pointer;
-  background-color: ${({ selected }) => (selected ? "#b3e1fd" : "transparent")};
+  background-color: ${({ selected }) =>
+    selected ? "#50bcff" : "rgb(244, 244, 244)"};
 
-  &:hover {
-    background-color: ${({ selected }) =>
-      selected ? "" : "rgb(240, 240, 240)"};
+  // 모바일
+  @media (max-width: 640px) {
+    font-size: 16px;
   }
 `;

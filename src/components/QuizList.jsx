@@ -1,12 +1,11 @@
-import React from "react";
 import styled from "styled-components";
 import QuizCard from "./QuizCard";
-import quizData from "../data/quizData";
+import quizList from "../data/quizList";
 
 const QuizList = () => {
   return (
     <QuizListWrapper>
-      {quizData.map((quiz) => (
+      {quizList.map((quiz) => (
         <QuizCard key={quiz.id} {...quiz} />
       ))}
     </QuizListWrapper>

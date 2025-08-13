@@ -1,11 +1,9 @@
-import React from "react";
 import styled from "styled-components";
 import Header from "./components/Header";
 import Home from "./pages/Home";
-import QuizStart from "./pages/quiz/QuizStart";
-import QuizPlay from "./pages/quiz/QuizPlay";
 import QuizResult from "./pages/quiz/QuizResult";
 import { Routes, Route } from "react-router-dom";
+import Quiz from "./pages/quiz/Quiz";
 
 function App() {
   return (
@@ -14,9 +12,8 @@ function App() {
       <Main>
         <Routes>
           <Route path="/" element={<Home />} />
-          <Route path="/quiz/:id/start" element={<QuizStart />} />
-          <Route path="/quiz/play" element={<QuizPlay />} />
-          <Route path="/quiz/result" element={<QuizResult />} />
+          <Route path="/quiz/:id" element={<Quiz />} />
+          <Route path="/quiz/:id/result" element={<QuizResult />} />
         </Routes>
       </Main>
     </Layout>

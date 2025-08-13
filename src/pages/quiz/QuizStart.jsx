@@ -1,39 +1,24 @@
-import React from "react";
 import styled from "styled-components";
-import quizData from "../../data/quizData";
-import { useParams } from "react-router-dom";
 
-const QuizStart = () => {
-  const { id } = useParams();
-  const quiz = quizData.find((quiz) => quiz.id === Number(id));
-
+const QuizStart = ({ quizData, onStart }) => {
   return (
-    <QuizStartContainer>
-      <QuizStartContents>
-        <div>
-          <h3>
-            [{quiz.category}] {quiz.subject} - {quiz.count}문제
-          </h3>
-          <QuizTitle>{quiz.title}</QuizTitle>
-        </div>
-        <QuizImage src={quiz.image} />
-        <StartButton>시작하기</StartButton>
-      </QuizStartContents>
-    </QuizStartContainer>
+    <QuizStartContents>
+      <QuizCategory>
+        [{quizData.category}] {quizData.type}/{quizData.count}문제
+      </QuizCategory>
+      <QuizTitle>{quizData.title}</QuizTitle>
+
+      <QuizImage src={quizData.image} alt={quizData.title} />
+      <StartButton onClick={onStart}>시작하기</StartButton>
+    </QuizStartContents>
   );
 };
 
 export default QuizStart;
 
-const QuizStartContainer = styled.div`
-  max-width: 1100px;
-  margin: 0px auto 50px auto;
-`;
-
 const QuizStartContents = styled.div`
   display: flex;
   flex-direction: column;
-  row-gap: 20px;
   margin: 20px auto;
   width: 70%;
 
@@ -43,25 +28,47 @@ const QuizStartContents = styled.div`
   }
 `;
 
+const QuizCategory = styled.p`
+  font-size: 16px;
+  font-weight: 600;
+  color: #535353;
+  margin: 5px 2px 10px 2px;
+
+  // 모바일
+  @media (max-width: 640px) {
+    font-size: 14px;
+  }
+`;
+
 const QuizTitle = styled.p`
-  font-size: 15px;
-  font-weight: 500;
-  color: #6e6e6e;
+  font-size: 18px;
+  font-weight: 600;
+  margin: 3px 2px;
+
+  // 모바일
+  @media (max-width: 640px) {
+    font-size: 16px;
+  }
 `;
 
 const QuizImage = styled.img`
   width: 100%;
+  margin: 27px 0;
 `;
 
 const StartButton = styled.button`
   font-family: "Noto Sans KR", sans-serif;
-  font-size: 22px;
+  font-size: 19px;
   font-weight: 600;
   background-color: #5cc3ff;
   color: white;
-  height: 60px;
+  padding: 14px 0;
   border: none;
   border-radius: 4px;
   cursor: pointer;
-  margin-top: 20px;
+  margin-top: 15px;
+
+  @media (max-width: 640px) {
+    font-size: 17px;
+  }
 `;

@@ -1,4 +1,3 @@
-import React from "react";
 import styled from "styled-components";
 import { useNavigate } from "react-router-dom";
 
@@ -44,6 +43,7 @@ const Logo = styled.div`
   cursor: pointer;
   user-select: none;
   color: #26a6f0e3;
+  -webkit-tap-highlight-color: transparent; // 모바일 터치 효과 제거
 `;
 
 const Login = styled.button`

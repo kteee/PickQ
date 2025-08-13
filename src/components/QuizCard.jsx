@@ -1,22 +1,20 @@
-import React from "react";
 import styled from "styled-components";
 import { useNavigate } from "react-router-dom";
 
-const QuizCard = ({ id, image, title, category, subject, count }) => {
+const QuizCard = ({ id, image, title, category, subject, count, type }) => {
   const navigate = useNavigate();
 
   const handleQuizCardClick = () => {
-    navigate(`/quiz/${id}/start`);
+    navigate(`/quiz/${id}`);
   };
 
   return (
     <QuizCardWrapper onClick={handleQuizCardClick}>
       <QuizImage src={image} alt={`${title} 이미지`} />
-      <QuizTitle>
-        [{category}] {subject}-{count}문제
-      </QuizTitle>
-      <QuizDescription></QuizDescription>
-      <QuizDescription>{title}</QuizDescription>
+      <QuizCategory>
+        [{category}] {type}/{count}문제
+      </QuizCategory>
+      <QuizTitle>{title}</QuizTitle>
     </QuizCardWrapper>
   );
 };
@@ -41,13 +39,15 @@ const QuizImage = styled.img`
   }
 `;
 
-const QuizTitle = styled.h3`
-  margin: 18px 2px 5px 2px;
-`;
-
-const QuizDescription = styled.p`
+const QuizCategory = styled.p`
   font-size: 15px;
   font-weight: 600;
   color: #747474;
-  margin: 2px;
+  margin: 12px 2px 5px 2px;
+`;
+
+const QuizTitle = styled.p`
+  font-size: 18px;
+  font-weight: 600;
+  margin: 5px 2px 5px 2px;
 `;
