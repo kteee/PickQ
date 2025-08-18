@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { createSearchParams, useNavigate } from "react-router-dom";
 import styled from "styled-components";
 import { LinearProgress, Box } from "@mui/material";
 import { QUIZ_TYPE } from "../../data/testList.js";
@@ -22,24 +22,24 @@ const QuizPlay = ({ testData }) => {
     5: quiz05,
     6: quiz06,
   };
-  const test = testMap[id] ?? [];
+  const questions = testMap[id] ?? [];
 
-  const total = test.length || 1;
+  const total = questions.length || 1;
   const [quizStep, setQuizStep] = useState("question"); // question, answer
   const [currentIndex, setCurrentIndex] = useState(0);
   const [selectedOption, setSelectedOption] = useState(null); // 객관식 선택값
   const [subjectiveInput, setSubjectiveInput] = useState(""); // 주관식 입력값
   const [score, setScore] = useState(0);
 
-  if (!test || test.length === 0) return <div>퀴즈가 존재하지 않습니다.</div>;
+  if (!questions || questions.length === 0) return <div>퀴즈가 존재하지 않습니다.</div>;
 
   const progress = Math.round(((currentIndex + 1) / total) * 100);
 
-  const isSubjectiveCorrect = subjectiveInput === test[currentIndex].answer; // 주관식 정답
+  const isSubjectiveCorrect = subjectiveInput === questions[currentIndex].answer; // 주관식 정답
 
   const handleMultipleChoiceSubmit = (option) => {
     setSelectedOption(option);
-    if (option === test[currentIndex].answer) {
+    if (option === questions[currentIndex].answer) {
       setScore((prev) => prev + 1);
     }
     setQuizStep("answer");
@@ -56,21 +56,28 @@ const QuizPlay = ({ testData }) => {
   };
 
   const handleSubjectiveSubmit = () => {
-    if (subjectiveInput === test[currentIndex].answer) {
+    if (subjectiveInput === questions[currentIndex].answer) {
       setScore((prev) => prev + 1);
     }
     setQuizStep("answer");
   };
 
-  const handleNextButtonClick = () => {
+  const handleNextButtonClick = (title) => {
     if (currentIndex < total - 1) {
       setCurrentIndex((prev) => prev + 1);
       setSelectedOption(null);
       setSubjectiveInput("");
       setQuizStep("question");
     } else {
-      navigate(`/test/${id}/result`, {
-        state: { testData, total, score },
+      const params = createSearchParams({
+        title: testData.title,
+        score: score,
+        total: total,
+      });
+
+      navigate({
+        pathname: `/test/${id}/result`,
+        search: `?${params}`,
       });
     }
   };
@@ -96,12 +103,12 @@ const QuizPlay = ({ testData }) => {
         </QuestionCounter>
       </Box>
       <QuestionText>
-        {currentIndex + 1}. {test[currentIndex].question}
+        {currentIndex + 1}. {questions[currentIndex].question}
       </QuestionText>
       {testData.type === QUIZ_TYPE.MULTIPLE_CHOICE ? (
-        test[currentIndex].options.map((option, i) => {
+        questions[currentIndex].options.map((option, i) => {
           const isSelected = option === selectedOption; // 내가 고른 답
-          const isCorrectAnswer = option === test[currentIndex].answer; // 실제 정답
+          const isCorrectAnswer = option === questions[currentIndex].answer; // 실제 정답
 
           return (
             <OptionButton
@@ -152,7 +159,7 @@ const QuizPlay = ({ testData }) => {
               <SubjectiveResultText $isCorrectAnswer={isSubjectiveCorrect}>
                 {isSubjectiveCorrect ? "O 정답" : "X 오답"}
               </SubjectiveResultText>
-              <CorrectAnswerText>{test[currentIndex].answer}</CorrectAnswerText>
+              <CorrectAnswerText>{questions[currentIndex].answer}</CorrectAnswerText>
             </SubjectiveResultBox>
           )}
         </SubjectiveWrapper>

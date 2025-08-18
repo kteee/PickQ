@@ -1,26 +1,27 @@
 import { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { createSearchParams, useNavigate } from "react-router-dom";
 import styled from "styled-components";
 import { LinearProgress, Box } from "@mui/material";
-import test01, { psytestResults01 } from "../../data/psytestSets/test01.js";
-import test02, { psytestResults02 } from "../../data/psytestSets/test02.js";
+import test01 from "../../data/psytestSets/test01.js";
+import test02 from "../../data/psytestSets/test02.js";
 
 const PsyTestPlay = ({ testData }) => {
   const navigate = useNavigate();
 
   const id = Number(testData.id);
   const testMap = {
-    7: { test: test01, psytestResult: psytestResults01 },
-    8: { test: test02, psytestResult: psytestResults02 },
+    7: test01,
+    8: test02,
   };
-  const { test, psytestResult } = testMap[id] ?? [];
+  const questions = testMap[id] ?? [];
 
-  const total = test.length || 1;
+  const total = questions.length || 1;
 
   const [currentIndex, setCurrentIndex] = useState(0);
   const [score, setScore] = useState(0);
 
-  if (!test || test.length === 0) return <div>테스트가 존재하지 않습니다.</div>;
+  if (!questions || questions.length === 0)
+    return <div>테스트가 존재하지 않습니다.</div>;
 
   const progress = Math.round(((currentIndex + 1) / total) * 100);
 
@@ -32,8 +33,14 @@ const PsyTestPlay = ({ testData }) => {
       setScore(nextScore);
       setCurrentIndex((prev) => prev + 1);
     } else {
-      navigate(`/test/${id}/result`, {
-        state: { testData, total, score: nextScore, psytestResult },
+      const params = createSearchParams({
+        title: testData.title,
+        score: nextScore,
+      });
+
+      navigate({
+        pathname: `/test/${id}/result`,
+        search: `?${params}`,
       });
     }
   };
@@ -59,9 +66,9 @@ const PsyTestPlay = ({ testData }) => {
         </QuestionCounter>
       </Box>
       <QuestionText>
-        {currentIndex + 1}. {test[currentIndex].question}
+        {currentIndex + 1}. {questions[currentIndex].question}
       </QuestionText>
-      {test[currentIndex].options.map((option, i) => {
+      {questions[currentIndex].options.map((option, i) => {
         return (
           <OptionButton key={i} onClick={() => handleOptionClick(i)}>
             <div>{option}</div>

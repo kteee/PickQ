@@ -1,10 +1,21 @@
 import styled from "styled-components";
-import { useLocation, useNavigate } from "react-router-dom";
+import { useNavigate, useParams, useSearchParams } from "react-router-dom";
+import { psytestResults01 } from "../../data/psytestSets/test01.js";
+import { psytestResults02 } from "../../data/psytestSets/test02.js";
 
 const PsyTestResult = () => {
-  const location = useLocation();
   const navigate = useNavigate();
-  const { testData, score, psytestResult } = location.state;
+  const { id } = useParams();
+  const [searchParams] = useSearchParams();
+  const title = searchParams.get("title");
+  const score = searchParams.get("score");
+
+  const psytestMap = {
+    7: psytestResults01,
+    8: psytestResults02,
+  };
+
+  const psytestResult = psytestMap[Number(id)] ?? [];
 
   const result = psytestResult.find(
     (result) => score >= result.minScore && score <= result.maxScore
@@ -13,7 +24,7 @@ const PsyTestResult = () => {
   return (
     <QuizContainer>
       <QuizResultContents>
-        <TitleText>{testData.title}</TitleText>
+        <TitleText>{title}</TitleText>
         <CompletionText>
           테스트를 완료하였습니다! 결과를 확인해보세요.
         </CompletionText>
@@ -24,7 +35,7 @@ const PsyTestResult = () => {
         <BaseButton
           $backgroundColor="#b12af0"
           onClick={() => {
-            navigate(`/test/${testData.id}`);
+            navigate(`/test/${id}`);
           }}
         >
           다시하기

@@ -1,15 +1,18 @@
 import styled from "styled-components";
-import { useLocation, useNavigate } from "react-router-dom";
+import { useNavigate, useParams, useSearchParams } from "react-router-dom";
 
 const QuizResult = () => {
-  const location = useLocation();
   const navigate = useNavigate();
-  const { testData, total, score } = location.state;
+  const { id } = useParams();
+  const [searchParams] = useSearchParams();
+  const title = searchParams.get("title");
+  const score = Number(searchParams.get("score"));
+  const total = Number(searchParams.get("total"));
 
   return (
     <QuizContainer>
       <QuizResultContents>
-        <TitleText>{testData.title}</TitleText>
+        <TitleText>{title}</TitleText>
         <CompletionText>
           퀴즈를 완료하였습니다! 결과를 확인해보세요.
         </CompletionText>
@@ -37,7 +40,7 @@ const QuizResult = () => {
         <BaseButton
           $backgroundColor="#b12af0"
           onClick={() => {
-            navigate(`/test/${testData.id}`);
+            navigate(`/test/${id}`);
           }}
         >
           다시하기
