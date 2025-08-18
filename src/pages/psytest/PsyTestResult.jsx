@@ -1,38 +1,25 @@
 import styled from "styled-components";
 import { useLocation, useNavigate } from "react-router-dom";
 
-const QuizResult = () => {
+const PsyTestResult = () => {
   const location = useLocation();
   const navigate = useNavigate();
-  const { testData, total, score } = location.state;
+  const { testData, score, psytestResult } = location.state;
+
+  const result = psytestResult.find(
+    (result) => score >= result.minScore && score <= result.maxScore
+  );
 
   return (
     <QuizContainer>
       <QuizResultContents>
         <TitleText>{testData.title}</TitleText>
         <CompletionText>
-          퀴즈를 완료하였습니다! 결과를 확인해보세요.
+          테스트를 완료하였습니다! 결과를 확인해보세요.
         </CompletionText>
-        <CardWrapper>
-          <StatCard>
-            <StatItem>
-              <StatLabel>점수</StatLabel>
-              <StatValue>
-                {score}
-                <StatUnit> / {total}</StatUnit>
-              </StatValue>
-            </StatItem>
-          </StatCard>
-          <StatCard>
-            <StatItem>
-              <StatLabel>정답률</StatLabel>
-              <StatValue>
-                {Math.round((score / total) * 100)}
-                <StatUnit>%</StatUnit>
-              </StatValue>
-            </StatItem>
-          </StatCard>
-        </CardWrapper>
+        <ResultWrapper>
+          <ResultImg src={result.img} />
+        </ResultWrapper>
 
         <BaseButton
           $backgroundColor="#b12af0"
@@ -55,7 +42,7 @@ const QuizResult = () => {
   );
 };
 
-export default QuizResult;
+export default PsyTestResult;
 
 const QuizContainer = styled.div`
   max-width: 980px;
@@ -97,67 +84,14 @@ const CompletionText = styled.div`
   }
 `;
 
-const CardWrapper = styled.div`
+const ResultWrapper = styled.div`
   display: flex;
   width: 100%;
-  gap: 15px;
 `;
 
-const StatCard = styled.div`
+const ResultImg = styled.img`
+  margin: 20px 0 25px 0;
   width: 100%;
-  height: 190px;
-  background-color: rgb(248, 248, 251);
-  border: 1px solid rgb(213, 215, 219);
-  border-radius: 6px;
-  margin: 20px 0;
-  user-select: none;
-
-  @media (max-width: 640px) {
-    height: 190px;
-  }
-`;
-
-const StatItem = styled.div`
-  display: flex;
-  height: 100%;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-`;
-
-const StatLabel = styled.div`
-  font-size: 16px;
-  font-weight: 500;
-  color: #636870;
-  letter-spacing: 0.2px;
-  margin-bottom: 14px;
-
-  @media (max-width: 640px) {
-    font-size: 15px;
-  }
-`;
-
-const StatValue = styled.div`
-  font-size: 42px;
-  font-weight: 800;
-  color: #292929;
-  line-height: 1;
-  margin-bottom: 13px;
-
-  @media (max-width: 640px) {
-    font-size: 40px;
-  }
-`;
-
-const StatUnit = styled.span`
-  font-size: 22px;
-  font-weight: 600;
-  color: #636870;
-  margin-left: 6px;
-
-  @media (max-width: 640px) {
-    font-size: 18px;
-  }
 `;
 
 const BaseButton = styled.button`

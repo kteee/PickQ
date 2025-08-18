@@ -28,12 +28,12 @@ const HeaderContainer = styled.div`
 
 const HeaderContents = styled.div`
   display: flex;
-  max-width: 1100px;
+  max-width: 980px;
   margin: 0 auto;
-  height: 82px;
+  height: 100%;
   justify-content: space-between;
   align-items: center;
-  padding: 0 16px;
+  padding: 0 18px;
 `;
 
 const Logo = styled.div`
@@ -43,19 +43,18 @@ const Logo = styled.div`
   cursor: pointer;
   user-select: none;
   color: #26a6f0e3;
-  -webkit-tap-highlight-color: transparent; // 모바일 터치 효과 제거
+  -webkit-tap-highlight-color: transparent;
 `;
 
 const Login = styled.button`
-  font-size: 14px;
-  padding: 6px 12px;
-  background-color: transparent;
-  border: 1px solid #7e7e7e;
-  border-radius: 6px;
-  color: #202020;
-  cursor: pointer;
+  font-size: 13px;
+  padding: 7px 14px;
+  background-color: rgb(255, 255, 255);
+  border: 1px solid rgba(0, 0, 0, 0.2);
+  border-radius: 20px;
+  color: #0a0a0a;
 
   &:hover {
-    background-color: rgb(248, 248, 250);
+    background-color: rgb(248, 248, 251);
   }
 `;

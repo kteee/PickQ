@@ -1,9 +1,9 @@
 import styled from "styled-components";
 import Header from "./components/Header";
 import Home from "./pages/Home";
-import QuizResult from "./pages/quiz/QuizResult";
 import { Routes, Route } from "react-router-dom";
-import Quiz from "./pages/quiz/Quiz";
+import TestContainer from "./pages/common/TestContainer";
+import TestResultRouter from "./pages/common/TestResultRouter";
 
 function App() {
   return (
@@ -12,8 +12,8 @@ function App() {
       <Main>
         <Routes>
           <Route path="/" element={<Home />} />
-          <Route path="/quiz/:id" element={<Quiz />} />
-          <Route path="/quiz/:id/result" element={<QuizResult />} />
+          <Route path="/test/:id" element={<TestContainer />} />
+          <Route path="/test/:id/result" element={<TestResultRouter />} />
         </Routes>
       </Main>
     </Layout>

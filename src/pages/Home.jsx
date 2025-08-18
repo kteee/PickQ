@@ -1,19 +1,32 @@
 import styled from "styled-components";
-import QuizList from "../components/QuizList";
+import TestList from "../components/TestList";
+import { useState } from "react";
+
+const CATEGORIES = ["전체", "퀴즈", "심리테스트"];
 
 const Home = () => {
+  const [selectedCate, setSelectedCate] = useState("전체");
+
   return (
     <HomeContainer>
       <HomeContents>
         <AdBanner>광고영역</AdBanner>
         <CategoryBar>
           <Category>
-            <CategoryItem selected>전체</CategoryItem>
-            <CategoryItem>퀴즈</CategoryItem>
-            <CategoryItem>성격테스트</CategoryItem>
+            {CATEGORIES.map((category) => (
+              <CategoryItem
+                key={category}
+                onClick={() => {
+                  setSelectedCate(category);
+                }}
+                selected={selectedCate === category}
+              >
+                {category}
+              </CategoryItem>
+            ))}
           </Category>
         </CategoryBar>
-        <QuizList />
+        <TestList selectedCategory={selectedCate} />
       </HomeContents>
     </HomeContainer>
   );
@@ -26,11 +39,20 @@ const HomeContainer = styled.div`
 `;
 
 const HomeContents = styled.div`
-  max-width: 1100px;
+  width: 100%;
+  max-width: 980px;
+  box-sizing: border-box;
   margin: 0px auto 50px auto;
   display: grid;
   row-gap: 30px;
-  padding: 0 16px;
+  padding: 0px 18px;
+
+  // 모바일
+  @media (max-width: 640px) {
+    background-color: #f6f7f9;
+    row-gap: 17px;
+    padding: 0px;
+  }
 `;
 
 const AdBanner = styled.div`
@@ -39,14 +61,19 @@ const AdBanner = styled.div`
 
 const CategoryBar = styled.div`
   display: flex;
-  height: 80px;
+  height: 65px;
   justify-content: space-between;
   align-items: center;
+
+  @media (max-width: 640px) {
+    background-color: #ffffff;
+    padding: 0 18px;
+  }
 `;
 
 const Category = styled.div`
   display: flex;
-  gap: 13px;
+  gap: 11px;
   flex-wrap: wrap;
 `;
 
@@ -55,14 +82,13 @@ const CategoryItem = styled.button`
   border: none;
   border-radius: 4px;
   font-family: "Noto Sans KR", sans-serif;
-  font-size: 17px;
-  font-weight: 600;
+  font-size: 15px;
+  font-weight: 500;
   color: ${({ selected }) => (selected ? "#ffffff" : "#343434")};
   cursor: pointer;
   background-color: ${({ selected }) =>
-    selected ? "#50bcff" : "rgb(244, 244, 244)"};
+    selected ? "#50bcff" : "rgb(245, 245, 249)"};
 
-  // 모바일
   @media (max-width: 640px) {
     font-size: 16px;
   }
