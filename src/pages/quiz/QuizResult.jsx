@@ -1,5 +1,6 @@
 import styled from "styled-components";
 import { useNavigate, useParams, useSearchParams } from "react-router-dom";
+import ResultFooter from "../../components/ResultFooter";
 
 const QuizResult = () => {
   const navigate = useNavigate();
@@ -36,23 +37,7 @@ const QuizResult = () => {
             </StatItem>
           </StatCard>
         </CardWrapper>
-
-        <BaseButton
-          $backgroundColor="#b12af0"
-          onClick={() => {
-            navigate(`/test/${id}`);
-          }}
-        >
-          다시하기
-        </BaseButton>
-        <BaseButton
-          $backgroundColor="rgb(92, 195, 255)"
-          onClick={() => {
-            navigate("/");
-          }}
-        >
-          홈으로
-        </BaseButton>
+        <ResultFooter id={id} title={title} />
       </QuizResultContents>
     </QuizContainer>
   );

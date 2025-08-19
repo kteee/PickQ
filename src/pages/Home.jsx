@@ -10,7 +10,6 @@ const Home = () => {
   return (
     <HomeContainer>
       <HomeContents>
-        <AdBanner>광고영역</AdBanner>
         <CategoryBar>
           <Category>
             {CATEGORIES.map((category) => (
@@ -55,13 +54,14 @@ const HomeContents = styled.div`
   }
 `;
 
-const AdBanner = styled.div`
-  height: 120px;
-`;
+// const AdBanner = styled.div`
+//   height: 120px;
+// `;
 
 const CategoryBar = styled.div`
   display: flex;
   height: 65px;
+  margin-top: 25px;
   justify-content: space-between;
   align-items: center;
 
