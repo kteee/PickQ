@@ -132,7 +132,7 @@ const OptionButton = styled.button`
   padding: 16px 18px;
   background-color: rgb(240, 244, 249);
   cursor: pointer;
-  -webkit-tap-highlight-color: transparent;
+  -webkit-tap-highlight-color: rgba(221, 227, 234, 0.322);
 
   &:hover {
     background-color: rgb(221, 227, 234);
@@ -141,5 +141,9 @@ const OptionButton = styled.button`
   @media (max-width: 640px) {
     font-size: 16px;
     padding: 15px 18px;
+
+    &:hover {
+      background-color: rgb(240, 244, 249);
+    }
   }
 `;

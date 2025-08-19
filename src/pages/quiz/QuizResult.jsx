@@ -69,7 +69,7 @@ const TitleText = styled.div`
 
   @media (max-width: 640px) {
     margin: 6px 2px 10px 2px;
-    font-size: 19px;
+    font-size: 18px;
   }
 `;
 
@@ -80,7 +80,7 @@ const CompletionText = styled.div`
   margin: 0px 2px 8px 2px;
 
   @media (max-width: 640px) {
-    font-size: 16px;
+    font-size: 15px;
   }
 `;
 
@@ -92,7 +92,7 @@ const CardWrapper = styled.div`
 
 const StatCard = styled.div`
   width: 100%;
-  height: 190px;
+  height: 210px;
   background-color: rgb(248, 248, 251);
   border: 1px solid rgb(213, 215, 219);
   border-radius: 6px;
@@ -100,7 +100,7 @@ const StatCard = styled.div`
   user-select: none;
 
   @media (max-width: 640px) {
-    height: 190px;
+    height: 170px;
   }
 `;
 
@@ -120,7 +120,7 @@ const StatLabel = styled.div`
   margin-bottom: 14px;
 
   @media (max-width: 640px) {
-    font-size: 15px;
+    font-size: 14px;
   }
 `;
 
@@ -132,7 +132,7 @@ const StatValue = styled.div`
   margin-bottom: 13px;
 
   @media (max-width: 640px) {
-    font-size: 40px;
+    font-size: 35px;
   }
 `;
 

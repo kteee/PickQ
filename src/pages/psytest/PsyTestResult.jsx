@@ -24,7 +24,7 @@ const PsyTestResult = () => {
   return (
     <QuizContainer>
       <QuizResultContents>
-        <TitleText>{title}</TitleText>
+        <TitleText>{title} 결과</TitleText>
         <CompletionText>
           테스트를 완료하였습니다! 결과를 확인해보세요.
         </CompletionText>
@@ -64,7 +64,7 @@ const TitleText = styled.div`
 
   @media (max-width: 640px) {
     margin: 6px 2px 10px 2px;
-    font-size: 19px;
+    font-size: 18px;
   }
 `;
 
@@ -75,7 +75,7 @@ const CompletionText = styled.div`
   margin: 0px 2px 8px 2px;
 
   @media (max-width: 640px) {
-    font-size: 16px;
+    font-size: 15px;
   }
 `;
 
@@ -85,6 +85,6 @@ const ResultWrapper = styled.div`
 `;
 
 const ResultImg = styled.img`
-  margin: 20px 0 25px 0;
+  margin: 15px 0 20px 0;
   width: 100%;
 `;

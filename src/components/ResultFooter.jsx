@@ -24,7 +24,7 @@ const ResultFooter = ({ id, title }) => {
         홈으로
       </Button>
       <ResultShare>
-        <div>결과 공유하기</div>
+        <div>카카오톡 공유하기</div>
         <KakaoShareButton title={title} />
       </ResultShare>
     </>
@@ -48,6 +48,7 @@ const Button = styled.button`
 
   @media (max-width: 640px) {
     font-size: 16px;
+    padding: 13px 0;
   }
 `;
 
@@ -56,9 +57,16 @@ const ResultShare = styled.div`
   flex-direction: column;
   justify-content: center;
   align-items: center;
+  height: 50px;
   gap: 20px;
-  margin: 40px 0;
-  font-size: 16px;
+  margin-top: 65px;
+  margin-bottom: 30px;
+  font-size: 14px;
   font-weight: 500;
-  color: #7a7a7a;
+  color: #585858;
+
+  @media (max-width: 640px) {
+    gap: 15px;
+    margin-top: 55px;
+  }
 `;

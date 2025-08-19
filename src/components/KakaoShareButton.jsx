@@ -45,6 +45,6 @@ const KakaoShareButton = ({ title }) => {
 export default KakaoShareButton;
 
 const KakaoImg = styled.img`
-  width: 50px;
+  height: 100%;
   cursor: pointer;
 `;
