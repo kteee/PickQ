@@ -1,9 +1,8 @@
 import styled from "styled-components";
-import { useNavigate, useParams, useSearchParams } from "react-router-dom";
+import { useParams, useSearchParams } from "react-router-dom";
 import ResultFooter from "../../components/ResultFooter";
 
 const QuizResult = () => {
-  const navigate = useNavigate();
   const { id } = useParams();
   const [searchParams] = useSearchParams();
   const title = searchParams.get("title");
@@ -145,23 +144,5 @@ const StatUnit = styled.span`
 
   @media (max-width: 640px) {
     font-size: 18px;
-  }
-`;
-
-const BaseButton = styled.button`
-  font-family: "Noto Sans KR", sans-serif;
-  font-size: 19px;
-  font-weight: 600;
-  width: 100%;
-  margin-top: 13px;
-  padding: 14px 0;
-  background-color: ${(props) => props.$backgroundColor || "#b0e9ff"};
-  color: white;
-  border: none;
-  border-radius: 4px;
-  cursor: pointer;
-
-  @media (max-width: 640px) {
-    font-size: 16px;
   }
 `;

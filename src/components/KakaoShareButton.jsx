@@ -21,11 +21,6 @@ const KakaoShareButton = ({ title }) => {
           webUrl: resultUrl,
         },
       },
-      // social: {
-      //   likeCount: 10,
-      //   commentCount: 20,
-      //   sharedCount: 30,
-      // },
       buttons: [
         {
           title: "결과 확인하기",
@@ -36,7 +31,7 @@ const KakaoShareButton = ({ title }) => {
         },
       ],
     });
-  }, []);
+  }, [title, resultUrl]);
 
   return (
     <KakaoImg
