@@ -13,9 +13,7 @@ const QuizResult = () => {
     <QuizContainer>
       <QuizResultContents>
         <TitleText>{title}</TitleText>
-        <CompletionText>
-          퀴즈를 완료하였습니다! 결과를 확인해보세요.
-        </CompletionText>
+        <CompletionText>나의 퀴즈 결과를 확인해보세요.</CompletionText>
         <CardWrapper>
           <StatCard>
             <StatItem>
@@ -92,7 +90,7 @@ const CardWrapper = styled.div`
 
 const StatCard = styled.div`
   width: 100%;
-  height: 210px;
+  height: 230px;
   background-color: rgb(248, 248, 251);
   border: 1px solid rgb(213, 215, 219);
   border-radius: 6px;

@@ -31,11 +31,13 @@ const QuizPlay = ({ testData }) => {
   const [subjectiveInput, setSubjectiveInput] = useState(""); // 주관식 입력값
   const [score, setScore] = useState(0);
 
-  if (!questions || questions.length === 0) return <div>퀴즈가 존재하지 않습니다.</div>;
+  if (!questions || questions.length === 0)
+    return <div>퀴즈가 존재하지 않습니다.</div>;
 
   const progress = Math.round(((currentIndex + 1) / total) * 100);
 
-  const isSubjectiveCorrect = subjectiveInput === questions[currentIndex].answer; // 주관식 정답
+  const isSubjectiveCorrect =
+    subjectiveInput === questions[currentIndex].answer; // 주관식 정답
 
   const handleMultipleChoiceSubmit = (option) => {
     setSelectedOption(option);
@@ -159,7 +161,9 @@ const QuizPlay = ({ testData }) => {
               <SubjectiveResultText $isCorrectAnswer={isSubjectiveCorrect}>
                 {isSubjectiveCorrect ? "O 정답" : "X 오답"}
               </SubjectiveResultText>
-              <CorrectAnswerText>{questions[currentIndex].answer}</CorrectAnswerText>
+              <CorrectAnswerText>
+                {questions[currentIndex].answer}
+              </CorrectAnswerText>
             </SubjectiveResultBox>
           )}
         </SubjectiveWrapper>

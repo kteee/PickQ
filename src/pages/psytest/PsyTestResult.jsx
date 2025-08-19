@@ -24,10 +24,8 @@ const PsyTestResult = () => {
   return (
     <QuizContainer>
       <QuizResultContents>
-        <TitleText>{title} 결과</TitleText>
-        <CompletionText>
-          테스트를 완료하였습니다! 결과를 확인해보세요.
-        </CompletionText>
+        <TitleText>{title}</TitleText>
+        <CompletionText>나의 결과를 확인해보세요.</CompletionText>
         <ResultWrapper>
           <ResultImg src={result.img} />
         </ResultWrapper>
