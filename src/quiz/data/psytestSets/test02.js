@@ -1,7 +1,7 @@
-import Result01 from "../../assets/result/result01.png";
-import Result02 from "../../assets/result/result05.png";
-import Result03 from "../../assets/result/result06.png";
-import Result04 from "../../assets/result/result04.png";
+import Result01 from "../../../shared/assets/result/result01.png";
+import Result02 from "../../../shared/assets/result/result05.png";
+import Result03 from "../../../shared/assets/result/result06.png";
+import Result04 from "../../../shared/assets/result/result04.png";
 
 const test02 = [
   {

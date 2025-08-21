@@ -1,7 +1,7 @@
 import { useLocation, useParams } from "react-router-dom";
-import testList from "../../data/testList";
-import QuizResult from "../quiz/QuizResult";
-import PsyTestResult from "../psytest/PsyTestResult";
+import testList from "../data/testListData";
+import QuizResult from "../../quiz/pages/QuizResult";
+import PsyTestResult from "../../quiz/pages/PsyTestResult";
 
 const TestResultRouter = () => {
   const { id } = useParams();

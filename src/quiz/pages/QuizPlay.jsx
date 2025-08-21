@@ -2,13 +2,13 @@ import { useState } from "react";
 import { createSearchParams, useNavigate } from "react-router-dom";
 import styled from "styled-components";
 import { LinearProgress, Box } from "@mui/material";
-import { QUIZ_TYPE } from "../../data/testList.js";
-import quiz01 from "../../data/quizSets/quiz01.js";
-import quiz02 from "../../data/quizSets/quiz02.js";
-import quiz03 from "../../data/quizSets/quiz03.js";
-import quiz04 from "../../data/quizSets/quiz04.js";
-import quiz05 from "../../data/quizSets/quiz05.js";
-import quiz06 from "../../data/quizSets/quiz06.js";
+import { QUIZ_TYPE } from "../../shared/data/testListData.js";
+import quiz01 from "../data/quizSets/quiz01.js";
+import quiz02 from "../data/quizSets/quiz02.js";
+import quiz03 from "../data/quizSets/quiz03.js";
+import quiz04 from "../data/quizSets/quiz04.js";
+import quiz05 from "../data/quizSets/quiz05.js";
+import quiz06 from "../data/quizSets/quiz06.js";
 
 const QuizPlay = ({ testData }) => {
   const navigate = useNavigate();

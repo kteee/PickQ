@@ -22,7 +22,7 @@ export default Header;
 
 const HeaderContainer = styled.div`
   width: 100%;
-  height: 82px;
+  height: 100%;
   border-bottom: 1px solid lightgray;
 `;
 
@@ -47,12 +47,12 @@ const Logo = styled.div`
 `;
 
 const Login = styled.button`
-  font-size: 13px;
-  padding: 7px 14px;
+  font-size: 14px;
+  padding: 7px 15px;
   background-color: rgb(255, 255, 255);
-  border: 1px solid rgba(0, 0, 0, 0.2);
+  border: 1px solid rgb(209, 213, 219);
   border-radius: 20px;
-  color: #0a0a0a;
+  color: rgb(13, 17, 23);
 
   &:hover {
     background-color: rgb(248, 248, 251);

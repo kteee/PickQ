@@ -1,12 +1,15 @@
 import styled from "styled-components";
-import TestCard from "./TestCard";
-import testList from "../data/testList";
+import TestCard from "./TestListCard";
 
-const TestList = ({ selectedCategory }) => {
+const TestList = ({ testListData, selectedCategory }) => {
   const filteredList =
     selectedCategory === "전체"
-      ? testList
-      : testList.filter((test) => test.category === selectedCategory);
+      ? testListData
+      : testListData.filter((test) => test.category === selectedCategory);
+
+  if (filteredList.length === 0) {
+    return <EmptyMessage>표시할 항목이 없습니다.</EmptyMessage>;
+  }
 
   return (
     <ListWrapper>
@@ -35,4 +38,13 @@ const ListWrapper = styled.div`
     grid-template-columns: 1fr;
     gap: 17px;
   }
+`;
+
+const EmptyMessage = styled.div`
+  width: 100%;
+  font-size: 17px;
+
+  text-align: center;
+  padding: 40px 0;
+  color: #666;
 `;

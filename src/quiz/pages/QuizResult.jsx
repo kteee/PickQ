@@ -1,6 +1,6 @@
 import styled from "styled-components";
 import { useParams, useSearchParams } from "react-router-dom";
-import ResultFooter from "../../components/ResultFooter";
+import ResultFooter from "../../shared/components/TestResultFooter";
 
 const QuizResult = () => {
   const { id } = useParams();

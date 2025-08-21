@@ -2,9 +2,9 @@ import styled from "styled-components";
 import { useState } from "react";
 import { useParams } from "react-router-dom";
 import TestStart from "./TestStart";
-import testList from "../../data/testList";
-import QuizPlay from "../quiz/QuizPlay";
-import PsyTestPlay from "../psytest/PsyTestPlay";
+import testList from "../data/testListData";
+import QuizPlay from "../../quiz/pages/QuizPlay";
+import PsyTestPlay from "../../quiz/pages/PsyTestPlay";
 
 const TestContainer = () => {
   const { id } = useParams();

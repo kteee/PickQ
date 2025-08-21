@@ -2,8 +2,8 @@ import { useState } from "react";
 import { createSearchParams, useNavigate } from "react-router-dom";
 import styled from "styled-components";
 import { LinearProgress, Box } from "@mui/material";
-import test01 from "../../data/psytestSets/test01.js";
-import test02 from "../../data/psytestSets/test02.js";
+import test01 from "../data/psytestSets/test01.js";
+import test02 from "../data/psytestSets/test02.js";
 
 const PsyTestPlay = ({ testData }) => {
   const navigate = useNavigate();

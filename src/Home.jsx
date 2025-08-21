@@ -1,5 +1,6 @@
 import styled from "styled-components";
-import TestList from "../components/TestList";
+import TestList from "./shared/components/TestList";
+import testListData from "./shared/data/testListData";
 import { useState } from "react";
 
 const CATEGORIES = ["전체", "퀴즈", "심리테스트"];
@@ -10,6 +11,7 @@ const Home = () => {
   return (
     <HomeContainer>
       <HomeContents>
+        <PopularSection>dd</PopularSection>
         <CategoryBar>
           <Category>
             {CATEGORIES.map((category) => (
@@ -25,7 +27,7 @@ const Home = () => {
             ))}
           </Category>
         </CategoryBar>
-        <TestList selectedCategory={selectedCate} />
+        <TestList testListData={testListData} selectedCategory={selectedCate} />
       </HomeContents>
     </HomeContainer>
   );
@@ -44,7 +46,7 @@ const HomeContents = styled.div`
   margin: 0px auto 50px auto;
   display: grid;
   row-gap: 30px;
-  padding: 0px 18px;
+  //padding: 0px 18px;
 
   // 모바일
   @media (max-width: 640px) {
@@ -54,9 +56,7 @@ const HomeContents = styled.div`
   }
 `;
 
-// const AdBanner = styled.div`
-//   height: 120px;
-// `;
+const PopularSection = styled.div``;
 
 const CategoryBar = styled.div`
   display: flex;

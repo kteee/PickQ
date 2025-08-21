@@ -1,8 +1,8 @@
 import styled from "styled-components";
 import { useParams, useSearchParams } from "react-router-dom";
-import { psytestResults01 } from "../../data/psytestSets/test01.js";
-import { psytestResults02 } from "../../data/psytestSets/test02.js";
-import ResultFooter from "../../components/ResultFooter.jsx";
+import { psytestResults01 } from "../data/psytestSets/test01.js";
+import { psytestResults02 } from "../data/psytestSets/test02.js";
+import ResultFooter from "../../shared/components/TestResultFooter.jsx";
 
 const PsyTestResult = () => {
   const { id } = useParams();
