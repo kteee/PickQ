@@ -1,106 +1,18 @@
 const express = require("express");
+const { check } = require("express-validator");
 
-const HttpError = require("../models/http-error");
+const quizController = require("../controllers/quiz-controller");
 
 const router = express.Router();
 
-const QUIZ_TYPE = {
-  MULTIPLE_CHOICE: "객관식",
-  SUBJECTIVE: "주관식",
-};
+router.get("/", quizController.getQuizzes);
 
-const DUMMY_QUIZ = [
-  {
-    id: 1,
-    category: "퀴즈",
-    title: "상식퀴즈(1)",
-    description: "중학생 수준의 일반상식 퀴즈모음!",
-    subject: "일반상식",
-    //image: Img01,
-    type: QUIZ_TYPE.MULTIPLE_CHOICE,
-  },
-  {
-    id: 2,
-    category: "퀴즈",
-    title: "상식퀴즈(2)",
-    description: "알아두면 쓸모있는 일반상식 퀴즈모음",
-    subject: "일반상식",
-    //image: Img02,
-    type: QUIZ_TYPE.MULTIPLE_CHOICE,
-  },
-  {
-    id: 3,
-    category: "퀴즈",
-    title: "상식퀴즈(3)",
-    description: "한국인이라면 무조건 알아야 할 역사상식",
-    subject: "역사상식",
-    //image: Img03,
-    type: QUIZ_TYPE.MULTIPLE_CHOICE,
-  },
-  {
-    id: 4,
-    category: "퀴즈",
-    title: "영화 초성퀴즈",
-    description: "초성으로 영화 제목 맞히기",
-    subject: "초성",
-    //image: Img04,
-    type: QUIZ_TYPE.SUBJECTIVE,
-  },
-  {
-    id: 5,
-    category: "퀴즈",
-    title: "맞춤법 퀴즈",
-    description: "당신의 맞춤법 실력을 테스트해보세요!",
-    subject: "맞춤법",
-    //image: Img05,
-    type: QUIZ_TYPE.MULTIPLE_CHOICE,
-  },
-  {
-    id: 6,
-    category: "퀴즈",
-    title: "사자성어 퀴즈",
-    description: "일상에서 쓰는 사자성어, 얼마나 알고 있나요?",
-    subject: "사자성어",
-    //image: Img06,
-    type: QUIZ_TYPE.SUBJECTIVE,
-  },
-  {
-    id: 7,
-    category: "심리테스트",
-    title: "테토남/에겐남 테스트",
-    description: "테토남/에겐남 나는 어떤 유형?",
-    subject: "성격",
-    //image: Img07,
-    type: QUIZ_TYPE.MULTIPLE_CHOICE,
-  },
-  {
-    id: 8,
-    category: "심리테스트",
-    title: "테토녀/에겐녀 테스트",
-    description: "테토녀/에겐녀 나는 어떤 유형?",
-    subject: "성격",
-    //image: Img08,
-    type: QUIZ_TYPE.MULTIPLE_CHOICE,
-  },
-];
+router.get("/:qid", quizController.getQuizById);
 
-router.get("/", (req, res, next) => {
-  res.json(DUMMY_QUIZ);
-});
-
-router.get("/:id", (req, res, next) => {
-  const quizId = req.params.id;
-  const quiz = DUMMY_QUIZ.find((quiz) => {
-    return quiz.id == quizId;
-  });
-
-  if (!quiz) {
-    return next(new HttpError("해당 퀴즈가 존재하지 않습니다.", 404));
-  }
-
-  res.json(quiz);
-});
-
-router.post("/:id/result", (req, res, next) => {});
+router.post(
+  "/:qid/result",
+  [check("userId").notEmpty(), check("type").notEmpty()],
+  quizController.submitResult
+);
 
 module.exports = router;
