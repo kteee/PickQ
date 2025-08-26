@@ -17,11 +17,28 @@ const registerUser = async (req, res, next) => {
   const { nickname, email, password, image } = req.body;
 
   // 이메일 중복 확인
-  let existingUser;
   try {
-    existingUser = await User.findOne({ email: email });
-    if (existingUser) {
-      const error = new HttpError("이미 사용하고 있는 이메일입니다.", 422);
+    const existingEmail = await User.findOne({ email: email });
+    if (existingEmail) {
+      const error = new HttpError(
+        "이미 사용 중인 이메일입니다. 다른 이메일을 입력해주세요.",
+        422
+      );
+      return next(error);
+    }
+  } catch (err) {
+    const error = new HttpError("사용자 조회 중 오류가 발생했습니다.", 500);
+    return next(error);
+  }
+
+  // 닉네임 중복 확인
+  try {
+    const existingNickname = await User.findOne({ nickname: nickname });
+    if (existingNickname) {
+      const error = new HttpError(
+        "이미 사용 중인 닉네임입니다. 다른 닉네임을 입력해주세요.",
+        422
+      );
       return next(error);
     }
   } catch (err) {
@@ -73,7 +90,7 @@ const login = async (req, res, next) => {
   // 회원 존재 여부 및 패스워드 일치 여부 확인
   if (!loginUser || loginUser.password !== password) {
     const error = new HttpError(
-      "이메일 또는 비밀번호가 일치하지 않습니다.",
+      "이메일 또는 비밀번호가 올바르지 않습니다.",
       401
     );
     return next(error);

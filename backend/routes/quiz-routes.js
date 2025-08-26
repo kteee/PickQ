@@ -10,11 +10,16 @@ router.get("/", quizController.getQuizzes);
 router.get("/:qid", quizController.getQuizById);
 
 router.post(
-  "/:qid/result",
-  [check("userId").notEmpty(), check("type").notEmpty()],
+  "/result",
+  [
+    check("quizId").notEmpty(),
+    check("userId").notEmpty(),
+    check("score").notEmpty(),
+    check("total").notEmpty(),
+  ],
   quizController.submitResult
 );
 
-router.get("/:qid/result/:rid", quizController.getQuizResultById);
+router.get("/result/:rid", quizController.getQuizResultById);
 
 module.exports = router;

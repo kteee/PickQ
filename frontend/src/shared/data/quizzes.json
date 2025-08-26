@@ -1,10 +1,11 @@
 [
   {
+    "id": "1",
     "category": "퀴즈",
     "title": "상식퀴즈(1)",
     "description": "중학생 수준의 일반상식 퀴즈모음!",
     "subject": "일반상식",
-    "image": "../assets/quiz01.png",
+    "image": "/assets/quiz01.png",
     "answerType": "객관식",
     "questions": [
       {
@@ -65,11 +66,12 @@
     ]
   },
   {
+    "id": "2",
     "category": "퀴즈",
     "title": "상식퀴즈(2)",
     "description": "알아두면 쓸모있는 일반상식 퀴즈모음",
     "subject": "일반상식",
-    "image": "../assets/quiz02.png",
+    "image": "/assets/quiz02.png",
     "answerType": "객관식",
     "questions": [
       {
@@ -195,11 +197,12 @@
     ]
   },
   {
+    "id": "3",
     "category": "퀴즈",
     "title": "상식퀴즈(3)",
     "description": "한국인이라면 무조건 알아야 할 역사상식",
     "subject": "역사상식",
-    "image": "../assets/quiz03.png",
+    "image": "/assets/quiz03.png",
     "answerType": "객관식",
     "questions": [
       {
@@ -320,11 +323,12 @@
     ]
   },
   {
+    "id": "4",
     "category": "퀴즈",
     "title": "영화 초성퀴즈",
     "description": "초성으로 영화 제목 맞히기",
     "subject": "초성",
-    "image": "../assets/quiz04.png",
+    "image": "/assets/quiz04.png",
     "answerType": "주관식",
     "questions": [
       {
@@ -370,11 +374,12 @@
     ]
   },
   {
+    "id": "5",
     "category": "퀴즈",
     "title": "맞춤법 퀴즈",
     "description": "당신의 맞춤법 실력을 테스트해보세요!",
     "subject": "맞춤법",
-    "image": "../assets/quiz05.png",
+    "image": "/assets/quiz05.png",
     "answerType": "객관식",
     "questions": [
       {
@@ -430,11 +435,12 @@
     ]
   },
   {
+    "id": "6",
     "category": "퀴즈",
     "title": "사자성어 퀴즈",
     "description": "일상에서 쓰는 사자성어, 얼마나 알고 있나요?",
     "subject": "사자성어",
-    "image": "../assets/quiz06.png",
+    "image": "/assets/quiz06.png",
     "answerType": "주관식",
     "questions": [
       {

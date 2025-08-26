@@ -1,7 +1,8 @@
 import styled from "styled-components";
 import { useNavigate } from "react-router-dom";
 import LoginButton from "./LoginButton";
-import SearchBar from "./SearchBar";
+import PCSearchBar from "./PCSearchBar";
+import MobileSearchBar from "./MobileSearchBar";
 
 const Header = () => {
   const navigate = useNavigate();
@@ -15,7 +16,8 @@ const Header = () => {
       <HeaderContents>
         <Logo onClick={handleLogoClick}>PickQ</Logo>
         <RightSection>
-          <SearchBar />
+          <PCSearchBar />
+          <MobileSearchBar />
           <LoginButton />
         </RightSection>
       </HeaderContents>
@@ -29,15 +31,20 @@ const HeaderContainer = styled.div`
   width: 100%;
   height: 100%;
   border-bottom: 1px solid rgb(229, 231, 235);
+  box-sizing: border-box;
+
+  @media (max-width: 1024px) {
+    padding: 0 18px;
+  }
 
   @media (max-width: 640px) {
-    border-bottom: 1px solid #000000;
+    padding: 0 16px;
   }
 `;
 
 const HeaderContents = styled.div`
   display: flex;
-  max-width: 1000px;
+  max-width: 1020px;
   margin: 0 auto;
   height: 100%;
   justify-content: space-between;
@@ -56,7 +63,6 @@ const Logo = styled.div`
 
 const RightSection = styled.div`
   display: flex;
-  gap: 15px;
   justify-content: center;
   align-items: center;
 `;

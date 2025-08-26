@@ -39,7 +39,7 @@ const PsyTestPlay = ({ testData }) => {
       });
 
       navigate({
-        pathname: `/test/${id}/result`,
+        pathname: `/psytest/${id}/result`,
         search: `?${params}`,
       });
     }

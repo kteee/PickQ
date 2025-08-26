@@ -1,26 +1,44 @@
+import { useEffect, useState } from "react";
 import styled from "styled-components";
-import { useParams, useSearchParams } from "react-router-dom";
+import { useParams } from "react-router-dom";
 import ResultFooter from "../../shared/components/TestResultFooter";
+import { useHttpClient } from "../../shared/hooks/http-hook";
 
 const QuizResult = () => {
   const { id } = useParams();
-  const [searchParams] = useSearchParams();
-  const title = searchParams.get("title");
-  const score = Number(searchParams.get("score"));
-  const total = Number(searchParams.get("total"));
+  const [result, setResult] = useState();
+  const { isLoading, error, sendRequest, clearError } = useHttpClient();
+
+  useEffect(() => {
+    console.log(id);
+    const fetchResult = async () => {
+      try {
+        const responseData = await sendRequest(
+          `http://localhost:5000/api/quiz/result/${id}`
+        );
+        setResult(responseData.data);
+      } catch (err) {}
+    };
+
+    fetchResult();
+  }, [id, sendRequest]);
+
+  if (isLoading || !result) {
+    return null;
+  }
 
   return (
     <QuizContainer>
       <QuizResultContents>
-        <TitleText>{title}</TitleText>
+        <TitleText></TitleText>
         <CompletionText>나의 퀴즈 결과를 확인해보세요.</CompletionText>
         <CardWrapper>
           <StatCard>
             <StatItem>
               <StatLabel>점수</StatLabel>
               <StatValue>
-                {score}
-                <StatUnit> / {total}</StatUnit>
+                {result.score}
+                <StatUnit> / {result.total}</StatUnit>
               </StatValue>
             </StatItem>
           </StatCard>
@@ -28,13 +46,13 @@ const QuizResult = () => {
             <StatItem>
               <StatLabel>정답률</StatLabel>
               <StatValue>
-                {Math.round((score / total) * 100)}
+                {Math.round((result.score / result.total) * 100)}
                 <StatUnit>%</StatUnit>
               </StatValue>
             </StatItem>
           </StatCard>
         </CardWrapper>
-        <ResultFooter id={id} title={title} />
+        <ResultFooter id={id} />
       </QuizResultContents>
     </QuizContainer>
   );
@@ -43,7 +61,7 @@ const QuizResult = () => {
 export default QuizResult;
 
 const QuizContainer = styled.div`
-  max-width: 980px;
+  max-width: 1020px;
   margin: 0px auto 50px auto;
 `;
 

@@ -38,7 +38,7 @@ const PsyTestResult = () => {
 export default PsyTestResult;
 
 const QuizContainer = styled.div`
-  max-width: 980px;
+  max-width: 1020px;
   margin: 0px auto 50px auto;
 `;
 

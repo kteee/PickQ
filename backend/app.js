@@ -11,6 +11,16 @@ const app = express();
 
 app.use(express.json());
 
+app.use((req, res, next) => {
+  res.setHeader("Access-Control-Allow-Origin", "*");
+  res.setHeader(
+    "Access-Control-Allow-Headers",
+    "Origin, X-Requested-With, Content-Type, Accept, Authorization"
+  );
+  res.setHeader("Access-Control-Allow-Methods", "GET, POST, PATCH, DELETE");
+  next();
+});
+
 app.use("/api/quiz", quizRoutes);
 
 app.use("/api/comment", commentRoutes);
@@ -18,7 +28,7 @@ app.use("/api/comment", commentRoutes);
 app.use("/api/user", userRoutes);
 
 app.use((req, res, next) => {
-  const error = new HttpError("해당 경로가 존재하지 않습니다.", 404);
+  const error = new HttpError("요청 경로가 존재하지 않습니다.", 404);
   throw error;
 });
 

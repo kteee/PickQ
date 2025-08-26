@@ -2,9 +2,10 @@ const { validationResult } = require("express-validator");
 
 const HttpError = require("../models/http-error");
 const Quiz = require("../models/quiz");
+const User = require("../models/user");
 const QuizResult = require("../models/quizResult");
 
-// GET /api/quiz - 완료!!
+// GET /api/quiz
 const getQuizzes = async (req, res, next) => {
   // 퀴즈 목록 조회
   let quizzes;
@@ -16,18 +17,17 @@ const getQuizzes = async (req, res, next) => {
   }
 
   res.json({
-    quizzes: quizzes.map((quiz) => quiz.toObject({ getters: true })),
+    data: quizzes.map((quiz) => quiz.toObject({ getters: true })),
   });
 };
 
-// GET /api/quiz/:qid -- 완료!!
+// GET /api/quiz/:qid
 const getQuizById = async (req, res, next) => {
   const quizId = req.params.qid;
-
   // 퀴즈 조회
   let quiz;
   try {
-    quiz = await Quiz.findById(quizId);
+    quiz = await Quiz.findOne({ id: quizId });
     if (!quiz) {
       const error = new HttpError("해당 퀴즈가 존재하지 않습니다.", 404);
       return next(error);
@@ -37,10 +37,10 @@ const getQuizById = async (req, res, next) => {
     return next(error);
   }
 
-  res.json({ quiz: quiz.toObject({ getters: true }) });
+  res.json({ data: quiz.toObject({ getters: true }) });
 };
 
-// POST /api/quiz/:qid/result -- 완료!!
+// POST /api/quiz/result
 const submitResult = async (req, res, next) => {
   const errors = validationResult(req);
   if (!errors.isEmpty()) {
@@ -51,8 +51,7 @@ const submitResult = async (req, res, next) => {
     return next(error);
   }
 
-  const quizId = req.params.qid;
-  const { userId, score, total } = req.body;
+  const { quizId, userId, score, total } = req.body;
   const submittedResult = new QuizResult({
     quizId,
     userId,
@@ -92,12 +91,10 @@ const submitResult = async (req, res, next) => {
     return next(error);
   }
 
-  res
-    .status(201)
-    .json({ submittedResult: submittedResult.toObject({ getters: true }) });
+  res.status(201).json({ data: submittedResult.toObject({ getters: true }) });
 };
 
-// GET /api/quiz/:qid/result/:rid
+// GET /api/quiz/result/:rid
 const getQuizResultById = async (req, res, next) => {
   const resultId = req.params.rid;
 
@@ -113,7 +110,7 @@ const getQuizResultById = async (req, res, next) => {
     const error = new HttpError("퀴즈 결과 조회 중 오류가 발생했습니다.", 500);
     return next(error);
   }
-  res.json({ quizResult: quizResult.toObject({ getters: true }) });
+  res.json({ data: quizResult.toObject({ getters: true }) });
 };
 
 exports.getQuizzes = getQuizzes;

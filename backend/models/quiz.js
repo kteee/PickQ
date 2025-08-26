@@ -13,6 +13,7 @@ const questionSchema = new Schema(
 
 const quizSchema = new Schema(
   {
+    id: { type: String, required: true },
     category: { type: String, required: true },
     title: { type: String, required: true },
     description: { type: String },

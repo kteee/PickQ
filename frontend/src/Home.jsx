@@ -1,50 +1,66 @@
+import { useEffect, useState } from "react";
 import styled from "styled-components";
-import TestList from "./shared/components/TestList";
-import testListData from "./shared/data/testListData";
+import TrendingUpIcon from "@mui/icons-material/TrendingUpRounded";
+import QuizList from "./shared/components/QuizList";
 import PopularContentCard from "./shared/components/PopularContentCard";
-import { useState } from "react";
-import Img01 from "./shared/assets/quiz01.png";
+import CategoryBar from "./shared/components/CategoryBar";
+import { useHttpClient } from "./shared/hooks/http-hook";
+import Img07 from "./shared/assets/test01.png";
 import Img04 from "./shared/assets/quiz04.png";
 import Img05 from "./shared/assets/quiz05.png";
-import Img07 from "./shared/assets/test01.png";
 
-const CATEGORIES = ["전체", "퀴즈", "심리테스트"];
-
-const POPULAR_CONTENTS = [Img01, Img04, Img05, Img07];
+const POPULAR_CONTENTS = [Img07, Img04, Img05, Img07];
 
 const Home = () => {
-  const [selectedCate, setSelectedCate] = useState("전체");
+  const { isLoading, error, sendRequest, clearError } = useHttpClient();
+
+  const [loadedQuizzes, setLoadedQuizzes] = useState();
+  const [selectedCategory, setSelectedCategory] = useState("전체");
+
+  useEffect(() => {
+    const fetchQuizzes = async () => {
+      try {
+        const responseData = await sendRequest(
+          "http://localhost:5000/api/quiz"
+        );
+        setLoadedQuizzes(responseData.data);
+      } catch (err) {}
+    };
+
+    fetchQuizzes();
+  }, [sendRequest]);
+
+  const errorHandler = () => {
+    clearError();
+  };
 
   return (
     <HomeContainer>
       <HomeContents>
         <PopularSection>
-          <SectionTitle>인기 컨텐츠</SectionTitle>
+          <SectionTitle>
+            <TrendingIcon sx={{ fontSize: "27px" }} />
+            인기 컨텐츠
+          </SectionTitle>
           <PopularList>
             {POPULAR_CONTENTS.map((image) => (
               <PopularContentCard
                 image={image}
-                title={"테토남/에겐남 테스트"}
+                title={"테토남/에겐남 테스트dddd ff"}
               />
             ))}
           </PopularList>
         </PopularSection>
-        <CategoryBar>
-          <Category>
-            {CATEGORIES.map((category) => (
-              <CategoryItem
-                key={category}
-                onClick={() => {
-                  setSelectedCate(category);
-                }}
-                selected={selectedCate === category}
-              >
-                {category}
-              </CategoryItem>
-            ))}
-          </Category>
-        </CategoryBar>
-        <TestList testListData={testListData} selectedCategory={selectedCate} />
+        <CategoryBar
+          selectedCate={selectedCategory}
+          setSelectedCate={setSelectedCategory}
+        />
+        {!isLoading && loadedQuizzes && (
+          <QuizList
+            quizData={loadedQuizzes}
+            selectedCategory={selectedCategory}
+          />
+        )}
       </HomeContents>
     </HomeContainer>
   );
@@ -58,81 +74,77 @@ const HomeContainer = styled.div`
 
 const HomeContents = styled.div`
   width: 100%;
-  max-width: 1000px;
+  max-width: 1020px;
   box-sizing: border-box;
   margin: 0px auto 50px auto;
   display: grid;
-  row-gap: 30px;
+  row-gap: 15px;
+
+  // 태블릿
+  @media (max-width: 1024px) {
+    padding: 0 18px;
+    box-sizing: border-box;
+  }
 
   // 모바일
   @media (max-width: 640px) {
     background-color: #f6f7f9;
-    row-gap: 17px;
-    padding: 0px 18px;
+    padding: 0px;
+    row-gap: 0px;
   }
 `;
 
 const PopularSection = styled.div`
   display: flex;
   flex-direction: column;
+  margin-bottom: 17px;
+
+  @media (max-width: 640px) {
+    background-color: #ffffff;
+    margin-bottom: 0px;
+    padding: 4px 18px 24px 18px;
+  }
+`;
+
+const TrendingIcon = styled(TrendingUpIcon)`
+  color: #26a6f0e3;
+  margin-right: 7px;
 `;
 
 const SectionTitle = styled.div`
-  font-size: 21px;
+  display: flex;
+  align-items: center;
+  font-size: 20.5px;
   font-weight: 500;
   color: rgb(10, 10, 10);
-  margin-top: 30px;
-  margin-bottom: 22px;
+  margin-top: 32px;
+  margin-bottom: 24px;
 
   @media (max-width: 640px) {
-    font-size: 19px;
-    margin-top: 15px;
+    font-size: 20px;
+    font-weight: 600;
+    margin-top: 19px;
+    margin-bottom: 20px;
   }
 `;
 
 const PopularList = styled.div`
   display: grid;
-  width: 100%;
   grid-template-columns: repeat(4, 1fr);
-  gap: 17px;
+  gap: 20px;
 
   @media (max-width: 640px) {
-    grid-template-columns: repeat(2, 1fr);
-  }
-`;
+    display: flex;
+    overflow-x: auto;
+    max-width: 100%;
+    box-sizing: border-box;
+    contain: content;
+    scroll-snap-type: x mandatory;
+    -webkit-overflow-scrolling: touch;
+    gap: 15px;
 
-const CategoryBar = styled.div`
-  display: flex;
-  height: 65px;
-  margin-top: 25px;
-  justify-content: space-between;
-  align-items: center;
-
-  @media (max-width: 640px) {
-    background-color: #ffffff;
-    padding: 0 18px;
-  }
-`;
-
-const Category = styled.div`
-  display: flex;
-  gap: 11px;
-  flex-wrap: wrap;
-`;
-
-const CategoryItem = styled.button`
-  padding: 4px 9px;
-  border: none;
-  border-radius: 4px;
-  font-family: "Noto Sans KR", sans-serif;
-  font-size: 15px;
-  font-weight: 500;
-  color: ${({ selected }) => (selected ? "#ffffff" : "#343434")};
-  cursor: pointer;
-  background-color: ${({ selected }) =>
-    selected ? "#50bcff" : "rgb(245, 245, 249)"};
-
-  @media (max-width: 640px) {
-    font-size: 16px;
+    &::-webkit-scrollbar {
+      display: none;
+    }
   }
 `;

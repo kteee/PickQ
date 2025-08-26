@@ -1,28 +1,13 @@
 import { useState } from "react";
-import { createSearchParams, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
 import { LinearProgress, Box } from "@mui/material";
-import { QUIZ_TYPE } from "../../shared/data/testListData.js";
-import quiz01 from "../data/quizSets/quiz01.js";
-import quiz02 from "../data/quizSets/quiz02.js";
-import quiz03 from "../data/quizSets/quiz03.js";
-import quiz04 from "../data/quizSets/quiz04.js";
-import quiz05 from "../data/quizSets/quiz05.js";
-import quiz06 from "../data/quizSets/quiz06.js";
+import { useHttpClient } from "../../shared/hooks/http-hook";
 
-const QuizPlay = ({ testData }) => {
+const QuizPlay = ({ quizData }) => {
   const navigate = useNavigate();
 
-  const id = Number(testData.id);
-  const testMap = {
-    1: quiz01,
-    2: quiz02,
-    3: quiz03,
-    4: quiz04,
-    5: quiz05,
-    6: quiz06,
-  };
-  const questions = testMap[id] ?? [];
+  const questions = quizData.questions;
 
   const total = questions.length || 1;
   const [quizStep, setQuizStep] = useState("question"); // question, answer
@@ -31,15 +16,14 @@ const QuizPlay = ({ testData }) => {
   const [subjectiveInput, setSubjectiveInput] = useState(""); // 주관식 입력값
   const [score, setScore] = useState(0);
 
-  if (!questions || questions.length === 0)
-    return <div>퀴즈가 존재하지 않습니다.</div>;
+  const { isLoading, error, sendRequest, clearError } = useHttpClient();
 
   const progress = Math.round(((currentIndex + 1) / total) * 100);
 
   const isSubjectiveCorrect =
     subjectiveInput === questions[currentIndex].answer; // 주관식 정답
 
-  const handleMultipleChoiceSubmit = (option) => {
+  const handleOptionSelect = (option) => {
     setSelectedOption(option);
     if (option === questions[currentIndex].answer) {
       setScore((prev) => prev + 1);
@@ -50,140 +34,168 @@ const QuizPlay = ({ testData }) => {
   const handleEnterKey = (e) => {
     if (e.key === "Enter") {
       if (quizStep === "question") {
-        handleSubjectiveSubmit();
+        handleSubjectiveAnswer();
       } else if (quizStep === "answer") {
         handleNextButtonClick();
       }
     }
   };
 
-  const handleSubjectiveSubmit = () => {
+  const handleSubjectiveAnswer = () => {
     if (subjectiveInput === questions[currentIndex].answer) {
       setScore((prev) => prev + 1);
     }
     setQuizStep("answer");
   };
 
-  const handleNextButtonClick = (title) => {
+  const handleNextButtonClick = async () => {
     if (currentIndex < total - 1) {
+      // 다음문제
       setCurrentIndex((prev) => prev + 1);
       setSelectedOption(null);
       setSubjectiveInput("");
       setQuizStep("question");
     } else {
-      const params = createSearchParams({
-        title: testData.title,
-        score: score,
-        total: total,
-      });
-
-      navigate({
-        pathname: `/test/${id}/result`,
-        search: `?${params}`,
-      });
+      // 결과제출
+      const result = await submitResult();
+      console.log(result);
+      navigate(`/quiz/result/${result.data._id}`);
     }
   };
 
+  const submitResult = async () => {
+    try {
+      const responseData = await sendRequest(
+        `http://localhost:5000/api/quiz/result`,
+        "POST",
+        JSON.stringify({
+          quizId: quizData._id,
+          userId: "68ac3b5b23431dfa6e9b434c",
+          score,
+          total,
+        }),
+        { "Content-Type": "application/json" }
+      );
+      return responseData;
+    } catch (err) {
+      console.error(err);
+      return null;
+    }
+  };
+
+  const errorHandler = () => {
+    clearError();
+  };
+
   return (
-    <PlayContents>
-      <Box sx={{ display: "flex", alignItems: "center", width: "100%" }}>
-        <Box sx={{ width: "100%", mr: 2 }}>
-          <LinearProgress
-            variant="determinate"
-            value={progress}
-            sx={{
-              "& .MuiLinearProgress-bar": {
-                backgroundColor: "#66c0fc",
-              },
-              backgroundColor: "#e9f2f8",
-              height: 8,
-            }}
-          />
+    <Container>
+      <PlayContents>
+        <Box sx={{ display: "flex", alignItems: "center", width: "100%" }}>
+          <Box sx={{ width: "100%", mr: 2 }}>
+            <LinearProgress
+              variant="determinate"
+              value={progress}
+              sx={{
+                "& .MuiLinearProgress-bar": {
+                  backgroundColor: "#66c0fc",
+                },
+                backgroundColor: "#e9f2f8",
+                height: 8,
+              }}
+            />
+          </Box>
+          <QuestionCounter>
+            {currentIndex + 1} / {total}
+          </QuestionCounter>
         </Box>
-        <QuestionCounter>
-          {currentIndex + 1} / {total}
-        </QuestionCounter>
-      </Box>
-      <QuestionText>
-        {currentIndex + 1}. {questions[currentIndex].question}
-      </QuestionText>
-      {testData.type === QUIZ_TYPE.MULTIPLE_CHOICE ? (
-        questions[currentIndex].options.map((option, i) => {
-          const isSelected = option === selectedOption; // 내가 고른 답
-          const isCorrectAnswer = option === questions[currentIndex].answer; // 실제 정답
+        <QuestionText>
+          {currentIndex + 1}. {questions[currentIndex].question}
+        </QuestionText>
+        {quizData.answerType === "객관식" ? (
+          questions[currentIndex].options.map((option, i) => {
+            const isSelected = option === selectedOption; // 내가 고른 답
+            const isCorrectAnswer = option === questions[currentIndex].answer; // 실제 정답
 
-          return (
-            <OptionButton
-              key={i}
-              onClick={() => handleMultipleChoiceSubmit(option)}
-              $isQuestionMode={quizStep === "question"}
-              $isCorrectAnswer={quizStep === "answer" && isCorrectAnswer}
-              $isWrong={quizStep === "answer" && isSelected && !isCorrectAnswer}
-              disabled={quizStep !== "question"}
+            return (
+              <OptionButton
+                key={i}
+                onClick={() => handleOptionSelect(option)}
+                $isQuestionMode={quizStep === "question"}
+                $isCorrectAnswer={quizStep === "answer" && isCorrectAnswer}
+                $isWrong={
+                  quizStep === "answer" && isSelected && !isCorrectAnswer
+                }
+                disabled={quizStep !== "question"}
+              >
+                <div>
+                  {String.fromCharCode(65 + i)}. {option}
+                </div>
+                {quizStep === "answer" && (
+                  <>
+                    {isCorrectAnswer && (
+                      <AnswerResultText $isCorrectAnswer={true}>
+                        정답
+                      </AnswerResultText>
+                    )}
+                    {isSelected && !isCorrectAnswer && (
+                      <AnswerResultText $isCorrectAnswer={false}>
+                        오답
+                      </AnswerResultText>
+                    )}
+                  </>
+                )}
+              </OptionButton>
+            );
+          })
+        ) : (
+          <SubjectiveWrapper>
+            <SubjectiveInput
+              key={quizStep}
+              type="search"
+              value={subjectiveInput}
+              onChange={(e) => setSubjectiveInput(e.target.value)}
+              onKeyDown={handleEnterKey}
+              readOnly={quizStep !== "question"}
+              autoFocus
+            ></SubjectiveInput>
+
+            {quizStep === "question" && (
+              <SubmitButton onClick={handleSubjectiveAnswer}>확인</SubmitButton>
+            )}
+            {quizStep === "answer" && (
+              <SubjectiveResultBox>
+                <SubjectiveResultText $isCorrectAnswer={isSubjectiveCorrect}>
+                  {isSubjectiveCorrect ? "O 정답" : "X 오답"}
+                </SubjectiveResultText>
+                <CorrectAnswerText>
+                  {questions[currentIndex].answer}
+                </CorrectAnswerText>
+              </SubjectiveResultBox>
+            )}
+          </SubjectiveWrapper>
+        )}
+
+        {quizStep === "answer" ? (
+          <ButtonWrapper>
+            <NextButton
+              onClick={handleNextButtonClick}
+              $done={currentIndex < total - 1}
             >
-              <div>
-                {String.fromCharCode(65 + i)}. {option}
-              </div>
-              {quizStep === "answer" && (
-                <>
-                  {isCorrectAnswer && (
-                    <AnswerResultText $isCorrectAnswer={true}>
-                      정답
-                    </AnswerResultText>
-                  )}
-                  {isSelected && !isCorrectAnswer && (
-                    <AnswerResultText $isCorrectAnswer={false}>
-                      오답
-                    </AnswerResultText>
-                  )}
-                </>
-              )}
-            </OptionButton>
-          );
-        })
-      ) : (
-        <SubjectiveWrapper>
-          <SubjectiveInput
-            key={quizStep}
-            type="search"
-            value={subjectiveInput}
-            onChange={(e) => setSubjectiveInput(e.target.value)}
-            onKeyDown={handleEnterKey}
-            readOnly={quizStep !== "question"}
-            autoFocus
-          ></SubjectiveInput>
-
-          {quizStep === "question" && (
-            <SubmitButton onClick={handleSubjectiveSubmit}>확인</SubmitButton>
-          )}
-          {quizStep === "answer" && (
-            <SubjectiveResultBox>
-              <SubjectiveResultText $isCorrectAnswer={isSubjectiveCorrect}>
-                {isSubjectiveCorrect ? "O 정답" : "X 오답"}
-              </SubjectiveResultText>
-              <CorrectAnswerText>
-                {questions[currentIndex].answer}
-              </CorrectAnswerText>
-            </SubjectiveResultBox>
-          )}
-        </SubjectiveWrapper>
-      )}
-
-      {quizStep === "answer" ? (
-        <ButtonWrapper>
-          <NextButton
-            onClick={handleNextButtonClick}
-            $done={currentIndex < total - 1}
-          >
-            {currentIndex < total - 1 ? "다음문제" : "결과보기"}
-          </NextButton>
-        </ButtonWrapper>
-      ) : null}
-    </PlayContents>
+              {currentIndex < total - 1 ? "다음문제" : "결과보기"}
+            </NextButton>
+          </ButtonWrapper>
+        ) : null}
+      </PlayContents>
+    </Container>
   );
 };
 
 export default QuizPlay;
+
+const Container = styled.div`
+  max-width: 1020px;
+  margin: 0px auto 50px auto;
+`;
 
 const PlayContents = styled.div`
   font-size: 19px;
