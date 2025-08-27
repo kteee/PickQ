@@ -1,7 +1,7 @@
 import { useCallback, useEffect, useRef, useState } from "react";
 
 export const useHttpClient = () => {
-  const [isLoading, setIsLoading] = useState(false);
+  const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState();
 
   const activeHttpRequests = useRef([]);
@@ -32,7 +32,10 @@ export const useHttpClient = () => {
         setIsLoading(false);
         return responseData;
       } catch (err) {
-        setError(err.message);
+        if (err.name === "AbortError") {
+          return;
+        }
+        setError(err.message || "알 수 없는 에러가 발생했습니다.");
         setIsLoading(false);
         throw err;
       }

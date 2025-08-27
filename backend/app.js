@@ -1,9 +1,9 @@
 const express = require("express");
 const mongoose = require("mongoose");
 
-const quizRoutes = require("./routes/quiz-routes");
-const commentRoutes = require("./routes/comment-routes");
-const userRoutes = require("./routes/user-routes");
+const testsRoutes = require("./routes/tests-routes");
+const commentsRoutes = require("./routes/comments-routes");
+const usersRoutes = require("./routes/users-routes");
 
 const HttpError = require("./models/http-error");
 
@@ -21,11 +21,11 @@ app.use((req, res, next) => {
   next();
 });
 
-app.use("/api/quiz", quizRoutes);
+app.use("/api/tests", testsRoutes);
 
-app.use("/api/comment", commentRoutes);
+app.use("/api/comments", commentsRoutes);
 
-app.use("/api/user", userRoutes);
+app.use("/api/users", usersRoutes);
 
 app.use((req, res, next) => {
   const error = new HttpError("요청 경로가 존재하지 않습니다.", 404);

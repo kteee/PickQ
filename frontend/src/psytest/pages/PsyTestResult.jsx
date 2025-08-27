@@ -2,7 +2,7 @@ import styled from "styled-components";
 import { useParams, useSearchParams } from "react-router-dom";
 import { psytestResults01 } from "../data/psytestSets/test01.js";
 import { psytestResults02 } from "../data/psytestSets/test02.js";
-import ResultFooter from "../../shared/components/TestResultFooter.jsx";
+import TestResultFooter from "../../shared/components/TestResultFooter.jsx";
 
 const PsyTestResult = () => {
   const { id } = useParams();
@@ -29,7 +29,7 @@ const PsyTestResult = () => {
         <ResultWrapper>
           <ResultImg src={result.img} />
         </ResultWrapper>
-        <ResultFooter id={id} title={title} />
+        <TestResultFooter id={id} title={title} />
       </QuizResultContents>
     </QuizContainer>
   );

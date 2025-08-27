@@ -10,7 +10,8 @@ const MyProfile = () => {
   const navigate = useNavigate();
   const auth = useContext(AuthContext);
 
-  const [nickname, setNickname] = useState("게스트");
+  const [user, setUser] = useState();
+  const [nickname, setNickname] = useState("");
   const [currentPassword, setCurrentPassword] = useState("");
   const [newPassword, setNewPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
@@ -18,14 +19,35 @@ const MyProfile = () => {
 
   const { isLoading, error, sendRequest, clearError } = useHttpClient();
 
-  useEffect(() => {});
+  const id = "68ac3b5b23431dfa6e9b434c";
+  useEffect(() => {
+    const fetchUser = async () => {
+      try {
+        const responseData = await sendRequest(
+          `http://localhost:5000/api/user/${id}`
+        );
+        setUser(responseData.data);
+        setNickname(responseData.data.nickname);
+      } catch (err) {}
+    };
 
-  const validate = () => {
+    fetchUser();
+  }, [id, sendRequest]);
+
+  const nicknameValidate = () => {
     const newErrors = {};
 
     if (nickname.trim().length < 2) {
       newErrors.nickname = "닉네임은 2자 이상 입력해주세요.";
     }
+
+    setValidationErrors(newErrors);
+
+    return Object.keys(newErrors).length === 0;
+  };
+
+  const passwordValidate = () => {
+    const newErrors = {};
 
     if (newPassword.length < 6) {
       newErrors.password = "비밀번호는 최소 6자 이상이어야 합니다.";
@@ -40,32 +62,42 @@ const MyProfile = () => {
     return Object.keys(newErrors).length === 0;
   };
 
-  const handleUpdateProfile = async (e) => {
+  const handleUpdateNickname = async (e) => {
     e.preventDefault();
-    // if (validate()) {
-    //   try {
-    //     await sendRequest(
-    //       "http://localhost:5000/api/user/register",
-    //       "PATCH",
-    //       JSON.stringify({ nickname, currentPassword, newPassword }),
-    //       { "Content-Type": "application/json" }
-    //     );
-    //     navigate("/");
-    //   } catch (err) {}
-    // }
+
+    if (nicknameValidate()) {
+      try {
+        await sendRequest(
+          `http://localhost:5000/api/user/${id}`,
+          "PATCH",
+          JSON.stringify({
+            nickname,
+          }),
+          { "Content-Type": "application/json" }
+        );
+      } catch (err) {
+        console.log(err);
+      }
+    }
   };
 
   return (
     <MyProfileContainer>
       <HeaderTitle>내 정보</HeaderTitle>
-      <Section>
+      <Section onSubmit={handleUpdateNickname} noValidate>
         <SectionTitle>닉네임 변경</SectionTitle>
         <Input
+          type="text"
+          maxlength="10"
           value={nickname}
+          autoComplete="off"
           onChange={(e) => setNickname(e.target.value)}
           placeholder="새 닉네임"
         />
-        <ActionButton>닉네임 변경</ActionButton>
+        {validationErrors.nickname && (
+          <ErrorText>{validationErrors.nickname}</ErrorText>
+        )}
+        <ActionButton type="submit">닉네임 변경</ActionButton>
       </Section>
       <Divider />
       <Section>
@@ -73,22 +105,25 @@ const MyProfile = () => {
         <Input
           type="password"
           value={currentPassword}
+          autoComplete="off"
           onChange={(e) => setCurrentPassword(e.target.value)}
           placeholder="현재 비밀번호를 입력하세요"
         />
         <Input
           type="password"
           value={newPassword}
+          autoComplete="off"
           onChange={(e) => setNewPassword(e.target.value)}
           placeholder="새 비밀번호를 입력하세요"
         />
         <Input
           type="password"
           value={confirmPassword}
+          autoComplete="off"
           onChange={(e) => setConfirmPassword(e.target.value)}
           placeholder="새 비밀번호를 다시 입력하세요"
         />
-        <ActionButton>비밀번호 변경</ActionButton>
+        <ActionButton type="submit">비밀번호 변경</ActionButton>
       </Section>
       <Divider />
       <BottomText>
@@ -121,7 +156,7 @@ const HeaderTitle = styled.h2`
   margin-bottom: 10px;
 `;
 
-const Section = styled.div`
+const Section = styled.form`
   display: flex;
   flex-direction: column;
 `;
@@ -180,4 +215,12 @@ const LinkButton = styled.button`
   &:hover {
     text-decoration: underline;
   }
+`;
+
+const ErrorText = styled.div`
+  font-size: 12px;
+  color: #ff4444;
+  margin-top: -6px;
+  margin-left: 6px;
+  margin-bottom: 15px;
 `;

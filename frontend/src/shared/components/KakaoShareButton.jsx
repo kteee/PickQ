@@ -14,7 +14,7 @@ const KakaoShareButton = ({ title }) => {
       container: "#kakaotalk-share-btn",
       objectType: "feed",
       content: {
-        title: `${title} 결과 - PickQ`,
+        title: `${title} 결과`,
         description: "지금 바로 피큐에 접속하여 결과를 확인해보세요!",
         link: {
           mobileWebUrl: resultUrl,

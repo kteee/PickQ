@@ -1,11 +1,11 @@
 import styled from "styled-components";
-import QuizCard from "./QuizCard";
+import TestCard from "./TestCard";
 
-const QuizList = ({ quizData, selectedCategory }) => {
+const TestList = ({ testData, selectedCategory }) => {
   const filteredList =
-    selectedCategory === "전체"
-      ? quizData
-      : quizData.filter((q) => q.category === selectedCategory);
+    selectedCategory === "all"
+      ? testData
+      : testData.filter((test) => test.category === selectedCategory);
 
   if (filteredList.length === 0) {
     return <EmptyMessage>표시할 항목이 없습니다.</EmptyMessage>;
@@ -13,14 +13,14 @@ const QuizList = ({ quizData, selectedCategory }) => {
 
   return (
     <ListWrapper>
-      {filteredList.map((quiz) => (
-        <QuizCard key={quiz.id} {...quiz} />
+      {filteredList.map((test) => (
+        <TestCard key={test.shortId} {...test} />
       ))}
     </ListWrapper>
   );
 };
 
-export default QuizList;
+export default TestList;
 
 const ListWrapper = styled.div`
   display: grid;

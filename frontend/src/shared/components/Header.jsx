@@ -1,6 +1,6 @@
 import styled from "styled-components";
 import { useNavigate } from "react-router-dom";
-import LoginButton from "./LoginButton";
+import AuthButton from "./AuthButton";
 import PCSearchBar from "./PCSearchBar";
 import MobileSearchBar from "./MobileSearchBar";
 
@@ -18,7 +18,7 @@ const Header = () => {
         <RightSection>
           <PCSearchBar />
           <MobileSearchBar />
-          <LoginButton />
+          <AuthButton />
         </RightSection>
       </HeaderContents>
     </HeaderContainer>

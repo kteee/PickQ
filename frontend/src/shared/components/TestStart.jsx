@@ -1,67 +1,73 @@
 import styled from "styled-components";
 import { useState, useEffect } from "react";
 import { useParams } from "react-router-dom";
-import QuizPlay from "../../quiz/pages/QuizPlay";
-import PsyTestPlay from "../../quiz/pages/PsyTestPlay";
 import { useHttpClient } from "../hooks/http-hook";
+import { getCategoryLabel } from "../data/category";
+import QuizPlay from "../../quiz/pages/QuizPlay";
+import PsyTestPlay from "../../psytest/pages/PsyTestPlay";
+import AlertSnackbar from "./AlertSnackbar";
 
-const QuizStart = () => {
+const TestStart = () => {
   const { id } = useParams();
   const { isLoading, error, sendRequest, clearError } = useHttpClient();
 
-  const [loadedQuiz, setLoadedQuiz] = useState();
+  const [loadedTest, setLoadedTest] = useState();
   const [playMode, setPlayMode] = useState("start");
 
+  console.log(id);
   useEffect(() => {
-    const fetchQuiz = async () => {
+    const fetchTest = async () => {
       try {
         const responseData = await sendRequest(
-          `http://localhost:5000/api/quiz/${id}`
+          `http://localhost:5000/api/tests/${id}`
         );
-        setLoadedQuiz(responseData.data);
+        setLoadedTest(responseData.data);
       } catch (err) {}
     };
 
-    fetchQuiz();
+    fetchTest();
   }, [id, sendRequest]);
 
-  const errorHandler = () => {
-    clearError();
-  };
-
-  // if (!isLoading && !loadedQuiz) {
-  //   return <div>존재하지 않는 테스트입니다.</div>;
-  // }
-
-  if (isLoading || !loadedQuiz) {
+  if (isLoading) {
     return null;
   }
 
+  if (!isLoading && !loadedTest) {
+    return <div>존재하지 않는 테스트입니다.</div>;
+  }
+
   if (playMode === "play") {
-    if (loadedQuiz.category === "퀴즈")
-      return <QuizPlay quizData={loadedQuiz} />;
-    if (loadedQuiz.category === "심리테스트")
-      return <PsyTestPlay quizData={loadedQuiz} />;
+    if (loadedTest.category === "quiz")
+      return <QuizPlay testData={loadedTest} />;
+    if (loadedTest.category === "psyte")
+      return <PsyTestPlay testData={loadedTest} />;
     return <div>알 수 없는 테스트 유형입니다.</div>;
   }
 
   return (
-    <Container>
-      <QuizStartContents>
-        <QuizImage src={loadedQuiz.image} alt={loadedQuiz.title} />
-        <QuizCategory>
-          <CategoryItem>#{loadedQuiz.category}</CategoryItem>
-          <CategoryItem>#{loadedQuiz.subject}</CategoryItem>
-        </QuizCategory>
-        <QuizTitle>{loadedQuiz.title}</QuizTitle>
-        <QuizDescription>{loadedQuiz.description}</QuizDescription>
-        <StartButton onClick={() => setPlayMode("play")}>시작하기</StartButton>
-      </QuizStartContents>
-    </Container>
+    <>
+      <AlertSnackbar message={error} severity="error" onClear={clearError} />
+      <Container>
+        <QuizStartContents>
+          <QuizImage src={loadedTest.image} alt={loadedTest.title} />
+          <QuizCategory>
+            <CategoryItem>
+              #{getCategoryLabel(loadedTest.category)}
+            </CategoryItem>
+            <CategoryItem>#{loadedTest.subject}</CategoryItem>
+          </QuizCategory>
+          <QuizTitle>{loadedTest.title}</QuizTitle>
+          <QuizDescription>{loadedTest.description}</QuizDescription>
+          <StartButton onClick={() => setPlayMode("play")}>
+            시작하기
+          </StartButton>
+        </QuizStartContents>
+      </Container>
+    </>
   );
 };
 
-export default QuizStart;
+export default TestStart;
 
 const Container = styled.div`
   max-width: 1020px;

@@ -3,9 +3,9 @@ const { validationResult } = require("express-validator");
 const HttpError = require("../models/http-error");
 const Comment = require("../models/comment");
 const User = require("../models/user");
-const Quiz = require("../models/quiz");
+const Test = require("../models/test");
 
-// GET /api/comment/:qid -- 완료!!
+// GET /api/comments/:qid -- 완료!!
 const getCommentsByQuizId = async (req, res, next) => {
   const quizId = req.params.qid;
 
@@ -26,7 +26,7 @@ const getCommentsByQuizId = async (req, res, next) => {
   });
 };
 
-// POST /api/comment/:qid -- 완료!!
+// POST /api/comments/:qid -- 완료!!
 const createComment = async (req, res, next) => {
   const errors = validationResult(req);
   if (!errors.isEmpty()) {
@@ -83,7 +83,7 @@ const createComment = async (req, res, next) => {
     .json({ createdComment: createdComment.toObject({ getters: true }) });
 };
 
-// DELETE /api/comment/:cid -- 완료!!
+// DELETE /api/comments/:cid -- 완료!!
 const deleteComment = async (req, res, next) => {
   const commentId = req.params.cid;
 

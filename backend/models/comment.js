@@ -4,7 +4,7 @@ const Schema = mongoose.Schema;
 
 const commentSchema = new Schema(
   {
-    quizId: { type: mongoose.Types.ObjectId, required: true, ref: "Quiz" },
+    testId: { type: mongoose.Types.ObjectId, required: true, ref: "Test" },
     userId: { type: mongoose.Types.ObjectId, required: true, ref: "User" },
     content: { type: String, required: true },
   },

@@ -1,68 +1,81 @@
 import { useEffect, useState } from "react";
 import styled from "styled-components";
-import TrendingUpIcon from "@mui/icons-material/TrendingUpRounded";
-import QuizList from "./shared/components/QuizList";
-import PopularContentCard from "./shared/components/PopularContentCard";
-import CategoryBar from "./shared/components/CategoryBar";
+import ShuffleRoundedIcon from "@mui/icons-material/ShuffleRounded";
 import { useHttpClient } from "./shared/hooks/http-hook";
-import Img07 from "./shared/assets/test01.png";
-import Img04 from "./shared/assets/quiz04.png";
-import Img05 from "./shared/assets/quiz05.png";
-
-const POPULAR_CONTENTS = [Img07, Img04, Img05, Img07];
+import TestList from "./shared/components/TestList";
+import RandomTestCard from "./shared/components/RandomTestCard";
+import CategoryBar from "./shared/components/CategoryBar";
+import AlertSnackbar from "./shared/components/AlertSnackbar";
+import ShuffleSVG from "./shared/assets/ShuffleSVG";
 
 const Home = () => {
   const { isLoading, error, sendRequest, clearError } = useHttpClient();
 
-  const [loadedQuizzes, setLoadedQuizzes] = useState();
-  const [selectedCategory, setSelectedCategory] = useState("전체");
+  const [loadedTests, setLoadedTests] = useState([]);
+  const [randomTests, setRandomTests] = useState([]);
+  const [selectedCategory, setSelectedCategory] = useState("all");
 
   useEffect(() => {
-    const fetchQuizzes = async () => {
+    const fetchTests = async () => {
       try {
         const responseData = await sendRequest(
-          "http://localhost:5000/api/quiz"
+          "http://localhost:5000/api/tests"
         );
-        setLoadedQuizzes(responseData.data);
+        setLoadedTests(responseData.data);
+        setRandomTests(getRandomTests(responseData.data, 4));
       } catch (err) {}
     };
 
-    fetchQuizzes();
+    fetchTests();
   }, [sendRequest]);
 
-  const errorHandler = () => {
-    clearError();
+  const getRandomTests = (arr, n) => {
+    if (arr.length <= n) return arr;
+    const shuffled = [...arr].sort(() => 0.5 - Math.random());
+    return shuffled.slice(0, n);
+  };
+
+  const handleShuffle = () => {
+    setRandomTests(getRandomTests(loadedTests, 4));
   };
 
   return (
-    <HomeContainer>
-      <HomeContents>
-        <PopularSection>
-          <SectionTitle>
-            <TrendingIcon sx={{ fontSize: "27px" }} />
-            인기 컨텐츠
-          </SectionTitle>
-          <PopularList>
-            {POPULAR_CONTENTS.map((image) => (
-              <PopularContentCard
-                image={image}
-                title={"테토남/에겐남 테스트dddd ff"}
-              />
-            ))}
-          </PopularList>
-        </PopularSection>
-        <CategoryBar
-          selectedCate={selectedCategory}
-          setSelectedCate={setSelectedCategory}
-        />
-        {!isLoading && loadedQuizzes && (
-          <QuizList
-            quizData={loadedQuizzes}
+    <>
+      <AlertSnackbar message={error} severity="error" onClear={clearError} />
+      <HomeContainer>
+        <HomeContents>
+          <RandomSection>
+            <SectionHeader>
+              <SectionTitle>
+                <ShuffleIcon sx={{ fontSize: "24px" }} /> 랜덤 컨텐츠
+              </SectionTitle>
+              <ShuffleButton onClick={handleShuffle}>
+                <ShuffleSVG width={17} height={14} color="gray" /> 랜덤
+              </ShuffleButton>
+            </SectionHeader>
+            <RandomList>
+              {randomTests.map((test, index) => (
+                <RandomTestCard
+                  key={index}
+                  image={test.image}
+                  title={test.title}
+                />
+              ))}
+            </RandomList>
+          </RandomSection>
+          <CategoryBar
             selectedCategory={selectedCategory}
+            setSelectedCategory={setSelectedCategory}
           />
-        )}
-      </HomeContents>
-    </HomeContainer>
+          {!isLoading && loadedTests && (
+            <TestList
+              testData={loadedTests}
+              selectedCategory={selectedCategory}
+            />
+          )}
+        </HomeContents>
+      </HomeContainer>
+    </>
   );
 };
 
@@ -94,7 +107,7 @@ const HomeContents = styled.div`
   }
 `;
 
-const PopularSection = styled.div`
+const RandomSection = styled.div`
   display: flex;
   flex-direction: column;
   margin-bottom: 17px;
@@ -106,14 +119,9 @@ const PopularSection = styled.div`
   }
 `;
 
-const TrendingIcon = styled(TrendingUpIcon)`
-  color: #26a6f0e3;
-  margin-right: 7px;
-`;
-
-const SectionTitle = styled.div`
+const SectionHeader = styled.div`
   display: flex;
-  align-items: center;
+  justify-content: space-between;
   font-size: 20.5px;
   font-weight: 500;
   color: rgb(10, 10, 10);
@@ -128,7 +136,36 @@ const SectionTitle = styled.div`
   }
 `;
 
-const PopularList = styled.div`
+const SectionTitle = styled.div`
+  display: flex;
+  align-items: center;
+`;
+
+const ShuffleIcon = styled(ShuffleRoundedIcon)`
+  color: #26a6f0;
+  margin-top: 2px;
+  margin-right: 7px;
+`;
+
+const ShuffleButton = styled.button`
+  display: flex;
+  align-items: center;
+  gap: 2px;
+  font-size: 14.5px;
+  padding: 6px 10px;
+  color: rgb(21, 27, 35);
+  background-color: rgb(255, 255, 255);
+  border: 1px solid rgb(209, 213, 219);
+  border-radius: 20px;
+  margin-top: 5px;
+  cursor: pointer;
+
+  &:hover {
+    background-color: rgb(248, 248, 251);
+  }
+`;
+
+const RandomList = styled.div`
   display: grid;
   grid-template-columns: repeat(4, 1fr);
   gap: 20px;

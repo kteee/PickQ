@@ -1,13 +1,13 @@
 [
   {
-    "id": "1",
-    "category": "퀴즈",
+    "shortId": "1",
+    "category": "quiz",
     "title": "상식퀴즈(1)",
     "description": "중학생 수준의 일반상식 퀴즈모음!",
     "subject": "일반상식",
     "image": "/assets/quiz01.png",
-    "answerType": "객관식",
-    "questions": [
+    "answerType": "multipleChoice",
+    "quizQuestions": [
       {
         "question": "태양계에서 가장 큰 행성은?",
         "options": ["지구", "목성", "토성", "화성"],
@@ -66,14 +66,14 @@
     ]
   },
   {
-    "id": "2",
-    "category": "퀴즈",
+    "shortId": "2",
+    "category": "quiz",
     "title": "상식퀴즈(2)",
     "description": "알아두면 쓸모있는 일반상식 퀴즈모음",
     "subject": "일반상식",
     "image": "/assets/quiz02.png",
-    "answerType": "객관식",
-    "questions": [
+    "answerType": "multipleChoice",
+    "quizQuestions": [
       {
         "question": "일흔 살을 뜻하는 한자어는?",
         "options": ["지천명", "불혹", "고희", "약관"],
@@ -197,14 +197,14 @@
     ]
   },
   {
-    "id": "3",
-    "category": "퀴즈",
+    "shortId": "3",
+    "category": "quiz",
     "title": "상식퀴즈(3)",
     "description": "한국인이라면 무조건 알아야 할 역사상식",
     "subject": "역사상식",
     "image": "/assets/quiz03.png",
-    "answerType": "객관식",
-    "questions": [
+    "answerType": "multipleChoice",
+    "quizQuestions": [
       {
         "question": "다음 중 고구려의 을지문덕 장군이 수나라의 100만 대군을 물리친 전투로, 세계 전쟁사에서도 손꼽히는 승리는 무엇인가요?",
         "options": ["안시성 전투", "귀주대첩", "황산벌 전투", "살수대첩"],
@@ -323,14 +323,14 @@
     ]
   },
   {
-    "id": "4",
-    "category": "퀴즈",
+    "shortId": "4",
+    "category": "quiz",
     "title": "영화 초성퀴즈",
     "description": "초성으로 영화 제목 맞히기",
     "subject": "초성",
     "image": "/assets/quiz04.png",
-    "answerType": "주관식",
-    "questions": [
+    "answerType": "shortAnswer",
+    "quizQuestions": [
       {
         "question": "[국외영화] ㅌㅇㅌㄴ",
         "answer": "타이타닉"
@@ -374,14 +374,14 @@
     ]
   },
   {
-    "id": "5",
-    "category": "퀴즈",
+    "shortId": "5",
+    "category": "quiz",
     "title": "맞춤법 퀴즈",
     "description": "당신의 맞춤법 실력을 테스트해보세요!",
     "subject": "맞춤법",
     "image": "/assets/quiz05.png",
-    "answerType": "객관식",
-    "questions": [
+    "answerType": "multipleChoice",
+    "quizQuestions": [
       {
         "question": "선생님은 학생에게 국어를 ○○○○.",
         "options": ["가르쳤다", "가르켰다"],
@@ -435,14 +435,14 @@
     ]
   },
   {
-    "id": "6",
-    "category": "퀴즈",
+    "shortId": "6",
+    "category": "quiz",
     "title": "사자성어 퀴즈",
     "description": "일상에서 쓰는 사자성어, 얼마나 알고 있나요?",
     "subject": "사자성어",
     "image": "/assets/quiz06.png",
-    "answerType": "주관식",
-    "questions": [
+    "answerType": "shortAnswer",
+    "quizQuestions": [
       {
         "question": "쓴 것이 다하면 단 것이 온다는 뜻으로, 고생 끝에 즐거움이 옴을 이르는 사자성어는?",
         "answer": "고진감래"

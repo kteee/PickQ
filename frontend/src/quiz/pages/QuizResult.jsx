@@ -1,8 +1,8 @@
 import { useEffect, useState } from "react";
 import styled from "styled-components";
 import { useParams } from "react-router-dom";
-import ResultFooter from "../../shared/components/TestResultFooter";
 import { useHttpClient } from "../../shared/hooks/http-hook";
+import TestResultFooter from "../../shared/components/TestResultFooter";
 
 const QuizResult = () => {
   const { id } = useParams();
@@ -10,7 +10,6 @@ const QuizResult = () => {
   const { isLoading, error, sendRequest, clearError } = useHttpClient();
 
   useEffect(() => {
-    console.log(id);
     const fetchResult = async () => {
       try {
         const responseData = await sendRequest(
@@ -30,7 +29,7 @@ const QuizResult = () => {
   return (
     <QuizContainer>
       <QuizResultContents>
-        <TitleText></TitleText>
+        <TitleText>{result.quizId.title}</TitleText>
         <CompletionText>나의 퀴즈 결과를 확인해보세요.</CompletionText>
         <CardWrapper>
           <StatCard>
@@ -52,7 +51,7 @@ const QuizResult = () => {
             </StatItem>
           </StatCard>
         </CardWrapper>
-        <ResultFooter id={id} />
+        <TestResultFooter id={result.quizId.id} title={result.quizId.title} />
       </QuizResultContents>
     </QuizContainer>
   );

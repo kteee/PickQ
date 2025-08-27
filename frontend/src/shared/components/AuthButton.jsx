@@ -4,15 +4,14 @@ import { AuthContext } from "../context/auth-context";
 import styled from "styled-components";
 import PersonIcon from "@mui/icons-material/PersonOutlineRounded";
 
-const LoginButton = () => {
+const AuthButton = () => {
   const { isLoggedIn } = useContext(AuthContext);
   const navigate = useNavigate();
-  const id = 1;
 
   return isLoggedIn ? (
     <ProfileSection
       onClick={() => {
-        navigate(`/user/${id}`);
+        navigate("/myprofile");
       }}
     >
       <ProfileIcon fontSize="large" />
@@ -28,7 +27,7 @@ const LoginButton = () => {
   );
 };
 
-export default LoginButton;
+export default AuthButton;
 
 const LoginBtn = styled.button`
   font-family: "Noto Sans KR", sans-serif;
@@ -58,7 +57,7 @@ const ProfileSection = styled.div`
 `;
 
 const ProfileIcon = styled(PersonIcon)`
-  color: #424242;
+  color: #383838;
   cursor: pointer;
   padding: 5px;
 

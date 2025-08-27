@@ -2,15 +2,14 @@ import styled from "styled-components";
 import { useNavigate } from "react-router-dom";
 import KakaoShareButton from "./KakaoShareButton";
 
-const ResultFooter = ({ id, title }) => {
+const QuizResultFooter = ({ id, title }) => {
   const navigate = useNavigate();
-
   return (
     <>
       <Button
         $backgroundColor="#b12af0"
         onClick={() => {
-          navigate(`/test/${id}`);
+          navigate(`/quiz/${id}`);
         }}
       >
         다시하기
@@ -31,7 +30,7 @@ const ResultFooter = ({ id, title }) => {
   );
 };
 
-export default ResultFooter;
+export default QuizResultFooter;
 
 const Button = styled.button`
   font-family: "Noto Sans KR", sans-serif;

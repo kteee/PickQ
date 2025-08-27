@@ -1,18 +1,18 @@
 const express = require("express");
 const { check } = require("express-validator");
 
-const userController = require("../controllers/user-controller");
+const usersController = require("../controllers/users-controller");
 
 const router = express.Router();
 
 router.post(
-  "/register",
+  "/signup",
   [
     check("nickname").notEmpty().isLength({ min: 2, max: 10 }),
     check("email").notEmpty().normalizeEmail().isEmail(),
     check("password").notEmpty().isLength({ min: 6 }),
   ],
-  userController.registerUser
+  usersController.registerUser
 );
 
 router.post(
@@ -21,20 +21,20 @@ router.post(
     check("email").notEmpty().normalizeEmail().isEmail(),
     check("password").notEmpty().isLength({ min: 6 }),
   ],
-  userController.login
+  usersController.login
 );
 
-router.get("/:uid", userController.getUserById);
+router.get("/:id", usersController.getUserById);
 
 router.patch(
-  "/:uid",
+  "/:id",
   [
     check("nickname").optional().isLength({ min: 2, max: 10 }),
-    check("password").optional().isLength({ min: 6 }),
+    check("newPassword").optional().isLength({ min: 6 }),
   ],
-  userController.updateUser
+  usersController.updateUser
 );
 
-router.delete("/:uid", userController.deleteUser);
+router.delete("/:id", usersController.deleteUser);
 
 module.exports = router;

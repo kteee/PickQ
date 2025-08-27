@@ -1,8 +1,3 @@
-import Result01 from "../../../shared/assets/result/result01.png";
-import Result02 from "../../../shared/assets/result/result05.png";
-import Result03 from "../../../shared/assets/result/result06.png";
-import Result04 from "../../../shared/assets/result/result04.png";
-
 const test02 = [
   {
     question: "나는 외출할 때 ",
@@ -73,24 +68,24 @@ export const psytestResults02 = [
     type: "소녀",
     minScore: 0,
     maxScore: 0,
-    img: Result04,
+    img: 1,
   },
   {
     type: "에겐녀",
     minScore: 1,
     maxScore: 6,
-    img: Result03,
+    img: 2,
   },
   {
     type: "테토녀",
     minScore: 7,
     maxScore: 11,
-    img: Result02,
+    img: 3,
   },
   {
     type: "야만인",
     minScore: 12,
     maxScore: 12,
-    img: Result01,
+    img: 4,
   },
 ];

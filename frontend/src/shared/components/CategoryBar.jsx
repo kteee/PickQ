@@ -1,18 +1,17 @@
 import styled from "styled-components";
+import { CATEGORIES } from "../../shared/data/category";
 
-const CATEGORIES = ["전체", "퀴즈", "심리테스트"];
-
-const CategoryBar = ({ selectedCate, setSelectedCate }) => {
+const CategoryBar = ({ selectedCategory, setSelectedCategory }) => {
   return (
     <Wrapper>
       <Category>
         {CATEGORIES.map((category) => (
           <CategoryItem
-            key={category}
-            onClick={() => setSelectedCate(category)}
-            selected={selectedCate === category}
+            key={category.value}
+            onClick={() => setSelectedCategory(category.value)}
+            selected={selectedCategory === category.value}
           >
-            {category}
+            {category.label}
           </CategoryItem>
         ))}
       </Category>

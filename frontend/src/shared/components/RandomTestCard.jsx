@@ -1,6 +1,6 @@
 import styled from "styled-components";
 
-const PopularContentCard = ({ image, title }) => {
+const RandomTestCard = ({ image, title }) => {
   return (
     <Card $image={image}>
       <CardText>{title}</CardText>
@@ -8,7 +8,7 @@ const PopularContentCard = ({ image, title }) => {
   );
 };
 
-export default PopularContentCard;
+export default RandomTestCard;
 
 const Card = styled.div`
   height: 170px;
@@ -41,6 +41,6 @@ const CardText = styled.div`
   width: 100%;
   background: rgba(0, 0, 0, 0.432);
   color: #ffffff;
-  padding: 6px 8px;
+  padding: 6px 10px;
   border-radius: 0px 0px 8px 8px;
 `;

@@ -5,7 +5,7 @@ import CircularProgress from "@mui/material/CircularProgress";
 import Alert from "@mui/material/Alert";
 import { useHttpClient } from "../../shared/hooks/http-hook";
 
-const Register = () => {
+const Signup = () => {
   const navigate = useNavigate();
 
   const [email, setEmail] = useState("");
@@ -75,6 +75,7 @@ const Register = () => {
         )}
         <Input
           type="text"
+          maxlength="10"
           placeholder="닉네임을 입력하세요 (2자 이상)"
           autoComplete="off"
           value={nickname}
@@ -129,7 +130,7 @@ const Register = () => {
   );
 };
 
-export default Register;
+export default Signup;
 
 const LoginContainer = styled.div`
   width: 100%;

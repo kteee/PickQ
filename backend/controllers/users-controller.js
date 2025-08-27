@@ -3,7 +3,7 @@ const { validationResult } = require("express-validator");
 const HttpError = require("../models/http-error");
 const User = require("../models/user");
 
-// POST /api/user/register -- 완료!!
+// POST /api/users/signup
 const registerUser = async (req, res, next) => {
   const errors = validationResult(req);
   if (!errors.isEmpty()) {
@@ -61,12 +61,10 @@ const registerUser = async (req, res, next) => {
     return next(error);
   }
 
-  res
-    .status(201)
-    .json({ registeredUser: registeredUser.toObject({ getters: true }) });
+  res.status(201).json({ data: registeredUser.toObject({ getters: true }) });
 };
 
-// POST /api/user/login
+// POST /api/users/login
 const login = async (req, res, next) => {
   const errors = validationResult(req);
   if (!errors.isEmpty()) {
@@ -96,10 +94,10 @@ const login = async (req, res, next) => {
     return next(error);
   }
 
-  res.status(200).json({ message: "로그인에 성공하였습니다." });
+  res.status(200).json({ data: loginUser.toObject({ getters: true }) });
 };
 
-// GET /api/user/:uid -- 완료!!
+// GET /api/users/id
 const getUserById = async (req, res, next) => {
   const userId = req.params.uid;
 
@@ -116,10 +114,10 @@ const getUserById = async (req, res, next) => {
     return next(error);
   }
 
-  res.json({ user: user.toObject({ getters: true }) });
+  res.json({ data: user.toObject({ getters: true }) });
 };
 
-// PATCH /api/user/:uid -- 완료!!
+// PATCH /api/users/id -- 완료!!
 const updateUser = async (req, res, next) => {
   const errors = validationResult(req);
   if (!errors.isEmpty()) {
@@ -131,7 +129,9 @@ const updateUser = async (req, res, next) => {
   }
 
   const userId = req.params.uid;
-  const { nickname, password } = req.body;
+  const { nickname, currentPassword, newPassword } = req.body;
+
+  console.log(userId, nickname, currentPassword, newPassword);
 
   // 사용자 존재 여부 확인
   let user;
@@ -149,8 +149,8 @@ const updateUser = async (req, res, next) => {
   if (nickname !== undefined) {
     user.nickname = nickname;
   }
-  if (password !== undefined) {
-    user.password = password;
+  if (newPassword !== undefined) {
+    user.password = newPassword;
   }
 
   // 사용자 정보 업데이트
@@ -161,10 +161,10 @@ const updateUser = async (req, res, next) => {
     return next(error);
   }
 
-  res.status(200).json({ user: user.toObject({ getters: true }) });
+  res.status(200).json({ data: user.toObject({ getters: true }) });
 };
 
-// DELETE /api/user/:uid -- 완료!!
+// DELETE /api/users/id -- 완료!!
 const deleteUser = async (req, res, next) => {
   const userId = req.params.uid;
 

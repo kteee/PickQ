@@ -1,14 +1,22 @@
 import styled from "styled-components";
 import { useNavigate } from "react-router-dom";
+import { getCategoryLabel } from "../data/category";
 
-const QuizCard = ({ id, image, title, description, category, subject }) => {
+const TestCard = ({
+  shortId,
+  image,
+  title,
+  description,
+  category,
+  subject,
+}) => {
   const navigate = useNavigate();
 
   const handleCardClick = () => {
-    if (category === "퀴즈") {
-      navigate(`/quiz/${id}`);
-    } else if (category === "심리테스트") {
-      navigate(`/psytest/${id}`);
+    if (category === "quiz") {
+      navigate(`/quiz/${shortId}`);
+    } else if (category === "psytest") {
+      navigate(`/psytest/${shortId}`);
     }
   };
 
@@ -19,7 +27,7 @@ const QuizCard = ({ id, image, title, description, category, subject }) => {
       </div>
       <CardContent>
         <Category>
-          <CategoryItem>#{category}</CategoryItem>
+          <CategoryItem>#{getCategoryLabel(category)}</CategoryItem>
           <CategoryItem>#{subject}</CategoryItem>
         </Category>
         <Title>{title}</Title>
@@ -29,7 +37,7 @@ const QuizCard = ({ id, image, title, description, category, subject }) => {
   );
 };
 
-export default QuizCard;
+export default TestCard;
 
 const CardWrapper = styled.div`
   display: flex;
@@ -86,7 +94,7 @@ const Title = styled.h3`
   font-size: 16px;
   font-weight: 500;
   color: rgb(10, 10, 10);
-  margin: 4px 2px 2px 4px;
+  margin: 5px 2px 2px 4px;
 
   @media (max-width: 640px) {
     font-size: 18.5px;
@@ -97,7 +105,7 @@ const Title = styled.h3`
 const Description = styled.p`
   font-size: 14px;
   color: rgb(113, 113, 130);
-  margin: 1px 2px 19px 4px;
+  margin: 1px 2px 22px 4px;
 
   @media (max-width: 640px) {
     font-size: 16px;
@@ -119,7 +127,7 @@ const Category = styled.div`
 
 const CategoryItem = styled.div`
   font-size: 12.5px;
-  background-color: rgb(243, 243, 243);
+  background-color: rgb(242, 242, 244);
   color: rgb(52, 52, 52);
   border-radius: 20px;
   padding: 2px 8px;
