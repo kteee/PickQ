@@ -1,37 +1,66 @@
+import { useEffect, useState } from "react";
 import styled from "styled-components";
-import { useParams, useSearchParams } from "react-router-dom";
-import { psytestResults01 } from "../data/psytestSets/test01.js";
-import { psytestResults02 } from "../data/psytestSets/test02.js";
-import TestResultFooter from "../../shared/components/TestResultFooter.jsx";
+import { useParams } from "react-router-dom";
+import { toast } from "sonner";
+import { useHttpClient } from "../../shared/hooks/http-hook";
+import TestResultFooter from "../../shared/components/TestResultFooter";
 
 const PsyTestResult = () => {
   const { id } = useParams();
-  const [searchParams] = useSearchParams();
-  const title = searchParams.get("title");
-  const score = searchParams.get("score");
+  const [result, setResult] = useState();
+  const [resultType, setResultType] = useState(null);
+  const { isLoading, error, sendRequest, clearError } = useHttpClient();
 
-  const psytestMap = {
-    7: psytestResults01,
-    8: psytestResults02,
-  };
+  useEffect(() => {
+    if (error) {
+      toast.error(error);
+      clearError();
+    }
+  }, [error, clearError]);
 
-  const psytestResult = psytestMap[Number(id)] ?? [];
+  useEffect(() => {
+    const fetchResult = async () => {
+      try {
+        const responseData = await sendRequest(
+          `http://localhost:5000/api/tests/result/${id}`
+        );
+        setResult(responseData.data);
+      } catch (err) {}
+    };
 
-  const result = psytestResult.find(
-    (result) => score >= result.minScore && score <= result.maxScore
-  );
+    fetchResult();
+  }, [id, sendRequest]);
+
+  // 심리테스트 결과 타입과 결과 데이터의 score를 비교하여 resultType 구하기
+  useEffect(() => {
+    if (result) {
+      const type = result?.testId?.psytestResults?.find(
+        (r) => r.minScore <= result.score && r.maxScore >= result.score
+      );
+      setResultType(type);
+    }
+  }, [result]);
+
+  if (isLoading || !result || !resultType) {
+    return null;
+  }
 
   return (
-    <QuizContainer>
-      <QuizResultContents>
-        <TitleText>{title}</TitleText>
-        <CompletionText>나의 결과를 확인해보세요.</CompletionText>
-        <ResultWrapper>
-          <ResultImg src={result.img} />
-        </ResultWrapper>
-        <TestResultFooter id={id} title={title} />
-      </QuizResultContents>
-    </QuizContainer>
+    <>
+      <QuizContainer>
+        <QuizResultContents>
+          <TitleText>{result.testId.title} 결과</TitleText>
+          <Description>{resultType.description}</Description>
+          <ResultWrapper>
+            <ResultImg src={resultType.img} />
+          </ResultWrapper>
+          <TestResultFooter
+            id={result.testId.shortId}
+            title={result.testId.title}
+          />
+        </QuizResultContents>
+      </QuizContainer>
+    </>
   );
 };
 
@@ -45,6 +74,7 @@ const QuizContainer = styled.div`
 const QuizResultContents = styled.div`
   font-family: "Noto Sans KR", sans-serif;
   display: flex;
+  align-items: center;
   flex-direction: column;
   margin: 20px auto;
   width: 70%;
@@ -58,7 +88,7 @@ const TitleText = styled.div`
   font-size: 20px;
   font-weight: 500;
   color: #2c2c2c;
-  margin: 10px 2px 12px 2px;
+  margin: 14px 2px 12px 2px;
 
   @media (max-width: 640px) {
     margin: 6px 2px 10px 2px;
@@ -66,11 +96,11 @@ const TitleText = styled.div`
   }
 `;
 
-const CompletionText = styled.div`
+const Description = styled.div`
   font-size: 16px;
   font-weight: 500;
   color: #7a7a7a;
-  margin: 0px 2px 8px 2px;
+  margin: 4px 2px 13px 2px;
 
   @media (max-width: 640px) {
     font-size: 15px;
@@ -83,6 +113,6 @@ const ResultWrapper = styled.div`
 `;
 
 const ResultImg = styled.img`
-  margin: 15px 0 20px 0;
-  width: 100%;
+  margin: 15px auto 25px auto;
+  width: 90%;
 `;

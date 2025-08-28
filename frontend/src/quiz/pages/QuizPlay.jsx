@@ -1,15 +1,15 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
+import { toast } from "sonner";
 import { LinearProgress, Box } from "@mui/material";
 import { useHttpClient } from "../../shared/hooks/http-hook";
-import AlertSnackbar from "../../shared/components/AlertSnackbar";
 
 const QuizPlay = ({ testData }) => {
   const navigate = useNavigate();
   const { error, sendRequest, clearError } = useHttpClient();
 
-  const questions = testData.quizQuestions;
+  const questions = testData.quizQuestions ?? [];
 
   const total = questions.length || 1;
   const [quizStep, setQuizStep] = useState("question"); // question, answer
@@ -22,6 +22,13 @@ const QuizPlay = ({ testData }) => {
 
   const isSubjectiveCorrect =
     subjectiveInput === questions[currentIndex].answer; // 주관식 정답
+
+  useEffect(() => {
+    if (error) {
+      toast.error(error);
+      clearError();
+    }
+  }, [error, clearError]);
 
   const handleOptionSelect = (option) => {
     setSelectedOption(option);
@@ -58,8 +65,10 @@ const QuizPlay = ({ testData }) => {
     } else {
       // 결과제출
       const result = await submitResult();
-      console.log(result);
-      navigate(`/quiz/result/${result.data._id}`);
+      if (!result || !result._id) {
+        return;
+      }
+      navigate(`/quiz/result/${result._id}`);
     }
   };
 
@@ -69,23 +78,19 @@ const QuizPlay = ({ testData }) => {
         `http://localhost:5000/api/tests/result`,
         "POST",
         JSON.stringify({
-          quizId: testData._id,
+          testId: testData._id,
           userId: "68ac3b5b23431dfa6e9b434c",
           score,
           total,
         }),
         { "Content-Type": "application/json" }
       );
-      return responseData;
-    } catch (err) {
-      console.error(err);
-      return null;
-    }
+      return responseData.data;
+    } catch (err) {}
   };
 
   return (
     <>
-      <AlertSnackbar message={error} severity="error" onClear={clearError} />
       <Container>
         <PlayContents>
           <Box sx={{ display: "flex", alignItems: "center", width: "100%" }}>

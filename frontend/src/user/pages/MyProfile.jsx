@@ -1,32 +1,39 @@
 import { useContext, useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
+import { toast } from "sonner";
+import Swal from "sweetalert2";
+import "../../shared/styles/swal-custom.css";
 import CircularProgress from "@mui/material/CircularProgress";
-import Alert from "@mui/material/Alert";
 import { AuthContext } from "../../shared/context/auth-context";
 import { useHttpClient } from "../../shared/hooks/http-hook";
 
 const MyProfile = () => {
   const navigate = useNavigate();
   const auth = useContext(AuthContext);
+  const { error, sendRequest, clearError } = useHttpClient();
+  const [isNicknameLoading, setIsNicknameLoading] = useState(false);
+  const [isPasswordLoading, setIsPasswordLoading] = useState(false);
 
   const [user, setUser] = useState();
+  const [initialNickname, setInitialNickname] = useState("");
   const [nickname, setNickname] = useState("");
   const [currentPassword, setCurrentPassword] = useState("");
   const [newPassword, setNewPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
   const [validationErrors, setValidationErrors] = useState({});
 
-  const { isLoading, error, sendRequest, clearError } = useHttpClient();
+  const id = "68ac56ad23431dfa6e9b4358";
+  let successMessage;
 
-  const id = "68ac3b5b23431dfa6e9b434c";
   useEffect(() => {
     const fetchUser = async () => {
       try {
         const responseData = await sendRequest(
-          `http://localhost:5000/api/user/${id}`
+          `http://localhost:5000/api/users/${id}`
         );
         setUser(responseData.data);
+        setInitialNickname(responseData.data.nickname);
         setNickname(responseData.data.nickname);
       } catch (err) {}
     };
@@ -34,11 +41,22 @@ const MyProfile = () => {
     fetchUser();
   }, [id, sendRequest]);
 
+  useEffect(() => {
+    if (error) {
+      toast.error(error);
+      clearError();
+    }
+  }, [error, clearError]);
+
   const nicknameValidate = () => {
     const newErrors = {};
 
     if (nickname.trim().length < 2) {
       newErrors.nickname = "닉네임은 2자 이상 입력해주세요.";
+    }
+
+    if (initialNickname === nickname) {
+      newErrors.nickname = "현재 닉네임과 다른 닉네임을 입력해주세요.";
     }
 
     setValidationErrors(newErrors);
@@ -50,7 +68,7 @@ const MyProfile = () => {
     const newErrors = {};
 
     if (newPassword.length < 6) {
-      newErrors.password = "비밀번호는 최소 6자 이상이어야 합니다.";
+      newErrors.newPassword = "비밀번호는 최소 6자 이상이어야 합니다.";
     }
 
     if (confirmPassword !== newPassword) {
@@ -66,20 +84,97 @@ const MyProfile = () => {
     e.preventDefault();
 
     if (nicknameValidate()) {
+      setIsNicknameLoading(true);
       try {
         await sendRequest(
-          `http://localhost:5000/api/user/${id}`,
+          `http://localhost:5000/api/users/${id}`,
           "PATCH",
           JSON.stringify({
             nickname,
           }),
           { "Content-Type": "application/json" }
         );
-      } catch (err) {
-        console.log(err);
-      }
+        setInitialNickname(nickname);
+        successMessage = "닉네임이 변경되었습니다.";
+        toast.success(successMessage);
+      } catch (err) {}
+      setIsNicknameLoading(false);
     }
   };
+
+  const handleUpdatePassword = async (e) => {
+    e.preventDefault();
+
+    if (passwordValidate()) {
+      setIsPasswordLoading(true);
+      try {
+        await sendRequest(
+          `http://localhost:5000/api/users/${id}`,
+          "PATCH",
+          JSON.stringify({
+            currentPassword,
+            newPassword,
+          }),
+          { "Content-Type": "application/json" }
+        );
+
+        successMessage = "비밀번호가 변경되었습니다.";
+        toast.success(successMessage);
+      } catch (err) {}
+      setCurrentPassword("");
+      setNewPassword("");
+      setConfirmPassword("");
+    }
+    setIsPasswordLoading(false);
+  };
+
+  const handleLogout = () => {
+    auth.logout();
+    navigate("/");
+  };
+
+  const handleDeleteAccount = async () => {
+    const result = await Swal.fire({
+      title: "회원탈퇴를 진행하시겠습니까?",
+      width: 340,
+      showCancelButton: true,
+      confirmButtonText: "탈퇴하기",
+      cancelButtonText: "취소",
+      confirmButtonColor: "rgb(80, 188, 255)",
+      cancelButtonColor: "#b1b1b1",
+      customClass: {
+        title: "swal-title",
+        htmlContainer: "swal-text",
+        confirmButton: "swal-confirm",
+        cancelButton: "swal-cancel",
+      },
+    });
+
+    if (result.isConfirmed) {
+      try {
+        await sendRequest(`http://localhost:5000/api/users/${id}`, "DELETE");
+        auth.logout();
+        await Swal.fire({
+          title: "회원탈퇴가 완료되었습니다.",
+          width: 330,
+          confirmButtonText: "확인",
+          confirmButtonColor: "rgb(80, 188, 255)",
+          customClass: {
+            title: "swal-title",
+            htmlContainer: "swal-text",
+            confirmButton: "swal-confirm",
+            cancelButton: "swal-cancel",
+          },
+        });
+
+        navigate("/");
+      } catch (err) {}
+    }
+  };
+
+  if (!user) {
+    return null;
+  }
 
   return (
     <MyProfileContainer>
@@ -88,7 +183,7 @@ const MyProfile = () => {
         <SectionTitle>닉네임 변경</SectionTitle>
         <Input
           type="text"
-          maxlength="10"
+          maxLength="10"
           value={nickname}
           autoComplete="off"
           onChange={(e) => setNickname(e.target.value)}
@@ -97,10 +192,16 @@ const MyProfile = () => {
         {validationErrors.nickname && (
           <ErrorText>{validationErrors.nickname}</ErrorText>
         )}
-        <ActionButton type="submit">닉네임 변경</ActionButton>
+        <ActionButton type="submit" disabled={isNicknameLoading}>
+          {isNicknameLoading ? (
+            <CircularProgress size="18px" color="inherit" />
+          ) : (
+            "닉네임 변경"
+          )}
+        </ActionButton>
       </Section>
       <Divider />
-      <Section>
+      <Section onSubmit={handleUpdatePassword} noValidate>
         <SectionTitle>비밀번호 변경</SectionTitle>
         <Input
           type="password"
@@ -116,6 +217,9 @@ const MyProfile = () => {
           onChange={(e) => setNewPassword(e.target.value)}
           placeholder="새 비밀번호를 입력하세요"
         />
+        {validationErrors.newPassword && (
+          <ErrorText>{validationErrors.newPassword}</ErrorText>
+        )}
         <Input
           type="password"
           value={confirmPassword}
@@ -123,11 +227,21 @@ const MyProfile = () => {
           onChange={(e) => setConfirmPassword(e.target.value)}
           placeholder="새 비밀번호를 다시 입력하세요"
         />
-        <ActionButton type="submit">비밀번호 변경</ActionButton>
+        {validationErrors.confirmPassword && (
+          <ErrorText>{validationErrors.confirmPassword}</ErrorText>
+        )}
+        <ActionButton type="submit" disabled={isPasswordLoading}>
+          {isPasswordLoading ? (
+            <CircularProgress size="18px" color="inherit" />
+          ) : (
+            "비밀번호 변경"
+          )}
+        </ActionButton>
       </Section>
       <Divider />
       <BottomText>
-        <LinkButton>로그아웃</LinkButton>|<LinkButton>회원탈퇴</LinkButton>
+        <LinkButton onClick={handleLogout}>로그아웃</LinkButton>|
+        <LinkButton onClick={handleDeleteAccount}>회원탈퇴</LinkButton>
       </BottomText>
     </MyProfileContainer>
   );
@@ -145,6 +259,7 @@ const MyProfileContainer = styled.div`
   box-sizing: border-box;
 
   @media (max-width: 640px) {
+    max-width: 100%;
     margin: 0px;
   }
 `;
@@ -190,11 +305,11 @@ const ActionButton = styled.button`
   padding: 13px;
   border: none;
   border-radius: 999px;
-  background-color: ${({ $loading }) => ($loading ? "#acdbf8" : " #50bcff")};
+  background-color: ${({ disabled }) => (disabled ? "#acdbf8" : " #50bcff")};
   color: white;
   font-size: 15px;
   font-weight: 600;
-  cursor: ${({ $loading }) => ($loading ? "default" : "pointer")};
+  cursor: ${({ disabled }) => (disabled ? "default" : "pointer")};
 `;
 
 const BottomText = styled.div`

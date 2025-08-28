@@ -1,17 +1,28 @@
+import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
 
-const RandomTestCard = ({ image, title }) => {
+const SmallTestCard = ({ id, category, image, title, isSearchMode }) => {
+  const navigate = useNavigate();
+
+  const handleCardClick = () => {
+    if (category === "quiz") {
+      navigate(`/quiz/${id}`);
+    } else if (category === "psytest") {
+      navigate(`/psytest/${id}`);
+    }
+  };
+
   return (
-    <Card $image={image}>
+    <Card $image={image} $isSearchMode={isSearchMode} onClick={handleCardClick}>
       <CardText>{title}</CardText>
     </Card>
   );
 };
 
-export default RandomTestCard;
+export default SmallTestCard;
 
 const Card = styled.div`
-  height: 170px;
+  height: ${({ $isSearchMode }) => ($isSearchMode ? "240px" : "170px")};
   border-radius: 8px;
   display: flex;
   align-items: flex-end;
@@ -25,9 +36,9 @@ const Card = styled.div`
     box-shadow: rgba(0, 0, 0, 0.2) 0px 0px 8px -3px;
   }
 
-  @media (max-width: 640px) {
-    height: 150px;
-    width: 52%;
+  @media (max-width: 700px) {
+    height: ${({ $isSearchMode }) => ($isSearchMode ? "270px" : "160px")};
+    width: ${({ $isSearchMode }) => ($isSearchMode ? "100%" : "52%")};
     flex-shrink: 0;
     scroll-snap-align: start;
   }

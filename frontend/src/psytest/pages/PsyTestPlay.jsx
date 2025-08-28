@@ -1,85 +1,107 @@
-import { useState } from "react";
-import { createSearchParams, useNavigate } from "react-router-dom";
+import { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
+import { toast } from "sonner";
 import { LinearProgress, Box } from "@mui/material";
-import test01 from "../data/psytestSets/test01.js";
-import test02 from "../data/psytestSets/test02.js";
+import { useHttpClient } from "../../shared/hooks/http-hook";
 
 const PsyTestPlay = ({ testData }) => {
   const navigate = useNavigate();
+  const { error, sendRequest, clearError } = useHttpClient();
 
-  const id = Number(testData.id);
-  const testMap = {
-    7: test01,
-    8: test02,
-  };
-  const questions = testMap[id] ?? [];
+  const questions = testData.psytestQuestions ?? [];
 
   const total = questions.length || 1;
-
   const [currentIndex, setCurrentIndex] = useState(0);
   const [score, setScore] = useState(0);
 
-  if (!questions || questions.length === 0)
-    return <div>테스트가 존재하지 않습니다.</div>;
-
   const progress = Math.round(((currentIndex + 1) / total) * 100);
 
-  const handleOptionClick = (i) => {
-    const point = i === 0 ? 1 : 0;
+  useEffect(() => {
+    if (error) {
+      toast.error(error);
+      clearError();
+    }
+  }, [error, clearError]);
+
+  const handleOptionClick = async (i) => {
+    const currentQuestion = questions[currentIndex];
+    const point = currentQuestion.scores[i] ?? 0;
+
     const nextScore = score + point;
 
     if (currentIndex < total - 1) {
       setScore(nextScore);
       setCurrentIndex((prev) => prev + 1);
     } else {
-      const params = createSearchParams({
-        title: testData.title,
-        score: nextScore,
-      });
-
-      navigate({
-        pathname: `/psytest/${id}/result`,
-        search: `?${params}`,
-      });
+      const result = await submitResult(nextScore);
+      if (!result || !result._id) {
+        return;
+      }
+      navigate(`/psytest/result/${result._id}`);
     }
   };
 
+  const submitResult = async (score) => {
+    try {
+      const responseData = await sendRequest(
+        `http://localhost:5000/api/tests/result`,
+        "POST",
+        JSON.stringify({
+          testId: testData._id,
+          userId: "68ac3b5b23431dfa6e9b434c",
+          score,
+        }),
+        { "Content-Type": "application/json" }
+      );
+      return responseData.data;
+    } catch (err) {}
+  };
+
   return (
-    <PlayContents>
-      <Box sx={{ display: "flex", alignItems: "center", width: "100%" }}>
-        <Box sx={{ width: "100%", mr: 2 }}>
-          <LinearProgress
-            variant="determinate"
-            value={progress}
-            sx={{
-              "& .MuiLinearProgress-bar": {
-                backgroundColor: "#b12af0",
-              },
-              backgroundColor: "#e9f2f8",
-              height: 8,
-            }}
-          />
-        </Box>
-        <QuestionCounter>
-          {currentIndex + 1} / {total}
-        </QuestionCounter>
-      </Box>
-      <QuestionText>
-        {currentIndex + 1}. {questions[currentIndex].question}
-      </QuestionText>
-      {questions[currentIndex].options.map((option, i) => {
-        return (
-          <OptionButton key={i} onClick={() => handleOptionClick(i)}>
-            <div>{option}</div>
-          </OptionButton>
-        );
-      })}
-    </PlayContents>
+    <>
+      <Container>
+        <PlayContents>
+          <Box sx={{ display: "flex", alignItems: "center", width: "100%" }}>
+            <Box sx={{ width: "100%", mr: 2 }}>
+              <LinearProgress
+                variant="determinate"
+                value={progress}
+                sx={{
+                  "& .MuiLinearProgress-bar": {
+                    backgroundColor: "#b12af0",
+                  },
+                  backgroundColor: "#e9f2f8",
+                  height: 8,
+                }}
+              />
+            </Box>
+            <QuestionCounter>
+              {currentIndex + 1} / {total}
+            </QuestionCounter>
+          </Box>
+          <QuestionText>
+            {currentIndex + 1}. {questions[currentIndex].question}
+          </QuestionText>
+          {questions[currentIndex].options.map((option, i) => {
+            return (
+              <OptionButton key={i} onClick={() => handleOptionClick(i)}>
+                <div>{option}</div>
+              </OptionButton>
+            );
+          })}
+        </PlayContents>
+      </Container>
+    </>
   );
 };
 
 export default PsyTestPlay;
+
+const Container = styled.div`
+  max-width: 1020px;
+  margin: 0px auto 50px auto;
+`;
 
 const PlayContents = styled.div`
   font-size: 19px;

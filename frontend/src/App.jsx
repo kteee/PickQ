@@ -1,10 +1,11 @@
 import { useCallback, useState } from "react";
 import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
 import styled from "styled-components";
+import { Toaster } from "sonner";
 import { AuthContext } from "./shared/context/auth-context";
 import Header from "./shared/components/Header";
 import Home from "./Home";
-import TestStart from "./shared/components/TestStart";
+import TestStart from "./shared/pages/TestStart";
 import Login from "./user/pages/Login";
 import Signup from "./user/pages/Signup";
 import QuizResult from "./quiz/pages/QuizResult";
@@ -23,28 +24,42 @@ function App() {
   }, []);
 
   return (
-    <AuthContext.Provider
-      value={{ isLoggedIn: isLoggedIn, login: login, logout: logout }}
-    >
-      <BrowserRouter>
-        <Layout>
-          <Header />
-          <Main>
-            <Routes>
-              <Route path="/" element={<Home />} />
-              <Route path="/login" element={<Login />} />
-              <Route path="/signup" element={<Signup />} />
-              <Route path="/myprofile" element={<MyProfile />} />
-              <Route path="/quiz/:id" element={<TestStart />} />
-              <Route path="/quiz/result/:id" element={<QuizResult />} />
-              <Route path="/psytest/:id" element={<TestStart />} />
-              <Route path="/psytest/:id/result" element={<PsyTestResult />} />
-              <Route path="*" element={<Navigate to="/" replace />} />
-            </Routes>
-          </Main>
-        </Layout>
-      </BrowserRouter>
-    </AuthContext.Provider>
+    <>
+      <Toaster
+        position="top-center"
+        richColors
+        toastOptions={{
+          style: {
+            fontFamily: "Noto Sans KR, sans-serif",
+            marginTop: "18px",
+            minWidth: "380px",
+            boxShadow: "none",
+          },
+        }}
+      />
+      <AuthContext.Provider
+        value={{ isLoggedIn: isLoggedIn, login: login, logout: logout }}
+      >
+        <BrowserRouter>
+          <Layout>
+            <Header />
+            <Main>
+              <Routes>
+                <Route path="/" element={<Home />} />
+                <Route path="/login" element={<Login />} />
+                <Route path="/signup" element={<Signup />} />
+                <Route path="/myprofile" element={<MyProfile />} />
+                <Route path="/quiz/:id" element={<TestStart />} />
+                <Route path="/quiz/result/:id" element={<QuizResult />} />
+                <Route path="/psytest/:id" element={<TestStart />} />
+                <Route path="/psytest/result/:id" element={<PsyTestResult />} />
+                <Route path="*" element={<Navigate to="/" replace />} />
+              </Routes>
+            </Main>
+          </Layout>
+        </BrowserRouter>
+      </AuthContext.Provider>
+    </>
   );
 }
 

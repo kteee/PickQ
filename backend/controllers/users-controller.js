@@ -4,7 +4,7 @@ const HttpError = require("../models/http-error");
 const User = require("../models/user");
 
 // POST /api/users/signup
-const registerUser = async (req, res, next) => {
+const signup = async (req, res, next) => {
   const errors = validationResult(req);
   if (!errors.isEmpty()) {
     const error = new HttpError(
@@ -99,7 +99,7 @@ const login = async (req, res, next) => {
 
 // GET /api/users/id
 const getUserById = async (req, res, next) => {
-  const userId = req.params.uid;
+  const userId = req.params.id;
 
   // 사용자 존재 여부 확인
   let user;
@@ -117,7 +117,7 @@ const getUserById = async (req, res, next) => {
   res.json({ data: user.toObject({ getters: true }) });
 };
 
-// PATCH /api/users/id -- 완료!!
+// PATCH /api/users/id
 const updateUser = async (req, res, next) => {
   const errors = validationResult(req);
   if (!errors.isEmpty()) {
@@ -128,10 +128,8 @@ const updateUser = async (req, res, next) => {
     return next(error);
   }
 
-  const userId = req.params.uid;
+  const userId = req.params.id;
   const { nickname, currentPassword, newPassword } = req.body;
-
-  console.log(userId, nickname, currentPassword, newPassword);
 
   // 사용자 존재 여부 확인
   let user;
@@ -147,9 +145,30 @@ const updateUser = async (req, res, next) => {
   }
 
   if (nickname !== undefined) {
+    // 닉네임 중복 확인
+    try {
+      const existingNickname = await User.findOne({ nickname: nickname });
+      if (existingNickname) {
+        const error = new HttpError(
+          "이미 사용 중인 닉네임입니다. 다른 닉네임을 입력해주세요.",
+          422
+        );
+        return next(error);
+      }
+    } catch (err) {
+      const error = new HttpError("사용자 조회 중 오류가 발생했습니다.", 500);
+      return next(error);
+    }
+
     user.nickname = nickname;
   }
   if (newPassword !== undefined) {
+    //패스워드 일치 여부 확인
+    if (user.password !== currentPassword) {
+      const error = new HttpError("현재 비밀번호가 올바르지 않습니다.", 401);
+      return next(error);
+    }
+
     user.password = newPassword;
   }
 
@@ -164,9 +183,9 @@ const updateUser = async (req, res, next) => {
   res.status(200).json({ data: user.toObject({ getters: true }) });
 };
 
-// DELETE /api/users/id -- 완료!!
+// DELETE /api/users/id
 const deleteUser = async (req, res, next) => {
-  const userId = req.params.uid;
+  const userId = req.params.id;
 
   // 사용자 삭제
   try {
@@ -176,14 +195,14 @@ const deleteUser = async (req, res, next) => {
       return next(error);
     }
   } catch (err) {
-    const error = new HttpError("사용자 삭제를 실패하였습니다.", 500);
+    const error = new HttpError("회원탈퇴를 실패하였습니다.", 500);
     return next(error);
   }
 
-  res.status(200).json({ message: "사용자 삭제를 성공하였습니다.", userId });
+  res.status(200).json({ message: "회원탈퇴를 성공하였습니다.", userId });
 };
 
-exports.registerUser = registerUser;
+exports.signup = signup;
 exports.login = login;
 exports.getUserById = getUserById;
 exports.updateUser = updateUser;

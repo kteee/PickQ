@@ -55,6 +55,7 @@ const submitResult = async (req, res, next) => {
   }
 
   const { testId, userId, score, total } = req.body;
+
   const submittedResult = new Result({
     testId,
     userId,
@@ -106,7 +107,7 @@ const getResultById = async (req, res, next) => {
   try {
     result = await Result.findById(resultId).populate(
       "testId",
-      "title shortId"
+      "title shortId psytestResults"
     );
     if (!result) {
       const error = new HttpError("테스트 결과가 존재하지 않습니다.", 404);

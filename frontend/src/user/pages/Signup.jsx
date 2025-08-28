@@ -1,8 +1,8 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
+import { toast } from "sonner";
 import styled from "styled-components";
 import CircularProgress from "@mui/material/CircularProgress";
-import Alert from "@mui/material/Alert";
 import { useHttpClient } from "../../shared/hooks/http-hook";
 
 const Signup = () => {
@@ -15,6 +15,13 @@ const Signup = () => {
   const [validationErrors, setValidationErrors] = useState({});
 
   const { isLoading, error, sendRequest, clearError } = useHttpClient();
+
+  useEffect(() => {
+    if (error) {
+      toast.error(error);
+      clearError();
+    }
+  }, [error, clearError]);
 
   const validate = () => {
     const newErrors = {};
@@ -46,87 +53,83 @@ const Signup = () => {
     if (validate()) {
       try {
         await sendRequest(
-          "http://localhost:5000/api/user/register",
+          "http://localhost:5000/api/users/signup",
           "POST",
           JSON.stringify({ email, nickname, password }),
           { "Content-Type": "application/json" }
         );
-        navigate("/");
+
+        navigate("/login", {
+          state: { successMessage: "회원가입이 완료되었습니다." },
+        });
       } catch (err) {}
     }
   };
 
-  const errorHandler = () => {
-    clearError();
-  };
-
   return (
-    <LoginContainer>
-      <HeaderTitle>회원가입</HeaderTitle>
-      <LoginForm onSubmit={handleRegister} noValidate>
-        <Input
-          type="email"
-          placeholder="이메일을 입력하세요"
-          value={email}
-          onChange={(e) => setEmail(e.target.value)}
-        />
-        {validationErrors.email && (
-          <ErrorText>{validationErrors.email}</ErrorText>
-        )}
-        <Input
-          type="text"
-          maxlength="10"
-          placeholder="닉네임을 입력하세요 (2자 이상)"
-          autoComplete="off"
-          value={nickname}
-          onChange={(e) => setNickname(e.target.value)}
-        />
-        {validationErrors.nickname && (
-          <ErrorText>{validationErrors.nickname}</ErrorText>
-        )}
-        <Input
-          type="password"
-          placeholder="비밀번호를 입력하세요 (6자 이상)"
-          autoComplete="off"
-          value={password}
-          onChange={(e) => setPassword(e.target.value)}
-        />
-        {validationErrors.password && (
-          <ErrorText>{validationErrors.password}</ErrorText>
-        )}
-        <Input
-          type="password"
-          placeholder="비밀번호를 다시 입력하세요"
-          autoComplete="off"
-          value={confirmPassword}
-          onChange={(e) => setConfirmPassword(e.target.value)}
-        />
-        {validationErrors.confirmPassword && (
-          <ErrorText>{validationErrors.confirmPassword}</ErrorText>
-        )}
-        <LoginButton type="submit" $loading={isLoading} disabled={isLoading}>
-          {isLoading ? (
-            <CircularProgress size="18px" color="inherit" />
-          ) : (
-            "회원가입"
+    <>
+      <LoginContainer>
+        <HeaderTitle>회원가입</HeaderTitle>
+        <LoginForm onSubmit={handleRegister} noValidate>
+          <Input
+            type="email"
+            placeholder="이메일을 입력하세요"
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
+          />
+          {validationErrors.email && (
+            <ErrorText>{validationErrors.email}</ErrorText>
           )}
-        </LoginButton>
-        {error && (
-          <Alert severity="error" style={{ marginTop: "10px" }}>
-            {error}
-          </Alert>
-        )}
-        <Divider>
-          <Line />
-          <DividerText>또는</DividerText>
-          <Line />
-        </Divider>
-        <GoogleLoginButton>구글로 시작하기</GoogleLoginButton>
-        <BottomText>
-          이미 계정이 있으신가요? <LoginLink to="/login">로그인</LoginLink>
-        </BottomText>
-      </LoginForm>
-    </LoginContainer>
+          <Input
+            type="text"
+            maxLength="10"
+            placeholder="닉네임을 입력하세요 (2자 이상)"
+            autoComplete="off"
+            value={nickname}
+            onChange={(e) => setNickname(e.target.value)}
+          />
+          {validationErrors.nickname && (
+            <ErrorText>{validationErrors.nickname}</ErrorText>
+          )}
+          <Input
+            type="password"
+            placeholder="비밀번호를 입력하세요 (6자 이상)"
+            autoComplete="off"
+            value={password}
+            onChange={(e) => setPassword(e.target.value)}
+          />
+          {validationErrors.password && (
+            <ErrorText>{validationErrors.password}</ErrorText>
+          )}
+          <Input
+            type="password"
+            placeholder="비밀번호를 다시 입력하세요"
+            autoComplete="off"
+            value={confirmPassword}
+            onChange={(e) => setConfirmPassword(e.target.value)}
+          />
+          {validationErrors.confirmPassword && (
+            <ErrorText>{validationErrors.confirmPassword}</ErrorText>
+          )}
+          <LoginButton type="submit" $loading={isLoading} disabled={isLoading}>
+            {isLoading ? (
+              <CircularProgress size="18px" color="inherit" />
+            ) : (
+              "회원가입"
+            )}
+          </LoginButton>
+          <Divider>
+            <Line />
+            <DividerText>또는</DividerText>
+            <Line />
+          </Divider>
+          <GoogleLoginButton>구글로 시작하기</GoogleLoginButton>
+          <BottomText>
+            이미 계정이 있으신가요? <LoginLink to="/login">로그인</LoginLink>
+          </BottomText>
+        </LoginForm>
+      </LoginContainer>
+    </>
   );
 };
 
@@ -142,6 +145,7 @@ const LoginContainer = styled.div`
   box-sizing: border-box;
 
   @media (max-width: 640px) {
+    max-width: 100%;
     margin: 0px;
   }
 `;

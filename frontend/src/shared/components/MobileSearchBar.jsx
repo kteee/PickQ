@@ -1,14 +1,40 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import { useNavigate, useLocation } from "react-router-dom";
 import styled from "styled-components";
 import Search from "@mui/icons-material/SearchRounded";
 import Clear from "@mui/icons-material/Clear";
 import Back from "@mui/icons-material/ArrowBackIosRounded";
 
 const MobileSearchBar = () => {
+  const navigate = useNavigate();
+  const location = useLocation();
   const [isOpen, setIsOpen] = useState(false);
   const [keyword, setKeyword] = useState("");
 
+  useEffect(() => {
+    const queryParams = new URLSearchParams(location.search);
+    const keyword = (queryParams.get("keyword") || "").trim();
+    setKeyword(keyword);
+  }, [location.search]);
+
   const handleClear = () => setKeyword("");
+
+  const handleBackIconClick = () => {
+    setIsOpen(false);
+    handleClear();
+  };
+
+  const handleSearch = () => {
+    const trimmed = keyword.trim();
+    if (!trimmed) return;
+    navigate(`/?keyword=${encodeURIComponent(trimmed)}`);
+  };
+
+  const handleKeyDown = (e) => {
+    if (e.key === "Enter") {
+      handleSearch();
+    }
+  };
 
   return (
     <>
@@ -18,14 +44,15 @@ const MobileSearchBar = () => {
       {isOpen && (
         <MobileSearchOverlay>
           <SearchInputWrapper>
-            <BackIcon onClick={() => setIsOpen(false)} />
-            <SearchIcon />
+            <BackIcon onClick={handleBackIconClick} />
+            <SearchIcon onClick={handleSearch} />
             <SearchInput
               autoFocus
               type="search"
               placeholder="검색어를 입력하세요"
               value={keyword}
               onChange={(e) => setKeyword(e.target.value)}
+              onKeyDown={handleKeyDown}
             />
             {keyword && <ClearIcon fontSize="small" onClick={handleClear} />}
           </SearchInputWrapper>
@@ -104,7 +131,6 @@ const SearchIcon = styled(Search)`
   top: 50%;
   transform: translateY(-50%);
   color: #505050;
-  pointer-events: none;
 `;
 
 const ClearIcon = styled(Clear)`
