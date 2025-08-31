@@ -49,7 +49,7 @@ const PsyTestPlay = ({ testData }) => {
         "POST",
         JSON.stringify({
           testId: testData._id,
-          userId: "68ac3b5b23431dfa6e9b434c",
+          userId: "68b3ff89ba64654aee77a092",
           score,
         }),
         { "Content-Type": "application/json" }

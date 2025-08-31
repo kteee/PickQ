@@ -1,15 +1,18 @@
 import styled from "styled-components";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useContext } from "react";
 import { useParams } from "react-router-dom";
 import { toast } from "sonner";
 import { useHttpClient } from "../hooks/http-hook";
 import { getCategoryLabel } from "../data/category";
+import { AuthContext } from "../../shared/context/auth-context";
 import QuizPlay from "../../quiz/pages/QuizPlay";
 import PsyTestPlay from "../../psytest/pages/PsyTestPlay";
+import CommentSection from "../../shared/components/CommentSection";
 
 const TestStart = () => {
   const { id } = useParams();
   const { isLoading, error, sendRequest, clearError } = useHttpClient();
+  const { isLoggedIn } = useContext(AuthContext);
 
   const [loadedTest, setLoadedTest] = useState();
   const [playMode, setPlayMode] = useState("start");
@@ -66,6 +69,7 @@ const TestStart = () => {
           <StartButton onClick={() => setPlayMode("play")}>
             시작하기
           </StartButton>
+          <CommentSection id={id} isLoggedIn={isLoggedIn} />
         </QuizStartContents>
       </Container>
     </>

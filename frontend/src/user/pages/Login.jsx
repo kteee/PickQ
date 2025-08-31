@@ -5,6 +5,7 @@ import { toast } from "sonner";
 import CircularProgress from "@mui/material/CircularProgress";
 import { AuthContext } from "../../shared/context/auth-context";
 import { useHttpClient } from "../../shared/hooks/http-hook";
+import GoogleSVG from "../../shared/assets/GoogleSVG";
 
 const Login = () => {
   const navigate = useNavigate();
@@ -18,7 +19,7 @@ const Login = () => {
 
   const hasShownToast = useRef(false);
 
-  // 회원가입 완료 시
+  // 회원가입 완료 시 메세지
   useEffect(() => {
     if (location.state?.successMessage && !hasShownToast.current) {
       toast.success(location.state.successMessage);
@@ -54,13 +55,13 @@ const Login = () => {
 
     if (validate()) {
       try {
-        await sendRequest(
+        const responseData = await sendRequest(
           "http://localhost:5000/api/users/login",
           "POST",
           JSON.stringify({ email, password }),
           { "Content-Type": "application/json" }
         );
-        auth.login();
+        auth.login(responseData.data.userId, responseData.data.token);
         navigate("/");
       } catch (err) {}
     }
@@ -90,7 +91,7 @@ const Login = () => {
           {validationErrors.password && (
             <ErrorText>{validationErrors.password}</ErrorText>
           )}
-          <LoginButton type="submit" $loading={isLoading} disabled={isLoading}>
+          <LoginButton type="submit" disabled={isLoading}>
             {isLoading ? (
               <CircularProgress size="18px" color="inherit" />
             ) : (
@@ -102,7 +103,9 @@ const Login = () => {
             <DividerText>또는</DividerText>
             <Line />
           </Divider>
-          <GoogleLoginButton>구글로 시작하기</GoogleLoginButton>
+          <GoogleLoginButton>
+            <GoogleSVG width={20} height={20} /> 구글로 시작하기
+          </GoogleLoginButton>
           <BottomText>
             계정이 없으신가요? <JoinLink to="/signup">회원가입</JoinLink>
           </BottomText>
@@ -159,11 +162,11 @@ const LoginButton = styled.button`
   padding: 13px;
   border: none;
   border-radius: 999px;
-  background-color: ${({ $loading }) => ($loading ? "#acdbf8" : " #50bcff")};
+  background-color: ${({ disable }) => (disable ? "#acdbf8" : " #50bcff")};
   color: white;
   font-size: 15px;
   font-weight: 600;
-  cursor: ${({ $loading }) => ($loading ? "default" : "pointer")};
+  cursor: ${({ disable }) => (disable ? "default" : "pointer")};
 `;
 
 const Divider = styled.div`
@@ -185,6 +188,10 @@ const DividerText = styled.span`
 `;
 
 const GoogleLoginButton = styled.button`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 3px;
   padding: 12px;
   border: 1px solid #ddd;
   border-radius: 999px;

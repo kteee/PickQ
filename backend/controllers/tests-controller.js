@@ -15,7 +15,10 @@ const getTests = async (req, res, next) => {
       "-answerType -quizQuestions -psytestQuestions -psytestResults"
     );
   } catch (err) {
-    const error = new HttpError("테스트 조회 중 오류가 발생했습니다.", 500);
+    const error = new HttpError(
+      "테스트 목록을 불러오는 중 문제가 발생했습니다.",
+      500
+    );
     return next(error);
   }
 
@@ -32,11 +35,14 @@ const getTestById = async (req, res, next) => {
   try {
     test = await Test.findOne({ shortId: testId });
     if (!test) {
-      const error = new HttpError("해당 테스트가 존재하지 않습니다.", 404);
+      const error = new HttpError("해당 테스트를 찾을 수 없습니다.", 404);
       return next(error);
     }
   } catch (err) {
-    const error = new HttpError("테스트 조회 중 오류가 발생했습니다.", 500);
+    const error = new HttpError(
+      "테스트 정보를 불러오는 중 문제가 발생했습니다.",
+      500
+    );
     return next(error);
   }
 
@@ -47,10 +53,7 @@ const getTestById = async (req, res, next) => {
 const submitResult = async (req, res, next) => {
   const errors = validationResult(req);
   if (!errors.isEmpty()) {
-    const error = new HttpError(
-      "유효하지 않은 입력 데이터를 전달했습니다.",
-      422
-    );
+    const error = new HttpError("유효하지 않은 입력 데이터입니다.", 422);
     return next(error);
   }
 
@@ -58,7 +61,7 @@ const submitResult = async (req, res, next) => {
 
   const submittedResult = new Result({
     testId,
-    userId,
+    userId: userId || null,
     score,
     total,
   });
@@ -67,31 +70,42 @@ const submitResult = async (req, res, next) => {
   try {
     const test = await Test.findById(testId);
     if (!test) {
-      const error = new HttpError("해당 테스트가 존재하지 않습니다.", 404);
+      const error = new HttpError("해당 테스트를 찾을 수 없습니다.", 404);
       return next(error);
     }
   } catch (err) {
-    const error = new HttpError("테스트 조회 중 오류가 발생했습니다.", 500);
+    const error = new HttpError(
+      "테스트 정보를 불러오는 중 문제가 발생했습니다.",
+      500
+    );
     return next(error);
   }
 
   // 사용자 존재 여부 확인
-  try {
-    const user = await User.findById(userId);
-    if (!user) {
-      const error = new HttpError("해당 사용자가 존재하지 않습니다.", 404);
+  if (userId) {
+    try {
+      const user = await User.findById(userId);
+      if (!user) {
+        const error = new HttpError("해당 사용자를 찾을 수 없습니다.", 404);
+        return next(error);
+      }
+    } catch (err) {
+      const error = new HttpError(
+        "사용자 정보를 불러오는 중 문제가 발생했습니다.",
+        500
+      );
       return next(error);
     }
-  } catch (err) {
-    const error = new HttpError("사용자 조회 중 오류가 발생했습니다.", 500);
-    return next(error);
   }
 
-  // 테스트 결과 제출
+  // 테스트 결과 저장
   try {
     await submittedResult.save();
   } catch (err) {
-    const error = new HttpError("테스트 결과 제출에 실패하였습니다.", 500);
+    const error = new HttpError(
+      "테스트 결과 저장 중 문제가 발생했습니다.",
+      500
+    );
     return next(error);
   }
 
@@ -110,12 +124,12 @@ const getResultById = async (req, res, next) => {
       "title shortId psytestResults"
     );
     if (!result) {
-      const error = new HttpError("테스트 결과가 존재하지 않습니다.", 404);
+      const error = new HttpError("해당 테스트 결과를 찾을 수 없습니다.", 404);
       return next(error);
     }
   } catch (err) {
     const error = new HttpError(
-      "테스트 결과 조회 중 오류가 발생했습니다.",
+      "테스트 결과를 불러오는 중 문제가 발생했습니다.",
       500
     );
     return next(error);

@@ -4,6 +4,7 @@ import { toast } from "sonner";
 import styled from "styled-components";
 import CircularProgress from "@mui/material/CircularProgress";
 import { useHttpClient } from "../../shared/hooks/http-hook";
+import GoogleSVG from "../../shared/assets/GoogleSVG";
 
 const Signup = () => {
   const navigate = useNavigate();
@@ -111,7 +112,7 @@ const Signup = () => {
           {validationErrors.confirmPassword && (
             <ErrorText>{validationErrors.confirmPassword}</ErrorText>
           )}
-          <LoginButton type="submit" $loading={isLoading} disabled={isLoading}>
+          <LoginButton type="submit" disabled={isLoading}>
             {isLoading ? (
               <CircularProgress size="18px" color="inherit" />
             ) : (
@@ -123,7 +124,9 @@ const Signup = () => {
             <DividerText>또는</DividerText>
             <Line />
           </Divider>
-          <GoogleLoginButton>구글로 시작하기</GoogleLoginButton>
+          <GoogleLoginButton>
+            <GoogleSVG width={20} height={20} /> 구글로 시작하기
+          </GoogleLoginButton>
           <BottomText>
             이미 계정이 있으신가요? <LoginLink to="/login">로그인</LoginLink>
           </BottomText>
@@ -180,11 +183,11 @@ const LoginButton = styled.button`
   padding: 13px;
   border: none;
   border-radius: 999px;
-  background-color: ${({ $loading }) => ($loading ? "#acdbf8" : " #50bcff")};
+  background-color: ${({ disabled }) => (disabled ? "#acdbf8" : " #50bcff")};
   color: white;
   font-size: 15px;
   font-weight: 600;
-  cursor: ${({ $loading }) => ($loading ? "default" : "pointer")};
+  cursor: ${({ disabled }) => (disabled ? "default" : "pointer")};
 `;
 
 const Divider = styled.div`
@@ -206,6 +209,10 @@ const DividerText = styled.span`
 `;
 
 const GoogleLoginButton = styled.button`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 3px;
   padding: 12px;
   border: 1px solid #ddd;
   border-radius: 999px;

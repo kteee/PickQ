@@ -1,7 +1,7 @@
 .swal-title {
   font-size: 16px;
   font-weight: 300;
-  padding-top: 32px;
+  padding-top: 30px;
   color: rgb(39, 39, 39);
   font-weight: 500;
   font-family: "Noto Sans KR", sans-serif;
@@ -11,14 +11,14 @@
   font-family: "Noto Sans KR", sans-serif;
   font-size: 14.5px;
   font-weight: 400;
-  padding: 8px 15px;
-  border-radius: 50px;
+  padding: 7px 14px;
+  border-radius: 4px;
 }
 
 .swal-cancel {
   font-family: "Noto Sans KR", sans-serif;
   font-size: 14.5px;
   font-weight: 400;
-  padding: 8px 15px;
-  border-radius: 50px;
+  padding: 7px 14px;
+  border-radius: 4px;
 }

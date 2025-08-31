@@ -1,8 +1,8 @@
-import { useCallback, useState } from "react";
 import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
 import styled from "styled-components";
 import { Toaster } from "sonner";
 import { AuthContext } from "./shared/context/auth-context";
+import { useAuth } from "./shared/hooks/auth-hook";
 import Header from "./shared/components/Header";
 import Home from "./Home";
 import TestStart from "./shared/pages/TestStart";
@@ -13,15 +13,11 @@ import PsyTestResult from "./psytest/pages/PsyTestResult";
 import MyProfile from "./user/pages/MyProfile";
 
 function App() {
-  const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const { token, login, logout, userId, authReady } = useAuth();
 
-  const login = useCallback(() => {
-    setIsLoggedIn(true);
-  }, []);
-
-  const logout = useCallback(() => {
-    setIsLoggedIn(false);
-  }, []);
+  if (!authReady) {
+    return null;
+  }
 
   return (
     <>
@@ -38,7 +34,13 @@ function App() {
         }}
       />
       <AuthContext.Provider
-        value={{ isLoggedIn: isLoggedIn, login: login, logout: logout }}
+        value={{
+          isLoggedIn: !!token,
+          token: token,
+          userId: userId,
+          login: login,
+          logout: logout,
+        }}
       >
         <BrowserRouter>
           <Layout>

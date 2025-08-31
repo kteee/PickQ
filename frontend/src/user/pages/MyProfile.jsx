@@ -11,6 +11,7 @@ import { useHttpClient } from "../../shared/hooks/http-hook";
 const MyProfile = () => {
   const navigate = useNavigate();
   const auth = useContext(AuthContext);
+
   const { error, sendRequest, clearError } = useHttpClient();
   const [isNicknameLoading, setIsNicknameLoading] = useState(false);
   const [isPasswordLoading, setIsPasswordLoading] = useState(false);
@@ -23,14 +24,18 @@ const MyProfile = () => {
   const [confirmPassword, setConfirmPassword] = useState("");
   const [validationErrors, setValidationErrors] = useState({});
 
-  const id = "68ac56ad23431dfa6e9b4358";
   let successMessage;
 
   useEffect(() => {
     const fetchUser = async () => {
       try {
         const responseData = await sendRequest(
-          `http://localhost:5000/api/users/${id}`
+          `http://localhost:5000/api/users/profile`,
+          "GET",
+          null,
+          {
+            Authorization: "Bearer " + auth.token,
+          }
         );
         setUser(responseData.data);
         setInitialNickname(responseData.data.nickname);
@@ -39,7 +44,7 @@ const MyProfile = () => {
     };
 
     fetchUser();
-  }, [id, sendRequest]);
+  }, [sendRequest, auth.token]);
 
   useEffect(() => {
     if (error) {
@@ -87,12 +92,15 @@ const MyProfile = () => {
       setIsNicknameLoading(true);
       try {
         await sendRequest(
-          `http://localhost:5000/api/users/${id}`,
+          `http://localhost:5000/api/users/profile`,
           "PATCH",
           JSON.stringify({
             nickname,
           }),
-          { "Content-Type": "application/json" }
+          {
+            Authorization: "Bearer " + auth.token,
+            "Content-Type": "application/json",
+          }
         );
         setInitialNickname(nickname);
         successMessage = "닉네임이 변경되었습니다.";
@@ -109,13 +117,16 @@ const MyProfile = () => {
       setIsPasswordLoading(true);
       try {
         await sendRequest(
-          `http://localhost:5000/api/users/${id}`,
+          `http://localhost:5000/api/users/profile`,
           "PATCH",
           JSON.stringify({
             currentPassword,
             newPassword,
           }),
-          { "Content-Type": "application/json" }
+          {
+            Authorization: "Bearer " + auth.token,
+            "Content-Type": "application/json",
+          }
         );
 
         successMessage = "비밀번호가 변경되었습니다.";
@@ -140,7 +151,7 @@ const MyProfile = () => {
       showCancelButton: true,
       confirmButtonText: "탈퇴하기",
       cancelButtonText: "취소",
-      confirmButtonColor: "rgb(80, 188, 255)",
+      confirmButtonColor: "#e03535",
       cancelButtonColor: "#b1b1b1",
       customClass: {
         title: "swal-title",
@@ -152,7 +163,15 @@ const MyProfile = () => {
 
     if (result.isConfirmed) {
       try {
-        await sendRequest(`http://localhost:5000/api/users/${id}`, "DELETE");
+        await sendRequest(
+          `http://localhost:5000/api/users/profile`,
+          "DELETE",
+          null,
+          {
+            Authorization: "Bearer " + auth.token,
+          }
+        );
+        navigate("/");
         auth.logout();
         await Swal.fire({
           title: "회원탈퇴가 완료되었습니다.",
@@ -166,8 +185,6 @@ const MyProfile = () => {
             cancelButton: "swal-cancel",
           },
         });
-
-        navigate("/");
       } catch (err) {}
     }
   };

@@ -1,4 +1,6 @@
 const { validationResult } = require("express-validator");
+const bcrypt = require("bcryptjs");
+const jwt = require("jsonwebtoken");
 
 const HttpError = require("../models/http-error");
 const User = require("../models/user");
@@ -7,10 +9,7 @@ const User = require("../models/user");
 const signup = async (req, res, next) => {
   const errors = validationResult(req);
   if (!errors.isEmpty()) {
-    const error = new HttpError(
-      "유효하지 않은 입력 데이터를 전달했습니다.",
-      422
-    );
+    const error = new HttpError("유효하지 않은 입력 데이터입니다.", 422);
     return next(error);
   }
 
@@ -27,7 +26,10 @@ const signup = async (req, res, next) => {
       return next(error);
     }
   } catch (err) {
-    const error = new HttpError("사용자 조회 중 오류가 발생했습니다.", 500);
+    const error = new HttpError(
+      "사용자 정보를 불러오는 중 문제가 발생했습니다.",
+      500
+    );
     return next(error);
   }
 
@@ -42,36 +44,51 @@ const signup = async (req, res, next) => {
       return next(error);
     }
   } catch (err) {
-    const error = new HttpError("사용자 조회 중 오류가 발생했습니다.", 500);
+    const error = new HttpError(
+      "사용자 정보를 불러오는 중 문제가 발생했습니다.",
+      500
+    );
     return next(error);
   }
 
-  const registeredUser = new User({
+  // 비밀번호 암호화
+  let hashedPassword;
+  try {
+    hashedPassword = await bcrypt.hash(password, 12);
+  } catch (err) {
+    const error = new HttpError("회원가입 처리 중 문제가 발생했습니다.", 500);
+    return next(error);
+  }
+
+  // 사용자 저장
+  const signupUser = new User({
     nickname,
     email,
-    password,
+    password: hashedPassword,
     image,
   });
 
-  // 사용자 등록
   try {
-    await registeredUser.save();
+    await signupUser.save();
   } catch (err) {
-    const error = new HttpError("회원가입을 실패하였습니다.", 500);
+    const error = new HttpError("회원가입에 실패하였습니다.", 500);
     return next(error);
   }
 
-  res.status(201).json({ data: registeredUser.toObject({ getters: true }) });
+  res.status(201).json({
+    message: "회원가입이 완료되었습니다.",
+    data: {
+      userId: signupUser.id,
+      email: signupUser.email,
+    },
+  });
 };
 
 // POST /api/users/login
 const login = async (req, res, next) => {
   const errors = validationResult(req);
   if (!errors.isEmpty()) {
-    const error = new HttpError(
-      "유효하지 않은 입력 데이터를 전달했습니다.",
-      422
-    );
+    const error = new HttpError("유효하지 않은 입력 데이터입니다.", 422);
     return next(error);
   }
   const { email, password } = req.body;
@@ -80,37 +97,77 @@ const login = async (req, res, next) => {
   let loginUser;
   try {
     loginUser = await User.findOne({ email: email });
+    if (!loginUser) {
+      const error = new HttpError(
+        "이메일 또는 비밀번호가 올바르지 않습니다.",
+        401
+      );
+      return next(error);
+    }
   } catch (err) {
-    const error = new HttpError("사용자 조회 중 오류가 발생했습니다.", 500);
-    return next(error);
-  }
-
-  // 회원 존재 여부 및 패스워드 일치 여부 확인
-  if (!loginUser || loginUser.password !== password) {
     const error = new HttpError(
-      "이메일 또는 비밀번호가 올바르지 않습니다.",
-      401
+      "사용자 정보를 불러오는 중 문제가 발생했습니다.",
+      500
     );
     return next(error);
   }
 
-  res.status(200).json({ data: loginUser.toObject({ getters: true }) });
-};
+  // 비밀번호 일치 여부 확인
+  let isValidPssword = false;
+  try {
+    isValidPssword = await bcrypt.compare(password, loginUser.password);
+    if (!isValidPssword) {
+      const error = new HttpError(
+        "이메일 또는 비밀번호가 올바르지 않습니다.",
+        401
+      );
+      return next(error);
+    }
+  } catch (err) {
+    const error = new HttpError("로그인 처리 중 문제가 발생했습니다.", 500);
+    return next(error);
+  }
+
+  // 토큰 생성
+  let token;
+  try {
+    token = jwt.sign(
+      { userId: loginUser.id, email: loginUser.email },
+      "pickq_secret_key",
+      { expiresIn: "1h" }
+    );
+  } catch (err) {
+    const error = new HttpError("로그인 처리 중 문제가 발생했습니다.", 500);
+    return next(error);
+  }
+
+res.status(200).json({
+  success: true,
+  message: "로그인 성공",
+  data: {
+    userId: loginUser.id,
+    email: loginUser.email,
+    token: token
+  }
+});
 
 // GET /api/users/id
 const getUserById = async (req, res, next) => {
-  const userId = req.params.id;
+  const userId = req.userData.userId;
 
   // 사용자 존재 여부 확인
   let user;
   try {
     user = await User.findById(userId);
     if (!user) {
-      const error = new HttpError("해당 사용자가 존재하지 않습니다.", 404);
+      const error = new HttpError("사용자를 찾을 수 없습니다.", 404);
       return next(error);
     }
   } catch (err) {
-    const error = new HttpError("사용자 조회 중 오류가 발생했습니다.", 500);
+    const error = new HttpError(
+      "사용자 정보를 불러오는 중 문제가 발생했습니다.",
+      500
+    );
     return next(error);
   }
 
@@ -121,14 +178,11 @@ const getUserById = async (req, res, next) => {
 const updateUser = async (req, res, next) => {
   const errors = validationResult(req);
   if (!errors.isEmpty()) {
-    const error = new HttpError(
-      "유효하지 않은 입력 데이터를 전달했습니다.",
-      422
-    );
+    const error = new HttpError("유효하지 않은 입력 데이터입니다.", 422);
     return next(error);
   }
 
-  const userId = req.params.id;
+  const userId = req.userData.userId;
   const { nickname, currentPassword, newPassword } = req.body;
 
   // 사용자 존재 여부 확인
@@ -136,16 +190,25 @@ const updateUser = async (req, res, next) => {
   try {
     user = await User.findById(userId);
     if (!user) {
-      const error = new HttpError("해당 사용자가 존재하지 않습니다.", 404);
+      const error = new HttpError("사용자를 찾을 수 없습니다.", 404);
       return next(error);
     }
   } catch (err) {
-    const error = new HttpError("사용자 조회 중 오류가 발생했습니다.", 500);
+    const error = new HttpError(
+      "사용자 정보를 불러오는 중 문제가 발생했습니다.",
+      500
+    );
     return next(error);
   }
 
+  // 토큰 검증
+  if (userId !== req.userData.userId) {
+    const error = new HttpError("해당 정보를 수정할 권한이 없습니다.", 403);
+    return next(error);
+  }
+
+  // 닉네임 중복 확인
   if (nickname !== undefined) {
-    // 닉네임 중복 확인
     try {
       const existingNickname = await User.findOne({ nickname: nickname });
       if (existingNickname) {
@@ -156,27 +219,52 @@ const updateUser = async (req, res, next) => {
         return next(error);
       }
     } catch (err) {
-      const error = new HttpError("사용자 조회 중 오류가 발생했습니다.", 500);
+      const error = new HttpError(
+        "사용자 정보를 불러오는 중 문제가 발생했습니다.",
+        500
+      );
       return next(error);
     }
 
     user.nickname = nickname;
   }
+
+  // 현재 비밀번호 일치 여부 확인
   if (newPassword !== undefined) {
-    //패스워드 일치 여부 확인
-    if (user.password !== currentPassword) {
-      const error = new HttpError("현재 비밀번호가 올바르지 않습니다.", 401);
+    let isValidPssword = false;
+    try {
+      isValidPssword = await bcrypt.compare(currentPassword, user.password);
+      if (!isValidPssword) {
+        const error = new HttpError("현재 비밀번호가 올바르지 않습니다.", 401);
+        return next(error);
+      }
+    } catch (err) {
+      const error = new HttpError(
+        "비밀번호 변경 처리 중 문제가 발생했습니다.",
+        500
+      );
       return next(error);
     }
 
-    user.password = newPassword;
+    // 비밀번호 암호화
+    let hashedPassword;
+    try {
+      hashedPassword = await bcrypt.hash(newPassword, 12);
+    } catch (err) {
+      const error = new HttpError(
+        "비밀번호 변경 처리 중 문제가 발생했습니다.",
+        500
+      );
+      return next(error);
+    }
+    user.password = hashedPassword;
   }
 
   // 사용자 정보 업데이트
   try {
     await user.save();
   } catch (err) {
-    const error = new HttpError("프로필 업데이트를 실패하였습니다.", 500);
+    const error = new HttpError("프로필 업데이트에 실패하였습니다.", 500);
     return next(error);
   }
 
@@ -185,21 +273,27 @@ const updateUser = async (req, res, next) => {
 
 // DELETE /api/users/id
 const deleteUser = async (req, res, next) => {
-  const userId = req.params.id;
+  const userId = req.userData.userId;
+
+  // 토큰 검증
+  if (userId !== req.userData.userId) {
+    const error = new HttpError("해당 정보를 수정할 권한이 없습니다.", 403);
+    return next(error);
+  }
 
   // 사용자 삭제
   try {
     const user = await User.findByIdAndDelete(userId);
     if (!user) {
-      const error = new HttpError("해당 사용자가 존재하지 않습니다.", 404);
+      const error = new HttpError("사용자를 찾을 수 없습니다.", 404);
       return next(error);
     }
   } catch (err) {
-    const error = new HttpError("회원탈퇴를 실패하였습니다.", 500);
+    const error = new HttpError("회원탈퇴에 실패하였습니다.", 500);
     return next(error);
   }
 
-  res.status(200).json({ message: "회원탈퇴를 성공하였습니다.", userId });
+  res.status(200).json({ message: "회원탈퇴가 완료되었습니다." });
 };
 
 exports.signup = signup;

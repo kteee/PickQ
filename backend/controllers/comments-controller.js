@@ -4,57 +4,74 @@ const HttpError = require("../models/http-error");
 const Comment = require("../models/comment");
 const User = require("../models/user");
 const Test = require("../models/test");
+const test = require("../models/test");
 
-// GET /api/comments/:qid -- 완료!!
-const getCommentsByQuizId = async (req, res, next) => {
-  const quizId = req.params.qid;
+// GET /api/comments/:id
+const getCommentsByTestId = async (req, res, next) => {
+  const testId = req.params.id;
+
+  // 퀴즈 존재 여부 확인
+  let test;
+  try {
+    test = await Test.findOne({ shortId: testId });
+
+    if (!test) {
+      const error = new HttpError("해당 퀴즈를 찾을 수 없습니다.", 404);
+      return next(error);
+    }
+  } catch (err) {
+    const error = new HttpError(
+      "퀴즈 정보를 불러오는 중 문제가 발생했습니다.",
+      500
+    );
+    return next(error);
+  }
 
   // 댓글 목록 조회
   let comments;
   try {
-    comments = await Comment.find({ quizId: quizId }).populate(
+    comments = await Comment.find({ testId: test._id }).populate(
       "userId",
       "nickname"
     );
   } catch (err) {
-    const error = new HttpError("댓글 조회 중 오류가 발생했습니다.", 500);
-    return next(error);
-  }
-
-  res.json({
-    comments: comments.map((comment) => comment.toObject({ getters: true })),
-  });
-};
-
-// POST /api/comments/:qid -- 완료!!
-const createComment = async (req, res, next) => {
-  const errors = validationResult(req);
-  if (!errors.isEmpty()) {
     const error = new HttpError(
-      "유효하지 않은 입력 데이터를 전달했습니다.",
-      422
+      "댓글 목록을 불러오는 중 문제가 발생했습니다.",
+      500
     );
     return next(error);
   }
 
-  const quizId = req.params.qid;
+  res.json({
+    data: comments.map((comment) => comment.toObject({ getters: true })),
+  });
+};
+
+// POST /api/comments/:id
+const createComment = async (req, res, next) => {
+  const errors = validationResult(req);
+  if (!errors.isEmpty()) {
+    const error = new HttpError("유효하지 않은 입력 데이터입니다.", 422);
+    return next(error);
+  }
+
+  const testId = req.params.id;
   const { userId, content } = req.body;
 
-  const createdComment = new Comment({
-    quizId,
-    userId,
-    content,
-  });
-
   // 퀴즈 존재 여부 확인
+  let test;
   try {
-    const quiz = await Quiz.findById(quizId);
-    if (!quiz) {
-      const error = new HttpError("해당 퀴즈가 존재하지 않습니다.", 404);
+    test = await Test.findOne({ shortId: testId });
+
+    if (!test) {
+      const error = new HttpError("해당 퀴즈를 찾을 수 없습니다.", 404);
       return next(error);
     }
   } catch (err) {
-    const error = new HttpError("퀴즈 조회 중 오류가 발생했습니다.", 500);
+    const error = new HttpError(
+      "퀴즈 정보를 불러오는 중 문제가 발생했습니다.",
+      500
+    );
     return next(error);
   }
 
@@ -62,46 +79,53 @@ const createComment = async (req, res, next) => {
   try {
     const user = await User.findById(userId);
     if (!user) {
-      const error = new HttpError("해당 사용자가 존재하지 않습니다.", 404);
+      const error = new HttpError("해당 사용자를 찾을 수 없습니다.", 404);
       return next(error);
     }
   } catch (err) {
-    const error = new HttpError("사용자 조회 중 오류가 발생했습니다.", 500);
+    const error = new HttpError(
+      "사용자 정보를 불러오는 중 문제가 발생했습니다.",
+      500
+    );
     return next(error);
   }
 
   // 댓글 등록
+  const createdComment = new Comment({
+    testId: test._id,
+    userId,
+    content,
+  });
+
   try {
     await createdComment.save();
   } catch (err) {
-    const error = new HttpError("댓글 등록을 실패하였습니다.", 500);
+    const error = new HttpError("댓글 등록에 실패하였습니다.", 500);
     return next(error);
   }
 
-  res
-    .status(201)
-    .json({ createdComment: createdComment.toObject({ getters: true }) });
+  res.status(201).json({ data: createdComment.toObject({ getters: true }) });
 };
 
-// DELETE /api/comments/:cid -- 완료!!
+// DELETE /api/comments/:id
 const deleteComment = async (req, res, next) => {
-  const commentId = req.params.cid;
+  const commentId = req.params.id;
 
   // 댓글 삭제
   try {
     const comment = await Comment.findByIdAndDelete(commentId);
     if (!comment) {
-      const error = new HttpError("해당 댓글이 존재하지 않습니다.", 404);
+      const error = new HttpError("해당 댓글을 찾을 수 없습니다.", 404);
       return next(error);
     }
   } catch (err) {
-    const error = new HttpError("댓글 삭제를 실패하였습니다.", 500);
+    const error = new HttpError("댓글 삭제에 실패하였습니다.", 500);
     return next(error);
   }
 
-  res.status(200).json({ message: "댓글 삭제를 성공하였습니다.", commentId });
+  res.status(200).json({ message: "댓글이 삭제되었습니다.", commentId });
 };
 
-exports.getCommentsByQuizId = getCommentsByQuizId;
+exports.getCommentsByTestId = getCommentsByTestId;
 exports.createComment = createComment;
 exports.deleteComment = deleteComment;
