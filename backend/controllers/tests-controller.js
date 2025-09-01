@@ -1,4 +1,5 @@
 const { validationResult } = require("express-validator");
+const jwt = require("jsonwebtoken");
 
 const HttpError = require("../models/http-error");
 const Test = require("../models/test");
@@ -23,6 +24,7 @@ const getTests = async (req, res, next) => {
   }
 
   res.json({
+    message: "테스트 목록을 성공적으로 불러왔습니다.",
     data: tests.map((test) => test.toObject({ getters: true })),
   });
 };
@@ -46,10 +48,13 @@ const getTestById = async (req, res, next) => {
     return next(error);
   }
 
-  res.json({ data: test.toObject({ getters: true }) });
+  res.json({
+    message: "테스트 정보를 성공적으로 불러왔습니다.",
+    data: test.toObject({ getters: true }),
+  });
 };
 
-// POST /api/tests/result
+// POST /api/tests/submit
 const submitResult = async (req, res, next) => {
   const errors = validationResult(req);
   if (!errors.isEmpty()) {
@@ -57,11 +62,22 @@ const submitResult = async (req, res, next) => {
     return next(error);
   }
 
-  const { testId, userId, score, total } = req.body;
+  const { testId, score, total } = req.body;
+
+  let userId = null;
+  if (req.headers.authorization) {
+    try {
+      const token = req.headers.authorization.split(" ")[1];
+      const decodedToken = jwt.verify(token, process.env.JWT_KEY);
+      userId = decodedToken.userId;
+    } catch (err) {
+      userId = null;
+    }
+  }
 
   const submittedResult = new Result({
     testId,
-    userId: userId || null,
+    userId,
     score,
     total,
   });
@@ -109,7 +125,10 @@ const submitResult = async (req, res, next) => {
     return next(error);
   }
 
-  res.status(201).json({ data: submittedResult.toObject({ getters: true }) });
+  res.status(201).json({
+    message: "테스트 결과가 성공적으로 제출되었습니다.",
+    data: submittedResult.toObject({ getters: true }),
+  });
 };
 
 // GET /api/tests/result/:id

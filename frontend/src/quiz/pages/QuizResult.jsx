@@ -21,7 +21,7 @@ const QuizResult = () => {
     const fetchResult = async () => {
       try {
         const responseData = await sendRequest(
-          `http://localhost:5000/api/tests/result/${id}`
+          `${process.env.REACT_APP_BACKEND_URL}/tests/result/${id}`
         );
         setResult(responseData.data);
       } catch (err) {}
@@ -46,38 +46,36 @@ const QuizResult = () => {
   }
 
   return (
-    <>
-      <QuizContainer>
-        <QuizResultContents>
-          <TitleText>{result.testId.title} 결과</TitleText>
-          <CompletionText>{message}</CompletionText>
-          <CardWrapper>
-            <StatCard>
-              <StatItem>
-                <StatLabel>점수</StatLabel>
-                <StatValue>
-                  {result.score}
-                  <StatUnit> / {result.total}</StatUnit>
-                </StatValue>
-              </StatItem>
-            </StatCard>
-            <StatCard>
-              <StatItem>
-                <StatLabel>정답률</StatLabel>
-                <StatValue>
-                  {rate}
-                  <StatUnit>%</StatUnit>
-                </StatValue>
-              </StatItem>
-            </StatCard>
-          </CardWrapper>
-          <TestResultFooter
-            id={result.testId.shortId}
-            title={result.testId.title}
-          />
-        </QuizResultContents>
-      </QuizContainer>
-    </>
+    <QuizContainer>
+      <QuizResultContents>
+        <TitleText>{result.testId.title} 결과</TitleText>
+        <CompletionText>{message}</CompletionText>
+        <CardWrapper>
+          <StatCard>
+            <StatItem>
+              <StatLabel>점수</StatLabel>
+              <StatValue>
+                {result.score}
+                <StatUnit> / {result.total}</StatUnit>
+              </StatValue>
+            </StatItem>
+          </StatCard>
+          <StatCard>
+            <StatItem>
+              <StatLabel>정답률</StatLabel>
+              <StatValue>
+                {rate}
+                <StatUnit>%</StatUnit>
+              </StatValue>
+            </StatItem>
+          </StatCard>
+        </CardWrapper>
+        <TestResultFooter
+          id={result.testId.shortId}
+          title={result.testId.title}
+        />
+      </QuizResultContents>
+    </QuizContainer>
   );
 };
 

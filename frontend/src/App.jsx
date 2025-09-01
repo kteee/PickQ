@@ -1,3 +1,4 @@
+import { lazy, Suspense } from "react";
 import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
 import styled from "styled-components";
 import { Toaster } from "sonner";
@@ -5,12 +6,13 @@ import { AuthContext } from "./shared/context/auth-context";
 import { useAuth } from "./shared/hooks/auth-hook";
 import Header from "./shared/components/Header";
 import Home from "./Home";
-import TestStart from "./shared/pages/TestStart";
-import Login from "./user/pages/Login";
-import Signup from "./user/pages/Signup";
-import QuizResult from "./quiz/pages/QuizResult";
-import PsyTestResult from "./psytest/pages/PsyTestResult";
-import MyProfile from "./user/pages/MyProfile";
+
+const Login = lazy(() => import("./user/pages/Login"));
+const Signup = lazy(() => import("./user/pages/Signup"));
+const TestStart = lazy(() => import("./shared/pages/TestStart"));
+const QuizResult = lazy(() => import("./quiz/pages/QuizResult"));
+const PsyTestResult = lazy(() => import("./psytest/pages/PsyTestResult"));
+const MyProfile = lazy(() => import("./user/pages/MyProfile"));
 
 function App() {
   const { token, login, logout, userId, authReady } = useAuth();
@@ -45,19 +47,24 @@ function App() {
         <BrowserRouter>
           <Layout>
             <Header />
-            <Main>
-              <Routes>
-                <Route path="/" element={<Home />} />
-                <Route path="/login" element={<Login />} />
-                <Route path="/signup" element={<Signup />} />
-                <Route path="/myprofile" element={<MyProfile />} />
-                <Route path="/quiz/:id" element={<TestStart />} />
-                <Route path="/quiz/result/:id" element={<QuizResult />} />
-                <Route path="/psytest/:id" element={<TestStart />} />
-                <Route path="/psytest/result/:id" element={<PsyTestResult />} />
-                <Route path="*" element={<Navigate to="/" replace />} />
-              </Routes>
-            </Main>
+            <Suspense fallback={null}>
+              <Main>
+                <Routes>
+                  <Route path="/" element={<Home />} />
+                  <Route path="/login" element={<Login />} />
+                  <Route path="/signup" element={<Signup />} />
+                  <Route path="/myprofile" element={<MyProfile />} />
+                  <Route path="/quiz/:id" element={<TestStart />} />
+                  <Route path="/quiz/result/:id" element={<QuizResult />} />
+                  <Route path="/psytest/:id" element={<TestStart />} />
+                  <Route
+                    path="/psytest/result/:id"
+                    element={<PsyTestResult />}
+                  />
+                  <Route path="*" element={<Navigate to="/" replace />} />
+                </Routes>
+              </Main>
+            </Suspense>
           </Layout>
         </BrowserRouter>
       </AuthContext.Provider>

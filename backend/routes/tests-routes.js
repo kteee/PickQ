@@ -10,12 +10,8 @@ router.get("/", testsController.getTests);
 router.get("/:id", testsController.getTestById);
 
 router.post(
-  "/result",
-  [
-    check("testId").notEmpty(),
-    check("userId").notEmpty(),
-    check("score").notEmpty(),
-  ],
+  "/submit",
+  [check("testId").notEmpty(), check("score").notEmpty()],
   testsController.submitResult
 );
 

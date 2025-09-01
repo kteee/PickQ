@@ -26,7 +26,7 @@ const Home = () => {
     const fetchTests = async () => {
       try {
         const responseData = await sendRequest(
-          "http://localhost:5000/api/tests"
+          `${process.env.REACT_APP_BACKEND_URL}/tests`
         );
         setLoadedTests(responseData.data);
         setRandomTests(getRandomTests(responseData.data, 4));
@@ -60,77 +60,75 @@ const Home = () => {
   );
 
   return (
-    <>
-      <HomeContainer>
-        <HomeContents $isSearchMode={isSearchMode}>
-          {!isSearchMode ? (
-            <>
-              <RandomSection>
-                <SectionHeader>
-                  <SectionTitle>
-                    <ShuffleIcon sx={{ fontSize: "24px" }} /> 랜덤 컨텐츠
-                  </SectionTitle>
-                  <ShuffleButton onClick={handleShuffle}>
-                    <ShuffleIconSmall>
-                      <ShuffleSVG width={17} height={14} color="gray" />
-                    </ShuffleIconSmall>
-                    랜덤
-                  </ShuffleButton>
-                </SectionHeader>
-                <RandomList>
-                  {randomTests.map((test) => (
-                    <SmallTestCard
-                      key={test.shortId}
-                      id={test.shortId}
-                      category={test.category}
-                      image={test.image}
-                      title={test.title}
-                    />
-                  ))}
-                </RandomList>
-              </RandomSection>
-              <CategoryBar
-                selectedCategory={selectedCategory}
-                setSelectedCategory={setSelectedCategory}
-              />
-              {!isLoading && loadedTests && (
-                <TestList
-                  testData={loadedTests}
-                  selectedCategory={selectedCategory}
-                />
-              )}
-            </>
-          ) : (
-            <>
+    <HomeContainer>
+      <HomeContents $isSearchMode={isSearchMode}>
+        {!isSearchMode ? (
+          <>
+            <RandomSection>
               <SectionHeader>
-                <SearchTitle>검색 결과</SearchTitle>
+                <SectionTitle>
+                  <ShuffleIcon sx={{ fontSize: "24px" }} /> 랜덤 컨텐츠
+                </SectionTitle>
+                <ShuffleButton onClick={handleShuffle}>
+                  <ShuffleIconSmall>
+                    <ShuffleSVG width={17} height={14} color="gray" />
+                  </ShuffleIconSmall>
+                  랜덤
+                </ShuffleButton>
               </SectionHeader>
+              <RandomList>
+                {randomTests.map((test) => (
+                  <SmallTestCard
+                    key={test.shortId}
+                    id={test.shortId}
+                    category={test.category}
+                    image={test.image}
+                    title={test.title}
+                  />
+                ))}
+              </RandomList>
+            </RandomSection>
+            <CategoryBar
+              selectedCategory={selectedCategory}
+              setSelectedCategory={setSelectedCategory}
+            />
+            {!isLoading && loadedTests && (
+              <TestList
+                testData={loadedTests}
+                selectedCategory={selectedCategory}
+              />
+            )}
+          </>
+        ) : (
+          <>
+            <SectionHeader>
+              <SearchTitle>검색 결과</SearchTitle>
+            </SectionHeader>
 
-              {!isLoading && (
-                <>
-                  {searchFiltered.length > 0 ? (
-                    <SearchResultList>
-                      {searchFiltered.map((test) => (
-                        <SmallTestCard
-                          key={test.shortId}
-                          isSearchMode={isSearchMode}
-                          id={test.shortId}
-                          category={test.category}
-                          image={test.image}
-                          title={test.title}
-                        />
-                      ))}
-                    </SearchResultList>
-                  ) : (
-                    <NoResultText>검색 결과가 없습니다.</NoResultText>
-                  )}
-                </>
-              )}
-            </>
-          )}
-        </HomeContents>
-      </HomeContainer>
-    </>
+            {!isLoading && (
+              <>
+                {searchFiltered.length > 0 ? (
+                  <SearchResultList>
+                    {searchFiltered.map((test) => (
+                      <SmallTestCard
+                        key={test.shortId}
+                        isSearchMode={isSearchMode}
+                        id={test.shortId}
+                        category={test.category}
+                        image={test.image}
+                        title={test.title}
+                      />
+                    ))}
+                  </SearchResultList>
+                ) : (
+                  <NoResultText>검색 결과가 없습니다.</NoResultText>
+                )}
+              </>
+            )}
+          </>
+        )}
+      </HomeContents>
+    </HomeContainer>
   );
 };
 

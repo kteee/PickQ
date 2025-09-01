@@ -22,7 +22,7 @@ const PsyTestResult = () => {
     const fetchResult = async () => {
       try {
         const responseData = await sendRequest(
-          `http://localhost:5000/api/tests/result/${id}`
+          `${process.env.REACT_APP_BACKEND_URL}/tests/result/${id}`
         );
         setResult(responseData.data);
       } catch (err) {}
@@ -46,21 +46,19 @@ const PsyTestResult = () => {
   }
 
   return (
-    <>
-      <QuizContainer>
-        <QuizResultContents>
-          <TitleText>{result.testId.title} 결과</TitleText>
-          <Description>{resultType.description}</Description>
-          <ResultWrapper>
-            <ResultImg src={resultType.img} />
-          </ResultWrapper>
-          <TestResultFooter
-            id={result.testId.shortId}
-            title={result.testId.title}
-          />
-        </QuizResultContents>
-      </QuizContainer>
-    </>
+    <QuizContainer>
+      <QuizResultContents>
+        <TitleText>{result.testId.title} 결과</TitleText>
+        <Description>{resultType.description}</Description>
+        <ResultWrapper>
+          <ResultImg src={resultType.img} />
+        </ResultWrapper>
+        <TestResultFooter
+          id={result.testId.shortId}
+          title={result.testId.title}
+        />
+      </QuizResultContents>
+    </QuizContainer>
   );
 };
 

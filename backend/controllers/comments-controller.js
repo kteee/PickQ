@@ -4,7 +4,6 @@ const HttpError = require("../models/http-error");
 const Comment = require("../models/comment");
 const User = require("../models/user");
 const Test = require("../models/test");
-const test = require("../models/test");
 
 // GET /api/comments/:id
 const getCommentsByTestId = async (req, res, next) => {
@@ -56,7 +55,8 @@ const createComment = async (req, res, next) => {
   }
 
   const testId = req.params.id;
-  const { userId, content } = req.body;
+  const userId = req.userData.userId;
+  const { content } = req.body;
 
   // 퀴즈 존재 여부 확인
   let test;
@@ -111,15 +111,30 @@ const createComment = async (req, res, next) => {
 const deleteComment = async (req, res, next) => {
   const commentId = req.params.id;
 
-  // 댓글 삭제
+  // 댓글 존재 여부 확인
+  let comment;
   try {
-    const comment = await Comment.findByIdAndDelete(commentId);
+    comment = await Comment.findById(commentId).populate("userId");
     if (!comment) {
       const error = new HttpError("해당 댓글을 찾을 수 없습니다.", 404);
       return next(error);
     }
   } catch (err) {
-    const error = new HttpError("댓글 삭제에 실패하였습니다.", 500);
+    const error = new HttpError("댓글 조회 중 오류가 발생했습니다.", 500);
+    return next(error);
+  }
+
+  // 권한 검증
+  if (comment.userId.id !== req.userData.userId) {
+    const error = new HttpError("해당 정보를 삭제할 권한이 없습니다.", 403);
+    return next(error);
+  }
+
+  // 댓글 삭제
+  try {
+    await comment.deleteOne();
+  } catch (err) {
+    const error = new HttpError("댓글 삭제에 실패하였습니다.", 403);
     return next(error);
   }
 

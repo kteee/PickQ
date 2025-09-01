@@ -133,7 +133,7 @@ const login = async (req, res, next) => {
   try {
     token = jwt.sign(
       { userId: loginUser.id, email: loginUser.email },
-      "pickq_secret_key",
+      process.env.JWT_KEY,
       { expiresIn: "1h" }
     );
   } catch (err) {
@@ -141,17 +141,17 @@ const login = async (req, res, next) => {
     return next(error);
   }
 
-res.status(200).json({
-  success: true,
-  message: "로그인 성공",
-  data: {
-    userId: loginUser.id,
-    email: loginUser.email,
-    token: token
-  }
-});
+  res.status(200).json({
+    message: "로그인을 성공하였습니다.",
+    data: {
+      userId: loginUser.id,
+      email: loginUser.email,
+      token: token,
+    },
+  });
+};
 
-// GET /api/users/id
+// GET /api/users/profile
 const getUserById = async (req, res, next) => {
   const userId = req.userData.userId;
 
@@ -171,10 +171,13 @@ const getUserById = async (req, res, next) => {
     return next(error);
   }
 
-  res.json({ data: user.toObject({ getters: true }) });
+  res.json({
+    message: "사용자 정보를 불러왔습니다.",
+    data: user.toObject({ getters: true }),
+  });
 };
 
-// PATCH /api/users/id
+// PATCH /api/users/profile
 const updateUser = async (req, res, next) => {
   const errors = validationResult(req);
   if (!errors.isEmpty()) {
@@ -201,7 +204,7 @@ const updateUser = async (req, res, next) => {
     return next(error);
   }
 
-  // 토큰 검증
+  // 권한 검증
   if (userId !== req.userData.userId) {
     const error = new HttpError("해당 정보를 수정할 권한이 없습니다.", 403);
     return next(error);
@@ -268,22 +271,26 @@ const updateUser = async (req, res, next) => {
     return next(error);
   }
 
-  res.status(200).json({ data: user.toObject({ getters: true }) });
+  res.status(200).json({
+    message: "프로필이 성공적으로 업데이트되었습니다.",
+    data: user.toObject({ getters: true }),
+  });
 };
 
-// DELETE /api/users/id
+// DELETE /api/users/profile
 const deleteUser = async (req, res, next) => {
   const userId = req.userData.userId;
 
-  // 토큰 검증
+  // 권한 검증
   if (userId !== req.userData.userId) {
-    const error = new HttpError("해당 정보를 수정할 권한이 없습니다.", 403);
+    const error = new HttpError("해당 정보를 삭제할 권한이 없습니다.", 403);
     return next(error);
   }
 
   // 사용자 삭제
+  let user;
   try {
-    const user = await User.findByIdAndDelete(userId);
+    user = await User.findByIdAndDelete(userId);
     if (!user) {
       const error = new HttpError("사용자를 찾을 수 없습니다.", 404);
       return next(error);
@@ -293,7 +300,9 @@ const deleteUser = async (req, res, next) => {
     return next(error);
   }
 
-  res.status(200).json({ message: "회원탈퇴가 완료되었습니다." });
+  res
+    .status(200)
+    .json({ message: "회원탈퇴가 완료되었습니다.", data: { userId: user.id } });
 };
 
 exports.signup = signup;

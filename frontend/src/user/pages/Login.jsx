@@ -56,7 +56,7 @@ const Login = () => {
     if (validate()) {
       try {
         const responseData = await sendRequest(
-          "http://localhost:5000/api/users/login",
+          `${process.env.REACT_APP_BACKEND_URL}/users/login`,
           "POST",
           JSON.stringify({ email, password }),
           { "Content-Type": "application/json" }
@@ -68,50 +68,48 @@ const Login = () => {
   };
 
   return (
-    <>
-      <LoginContainer>
-        <HeaderTitle>로그인</HeaderTitle>
-        <LoginForm onSubmit={handleLogin} noValidate>
-          <Input
-            type="email"
-            placeholder="이메일을 입력하세요"
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
-          />
-          {validationErrors.email && (
-            <ErrorText>{validationErrors.email}</ErrorText>
+    <LoginContainer>
+      <HeaderTitle>로그인</HeaderTitle>
+      <LoginForm onSubmit={handleLogin} noValidate>
+        <Input
+          type="email"
+          placeholder="이메일을 입력하세요"
+          value={email}
+          onChange={(e) => setEmail(e.target.value)}
+        />
+        {validationErrors.email && (
+          <ErrorText>{validationErrors.email}</ErrorText>
+        )}
+        <Input
+          type="password"
+          placeholder="비밀번호를 입력하세요"
+          autoComplete="off"
+          value={password}
+          onChange={(e) => setPassword(e.target.value)}
+        />
+        {validationErrors.password && (
+          <ErrorText>{validationErrors.password}</ErrorText>
+        )}
+        <LoginButton type="submit" disabled={isLoading}>
+          {isLoading ? (
+            <CircularProgress size="18px" color="inherit" />
+          ) : (
+            "로그인"
           )}
-          <Input
-            type="password"
-            placeholder="비밀번호를 입력하세요"
-            autoComplete="off"
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
-          />
-          {validationErrors.password && (
-            <ErrorText>{validationErrors.password}</ErrorText>
-          )}
-          <LoginButton type="submit" disabled={isLoading}>
-            {isLoading ? (
-              <CircularProgress size="18px" color="inherit" />
-            ) : (
-              "로그인"
-            )}
-          </LoginButton>
-          <Divider>
-            <Line />
-            <DividerText>또는</DividerText>
-            <Line />
-          </Divider>
-          <GoogleLoginButton>
-            <GoogleSVG width={20} height={20} /> 구글로 시작하기
-          </GoogleLoginButton>
-          <BottomText>
-            계정이 없으신가요? <JoinLink to="/signup">회원가입</JoinLink>
-          </BottomText>
-        </LoginForm>
-      </LoginContainer>
-    </>
+        </LoginButton>
+        <Divider>
+          <Line />
+          <DividerText>또는</DividerText>
+          <Line />
+        </Divider>
+        <GoogleLoginButton>
+          <GoogleSVG width={20} height={20} /> 구글로 시작하기
+        </GoogleLoginButton>
+        <BottomText>
+          계정이 없으신가요? <JoinLink to="/signup">회원가입</JoinLink>
+        </BottomText>
+      </LoginForm>
+    </LoginContainer>
   );
 };
 

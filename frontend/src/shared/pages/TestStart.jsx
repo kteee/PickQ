@@ -26,9 +26,10 @@ const TestStart = () => {
 
   useEffect(() => {
     const fetchTest = async () => {
+      console.log("🔥 fetchTest triggered by id:", id);
       try {
         const responseData = await sendRequest(
-          `http://localhost:5000/api/tests/${id}`
+          `${process.env.REACT_APP_BACKEND_URL}/tests/${id}`
         );
         setLoadedTest(responseData.data);
       } catch (err) {}
@@ -37,12 +38,8 @@ const TestStart = () => {
     fetchTest();
   }, [id, sendRequest]);
 
-  if (isLoading) {
+  if (isLoading || !loadedTest) {
     return null;
-  }
-
-  if (!isLoading && !loadedTest) {
-    return <div>존재하지 않는 테스트입니다.</div>;
   }
 
   if (playMode === "play") {
@@ -54,25 +51,19 @@ const TestStart = () => {
   }
 
   return (
-    <>
-      <Container>
-        <QuizStartContents>
-          <QuizImage src={loadedTest.image} alt={loadedTest.title} />
-          <QuizCategory>
-            <CategoryItem>
-              #{getCategoryLabel(loadedTest.category)}
-            </CategoryItem>
-            <CategoryItem>#{loadedTest.subject}</CategoryItem>
-          </QuizCategory>
-          <QuizTitle>{loadedTest.title}</QuizTitle>
-          <QuizDescription>{loadedTest.description}</QuizDescription>
-          <StartButton onClick={() => setPlayMode("play")}>
-            시작하기
-          </StartButton>
-          <CommentSection id={id} isLoggedIn={isLoggedIn} />
-        </QuizStartContents>
-      </Container>
-    </>
+    <Container>
+      <QuizStartContents>
+        <QuizImage src={loadedTest.image} alt={loadedTest.title} />
+        <QuizCategory>
+          <CategoryItem>#{getCategoryLabel(loadedTest.category)}</CategoryItem>
+          <CategoryItem>#{loadedTest.subject}</CategoryItem>
+        </QuizCategory>
+        <QuizTitle>{loadedTest.title}</QuizTitle>
+        <QuizDescription>{loadedTest.description}</QuizDescription>
+        <StartButton onClick={() => setPlayMode("play")}>시작하기</StartButton>
+        <CommentSection id={id} isLoggedIn={isLoggedIn} />
+      </QuizStartContents>
+    </Container>
   );
 };
 

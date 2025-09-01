@@ -12,7 +12,7 @@ module.exports = (req, res, next) => {
       throw new Error("인증에 실패했습니다.");
     }
 
-    const decodedToken = jwt.verify(token, "pickq_secret_key");
+    const decodedToken = jwt.verify(token, process.env.JWT_KEY);
     req.userData = { userId: decodedToken.userId };
     next();
   } catch (err) {

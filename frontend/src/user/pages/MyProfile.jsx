@@ -30,7 +30,7 @@ const MyProfile = () => {
     const fetchUser = async () => {
       try {
         const responseData = await sendRequest(
-          `http://localhost:5000/api/users/profile`,
+          `${process.env.REACT_APP_BACKEND_URL}/users/profile`,
           "GET",
           null,
           {
@@ -92,7 +92,7 @@ const MyProfile = () => {
       setIsNicknameLoading(true);
       try {
         await sendRequest(
-          `http://localhost:5000/api/users/profile`,
+          `${process.env.REACT_APP_BACKEND_URL}/users/profile`,
           "PATCH",
           JSON.stringify({
             nickname,
@@ -117,7 +117,7 @@ const MyProfile = () => {
       setIsPasswordLoading(true);
       try {
         await sendRequest(
-          `http://localhost:5000/api/users/profile`,
+          `${process.env.REACT_APP_BACKEND_URL}/users/profile`,
           "PATCH",
           JSON.stringify({
             currentPassword,
@@ -151,7 +151,7 @@ const MyProfile = () => {
       showCancelButton: true,
       confirmButtonText: "탈퇴하기",
       cancelButtonText: "취소",
-      confirmButtonColor: "#e03535",
+      confirmButtonColor: "rgb(80, 188, 255)",
       cancelButtonColor: "#b1b1b1",
       customClass: {
         title: "swal-title",
@@ -164,7 +164,7 @@ const MyProfile = () => {
     if (result.isConfirmed) {
       try {
         await sendRequest(
-          `http://localhost:5000/api/users/profile`,
+          `${process.env.REACT_APP_BACKEND_URL}/users/profile`,
           "DELETE",
           null,
           {

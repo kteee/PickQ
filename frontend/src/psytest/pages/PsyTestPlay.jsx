@@ -1,13 +1,18 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, useContext } from "react";
 import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
 import { toast } from "sonner";
 import { LinearProgress, Box } from "@mui/material";
 import { useHttpClient } from "../../shared/hooks/http-hook";
+import { AuthContext } from "../../shared/context/auth-context";
+import Loading from "../../shared/components/Loading";
 
 const PsyTestPlay = ({ testData }) => {
   const navigate = useNavigate();
+  const auth = useContext(AuthContext);
+
   const { error, sendRequest, clearError } = useHttpClient();
+  const [isSubmitting, setIsSubmitting] = useState(false);
 
   const questions = testData.psytestQuestions ?? [];
 
@@ -34,65 +39,79 @@ const PsyTestPlay = ({ testData }) => {
       setScore(nextScore);
       setCurrentIndex((prev) => prev + 1);
     } else {
-      const result = await submitResult(nextScore);
-      if (!result || !result._id) {
-        return;
-      }
-      navigate(`/psytest/result/${result._id}`);
+      await submitResult(nextScore);
     }
   };
 
   const submitResult = async (score) => {
-    try {
-      const responseData = await sendRequest(
-        `http://localhost:5000/api/tests/result`,
-        "POST",
-        JSON.stringify({
-          testId: testData._id,
-          userId: "68b3ff89ba64654aee77a092",
-          score,
-        }),
-        { "Content-Type": "application/json" }
-      );
-      return responseData.data;
-    } catch (err) {}
+    setIsSubmitting(true);
+
+    setTimeout(async () => {
+      try {
+        let headers = { "Content-Type": "application/json" };
+
+        if (auth && auth.token) {
+          headers.Authorization = "Bearer " + auth.token;
+        }
+
+        const responseData = await sendRequest(
+          process.env.REACT_APP_BACKEND_URL + "/tests/submit",
+          "POST",
+          JSON.stringify({
+            testId: testData._id,
+            score,
+          }),
+          headers
+        );
+
+        const result = responseData.data;
+
+        if (result && result._id) {
+          navigate(`/psytest/result/${result._id}`);
+        }
+      } catch (err) {}
+
+      setIsSubmitting(false);
+    }, 1800);
   };
 
+  if (isSubmitting) {
+    return <Loading />;
+  }
+
   return (
-    <>
-      <Container>
-        <PlayContents>
-          <Box sx={{ display: "flex", alignItems: "center", width: "100%" }}>
-            <Box sx={{ width: "100%", mr: 2 }}>
-              <LinearProgress
-                variant="determinate"
-                value={progress}
-                sx={{
-                  "& .MuiLinearProgress-bar": {
-                    backgroundColor: "#b12af0",
-                  },
-                  backgroundColor: "#e9f2f8",
-                  height: 8,
-                }}
-              />
-            </Box>
-            <QuestionCounter>
-              {currentIndex + 1} / {total}
-            </QuestionCounter>
+    <Container>
+      <PlayContents>
+        <Box sx={{ display: "flex", alignItems: "center", width: "100%" }}>
+          <Box sx={{ width: "100%", mr: 2 }}>
+            <LinearProgress
+              variant="determinate"
+              value={progress}
+              sx={{
+                "& .MuiLinearProgress-bar": {
+                  backgroundColor: "#b12af0",
+                },
+                backgroundColor: "#e9f2f8",
+                height: 8,
+              }}
+            />
           </Box>
-          <QuestionText>
-            {currentIndex + 1}. {questions[currentIndex].question}
-          </QuestionText>
-          {questions[currentIndex].options.map((option, i) => {
-            return (
-              <OptionButton key={i} onClick={() => handleOptionClick(i)}>
-                <div>{option}</div>
-              </OptionButton>
-            );
-          })}
-        </PlayContents>
-      </Container>
-    </>
+          <QuestionCounter>
+            {currentIndex + 1} / {total}
+          </QuestionCounter>
+        </Box>
+        <QuestionText>
+          {currentIndex + 1}. {questions[currentIndex].question}
+        </QuestionText>
+        {questions[currentIndex].options.map((option, i) => {
+          return (
+            <OptionButton key={i} onClick={() => handleOptionClick(i)}>
+              <div>{option}</div>
+            </OptionButton>
+          );
+        })}
+      </PlayContents>
+    </Container>
   );
 };
 

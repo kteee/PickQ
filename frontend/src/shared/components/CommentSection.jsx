@@ -35,7 +35,7 @@ const CommentSection = ({ id, isLoggedIn }) => {
     const fetchComments = async () => {
       try {
         const responseData = await sendRequest(
-          `http://localhost:5000/api/comments/${id}`
+          `${process.env.REACT_APP_BACKEND_URL}/comments/${id}`
         );
         setCommentsList(responseData.data);
       } catch (err) {}
@@ -49,10 +49,11 @@ const CommentSection = ({ id, isLoggedIn }) => {
     setIsSubmitting(true);
     try {
       await sendRequest(
-        `http://localhost:5000/api/comments/${id}`,
+        `${process.env.REACT_APP_BACKEND_URL}/comments/${id}`,
         "POST",
         JSON.stringify({ userId, content }),
         {
+          Authorization: "Bearer " + auth.token,
           "Content-Type": "application/json",
         }
       );
@@ -80,7 +81,14 @@ const CommentSection = ({ id, isLoggedIn }) => {
 
     if (result.isConfirmed) {
       try {
-        await sendRequest(`http://localhost:5000/api/comments/${id}`, "DELETE");
+        await sendRequest(
+          `${process.env.REACT_APP_BACKEND_URL}/comments/${id}`,
+          "DELETE",
+          null,
+          {
+            Authorization: "Bearer " + auth.token,
+          }
+        );
         await Swal.fire({
           title: "댓글이 삭제되었습니다.",
           width: 330,
