@@ -42,6 +42,7 @@ const getCommentsByTestId = async (req, res, next) => {
   }
 
   res.json({
+    message: "댓글 목록을 성공적으로 불러왔습니다.",
     data: comments.map((comment) => comment.toObject({ getters: true })),
   });
 };
@@ -104,7 +105,10 @@ const createComment = async (req, res, next) => {
     return next(error);
   }
 
-  res.status(201).json({ data: createdComment.toObject({ getters: true }) });
+  res.status(201).json({
+    message: "댓글이 성공적으로 등록되었습니다.",
+    data: createdComment.toObject({ getters: true }),
+  });
 };
 
 // DELETE /api/comments/:id
@@ -138,7 +142,12 @@ const deleteComment = async (req, res, next) => {
     return next(error);
   }
 
-  res.status(200).json({ message: "댓글이 삭제되었습니다.", commentId });
+  res
+    .status(200)
+    .json({
+      message: "댓글이 성공적으로 삭제되었습니다.",
+      data: { commentId },
+    });
 };
 
 exports.getCommentsByTestId = getCommentsByTestId;

@@ -153,7 +153,10 @@ const getResultById = async (req, res, next) => {
     );
     return next(error);
   }
-  res.json({ data: result.toObject({ getters: true }) });
+  res.json({
+    message: "테스트 결과를 성공적으로 불러왔습니다.",
+    data: result.toObject({ getters: true }),
+  });
 };
 
 exports.getTests = getTests;
