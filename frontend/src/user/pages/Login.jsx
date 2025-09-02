@@ -5,7 +5,7 @@ import { toast } from "sonner";
 import CircularProgress from "@mui/material/CircularProgress";
 import { AuthContext } from "../../shared/context/auth-context";
 import { useHttpClient } from "../../shared/hooks/http-hook";
-import GoogleSVG from "../../shared/assets/GoogleSVG";
+import GoogleLoginButton from "../../shared/components/GoogleLoginButton";
 
 const Login = () => {
   const navigate = useNavigate();
@@ -102,9 +102,7 @@ const Login = () => {
           <DividerText>또는</DividerText>
           <Line />
         </Divider>
-        <GoogleLoginButton>
-          <GoogleSVG width={20} height={20} /> 구글로 시작하기
-        </GoogleLoginButton>
+        <GoogleLoginButton />
         <BottomText>
           계정이 없으신가요? <JoinLink to="/signup">회원가입</JoinLink>
         </BottomText>
@@ -183,20 +181,6 @@ const Line = styled.div`
 const DividerText = styled.span`
   font-size: 13px;
   color: #999;
-`;
-
-const GoogleLoginButton = styled.button`
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  gap: 3px;
-  padding: 12px;
-  border: 1px solid #ddd;
-  border-radius: 999px;
-  background-color: white;
-  color: #111;
-  font-size: 14px;
-  cursor: pointer;
 `;
 
 const BottomText = styled.div`

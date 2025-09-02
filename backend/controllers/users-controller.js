@@ -84,6 +84,53 @@ const signup = async (req, res, next) => {
   });
 };
 
+// POST /api/oauth/signup
+const oauthSignup = async (req, res, next) => {
+  const errors = validationResult(req);
+  if (!errors.isEmpty()) {
+    const error = new HttpError("유효하지 않은 입력 데이터입니다.", 422);
+    return next(error);
+  }
+
+  const { googleId, email, nickname } = req.body;
+
+  // 사용자 저장
+  const signupUser = new User({
+    googleId,
+    email,
+    nickname,
+  });
+
+  try {
+    await signupUser.save();
+  } catch (err) {
+    const error = new HttpError("회원가입에 실패하였습니다.", 500);
+    return next(error);
+  }
+
+  // 토큰 생성
+  let token;
+  try {
+    token = jwt.sign(
+      { userId: signupUser.id, email: signupUser.email },
+      process.env.JWT_KEY,
+      { expiresIn: "1h" }
+    );
+  } catch (err) {
+    const error = new HttpError("로그인 처리 중 문제가 발생했습니다.", 500);
+    return next(error);
+  }
+
+  res.status(201).json({
+    message: "회원가입이 완료되었습니다.",
+    data: {
+      userId: signupUser.id,
+      email: signupUser.email,
+      token,
+    },
+  });
+};
+
 // POST /api/users/login
 const login = async (req, res, next) => {
   const errors = validationResult(req);
@@ -306,6 +353,7 @@ const deleteUser = async (req, res, next) => {
 };
 
 exports.signup = signup;
+exports.oauthSignup = oauthSignup;
 exports.login = login;
 exports.getUserById = getUserById;
 exports.updateUser = updateUser;

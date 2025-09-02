@@ -123,8 +123,9 @@ const CommentSection = ({ id, isLoggedIn }) => {
         <InputBox>
           <TextareaInput
             value={content}
+            maxLength={500}
             onChange={(e) => setContent(e.target.value)}
-            placeholder="댓글을 입력해주세요."
+            placeholder="댓글을 입력해주세요. (500자 제한)"
           />
           <ButtonWrapper>
             <SubmitButton onClick={handleAddComment} disabled={isSubmitting}>
@@ -151,11 +152,7 @@ const CommentSection = ({ id, isLoggedIn }) => {
             <CommentItem key={c.id}>
               <CommentHeader>
                 <CommentUser>
-                  <UserName>
-                    {c.userId && c.userId.nickname
-                      ? c.userId.nickname
-                      : "탈퇴한 사용자"}
-                  </UserName>
+                  <UserName>{c.nickname}</UserName>
                   <TimeText>{formatTime(c.createdAt)}</TimeText>
                 </CommentUser>
                 {c.userId && c.userId._id === userId && (
@@ -177,7 +174,7 @@ const CommentSection = ({ id, isLoggedIn }) => {
 export default CommentSection;
 
 const Container = styled.div`
-  margin-top: 35px;
+  margin-top: 38px;
 `;
 
 const Title = styled.h3`
@@ -296,4 +293,7 @@ const TimeText = styled.div`
 const CommentContent = styled.div`
   font-size: 14px;
   color: #333;
+  white-space: pre-wrap;
+  word-break: break-word;
+  overflow-wrap: break-word;
 `;

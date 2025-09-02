@@ -97,8 +97,6 @@ const QuizPlay = ({ testData }) => {
           navigate(`/quiz/result/${result._id}`);
         }
       } catch (err) {}
-
-      setIsSubmitting(false);
     }, 1800);
   };
 

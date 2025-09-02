@@ -6,6 +6,9 @@ import { AuthContext } from "./shared/context/auth-context";
 import { useAuth } from "./shared/hooks/auth-hook";
 import Header from "./shared/components/Header";
 import Home from "./Home";
+import TermsOfService from "./shared/pages/TermsOfService";
+import PrivacyPolicy from "./shared/pages/PrivacyPolicy";
+import OAuth2RedirectHandler from "./shared/components/OAuth2RedirectHandler";
 
 const Login = lazy(() => import("./user/pages/Login"));
 const Signup = lazy(() => import("./user/pages/Signup"));
@@ -60,6 +63,12 @@ function App() {
                   <Route
                     path="/psytest/result/:id"
                     element={<PsyTestResult />}
+                  />
+                  <Route path="/terms" element={<TermsOfService />} />
+                  <Route path="/privacy" element={<PrivacyPolicy />} />
+                  <Route
+                    path="/oauth2/redirect"
+                    element={<OAuth2RedirectHandler />}
                   />
                   <Route path="*" element={<Navigate to="/" replace />} />
                 </Routes>

@@ -44,7 +44,7 @@ const HeaderContainer = styled.div`
 
 const HeaderContents = styled.div`
   display: flex;
-  max-width: 1020px;
+  max-width: 1000px;
   margin: 0 auto;
   height: 100%;
   justify-content: space-between;

@@ -6,7 +6,8 @@ const commentSchema = new Schema(
   {
     testId: { type: mongoose.Types.ObjectId, required: true, ref: "Test" },
     userId: { type: mongoose.Types.ObjectId, required: true, ref: "User" },
-    content: { type: String, required: true },
+    nickname: { type: String, required: true },
+    content: { type: String, required: true, maxlength: 500 },
   },
   { timestamps: true }
 );

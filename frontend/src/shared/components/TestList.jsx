@@ -24,17 +24,18 @@ export default TestList;
 
 const ListWrapper = styled.div`
   display: grid;
-  width: 100%;
+  margin: 0px auto 50px auto;
   grid-template-columns: 1fr 1fr 1fr;
   gap: 30px;
 
   // 태블릿
-  @media (max-width: 1024px) {
+  @media (max-width: 780px) {
     grid-template-columns: 1fr 1fr;
   }
 
   // 모바일
   @media (max-width: 640px) {
+    background-color: #f6f7f9;
     grid-template-columns: 1fr;
     gap: 12px;
     margin-bottom: 13px;

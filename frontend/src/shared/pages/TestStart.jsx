@@ -26,7 +26,6 @@ const TestStart = () => {
 
   useEffect(() => {
     const fetchTest = async () => {
-      console.log("🔥 fetchTest triggered by id:", id);
       try {
         const responseData = await sendRequest(
           `${process.env.REACT_APP_BACKEND_URL}/tests/${id}`
@@ -54,12 +53,12 @@ const TestStart = () => {
     <Container>
       <QuizStartContents>
         <QuizImage src={loadedTest.image} alt={loadedTest.title} />
+        <QuizTitle>{loadedTest.title}</QuizTitle>
+        <QuizDescription>{loadedTest.description}</QuizDescription>
         <QuizCategory>
           <CategoryItem>#{getCategoryLabel(loadedTest.category)}</CategoryItem>
           <CategoryItem>#{loadedTest.subject}</CategoryItem>
         </QuizCategory>
-        <QuizTitle>{loadedTest.title}</QuizTitle>
-        <QuizDescription>{loadedTest.description}</QuizDescription>
         <StartButton onClick={() => setPlayMode("play")}>시작하기</StartButton>
         <CommentSection id={id} isLoggedIn={isLoggedIn} />
       </QuizStartContents>
@@ -92,11 +91,27 @@ const QuizImage = styled.img`
   object-fit: contain;
 `;
 
+const QuizTitle = styled.h2`
+  font-size: 19px;
+  font-weight: 500;
+  margin: 12px 2px 12px 2px;
+
+  @media (max-width: 640px) {
+    font-size: 19px;
+  }
+`;
+
+const QuizDescription = styled.p`
+  font-size: 16px;
+  color: rgb(113, 113, 130);
+  margin: 2px 2px;
+`;
+
 const QuizCategory = styled.div`
   display: flex;
   gap: 6px;
   color: rgb(3, 2, 19);
-  margin: 8px 0 8px 0;
+  margin: 30px 0 8px 0;
 `;
 
 const CategoryItem = styled.div`
@@ -111,22 +126,6 @@ const CategoryItem = styled.div`
   }
 `;
 
-const QuizTitle = styled.h2`
-  font-size: 19px;
-  font-weight: 500;
-  margin: 8px 2px 12px 2px;
-
-  @media (max-width: 640px) {
-    font-size: 19px;
-  }
-`;
-
-const QuizDescription = styled.p`
-  font-size: 16px;
-  color: rgb(113, 113, 130);
-  margin: 0px 2px;
-`;
-
 const StartButton = styled.button`
   font-family: "Noto Sans KR", sans-serif;
   font-size: 19px;
@@ -137,7 +136,7 @@ const StartButton = styled.button`
   border: none;
   border-radius: 4px;
   cursor: pointer;
-  margin-top: 35px;
+  margin-top: 20px;
 
   @media (max-width: 640px) {
     font-size: 17px;

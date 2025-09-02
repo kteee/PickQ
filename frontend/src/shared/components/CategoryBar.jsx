@@ -23,21 +23,24 @@ export default CategoryBar;
 
 const Wrapper = styled.div`
   display: flex;
-  height: 65px;
+  max-width: 1020px;
+  margin: 24px auto 30px auto;
+  height: fit-content;
   justify-content: space-between;
   align-items: center;
-  padding-top: 10px;
 
   @media (max-width: 640px) {
     background-color: #ffffff;
     align-items: flex-end;
     height: 55px;
-    padding: 2px 18px;
+    padding: 0px 18px;
+    margin: 10px 0;
   }
 `;
 
 const Category = styled.div`
   display: flex;
+  width: 100%;
   gap: 8px;
   flex-wrap: wrap;
 

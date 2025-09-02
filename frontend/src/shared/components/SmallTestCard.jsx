@@ -22,7 +22,7 @@ const SmallTestCard = ({ id, category, image, title, isSearchMode }) => {
 export default SmallTestCard;
 
 const Card = styled.div`
-  height: ${({ $isSearchMode }) => ($isSearchMode ? "240px" : "170px")};
+  height: ${({ $isSearchMode }) => ($isSearchMode ? "240px" : "180px")};
   border-radius: 8px;
   display: flex;
   align-items: flex-end;
@@ -36,11 +36,18 @@ const Card = styled.div`
     box-shadow: rgba(0, 0, 0, 0.2) 0px 0px 8px -3px;
   }
 
-  @media (max-width: 700px) {
-    height: ${({ $isSearchMode }) => ($isSearchMode ? "270px" : "160px")};
-    width: ${({ $isSearchMode }) => ($isSearchMode ? "100%" : "52%")};
+  @media (max-width: 1000px) {
+    height: ${({ $isSearchMode }) => ($isSearchMode ? "100%" : "160px")};
+    width: ${({ $isSearchMode }) => ($isSearchMode ? "auto" : "35%")};
+    aspect-ratio: ${({ $isSearchMode }) => ($isSearchMode ? "4 / 3" : "unset")};
     flex-shrink: 0;
     scroll-snap-align: start;
+  }
+
+  @media (max-width: 650px) {
+    width: ${({ $isSearchMode }) => ($isSearchMode ? "100%" : "45%")};
+    aspect-ratio: ${({ $isSearchMode }) =>
+      $isSearchMode ? "16 / 9" : "unset"};
   }
 `;
 

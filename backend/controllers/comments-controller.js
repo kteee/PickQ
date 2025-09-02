@@ -29,10 +29,9 @@ const getCommentsByTestId = async (req, res, next) => {
   // 댓글 목록 조회
   let comments;
   try {
-    comments = await Comment.find({ testId: test._id }).populate(
-      "userId",
-      "nickname"
-    );
+    comments = await Comment.find({ testId: test._id })
+      .sort({ createdAt: -1 })
+      .populate("userId", "nickname");
   } catch (err) {
     const error = new HttpError(
       "댓글 목록을 불러오는 중 문제가 발생했습니다.",
@@ -77,8 +76,9 @@ const createComment = async (req, res, next) => {
   }
 
   // 사용자 존재 여부 확인
+  let user;
   try {
-    const user = await User.findById(userId);
+    user = await User.findById(userId);
     if (!user) {
       const error = new HttpError("해당 사용자를 찾을 수 없습니다.", 404);
       return next(error);
@@ -95,6 +95,7 @@ const createComment = async (req, res, next) => {
   const createdComment = new Comment({
     testId: test._id,
     userId,
+    nickname: user.nickname,
     content,
   });
 
@@ -142,12 +143,10 @@ const deleteComment = async (req, res, next) => {
     return next(error);
   }
 
-  res
-    .status(200)
-    .json({
-      message: "댓글이 성공적으로 삭제되었습니다.",
-      data: { commentId },
-    });
+  res.status(200).json({
+    message: "댓글이 성공적으로 삭제되었습니다.",
+    data: { commentId },
+  });
 };
 
 exports.getCommentsByTestId = getCommentsByTestId;

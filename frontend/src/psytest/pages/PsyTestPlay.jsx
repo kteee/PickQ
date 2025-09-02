@@ -70,8 +70,6 @@ const PsyTestPlay = ({ testData }) => {
           navigate(`/psytest/result/${result._id}`);
         }
       } catch (err) {}
-
-      setIsSubmitting(false);
     }, 1800);
   };
 

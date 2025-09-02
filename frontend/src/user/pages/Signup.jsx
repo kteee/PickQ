@@ -4,7 +4,7 @@ import { toast } from "sonner";
 import styled from "styled-components";
 import CircularProgress from "@mui/material/CircularProgress";
 import { useHttpClient } from "../../shared/hooks/http-hook";
-import GoogleSVG from "../../shared/assets/GoogleSVG";
+import GoogleLoginButton from "../../shared/components/GoogleLoginButton";
 
 const Signup = () => {
   const navigate = useNavigate();
@@ -13,6 +13,7 @@ const Signup = () => {
   const [nickname, setNickname] = useState("");
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
+  const [isPrivacyAgreed, setIsPrivacyAgreed] = useState(false);
   const [validationErrors, setValidationErrors] = useState({});
 
   const { isLoading, error, sendRequest, clearError } = useHttpClient();
@@ -41,6 +42,10 @@ const Signup = () => {
 
     if (confirmPassword !== password) {
       newErrors.confirmPassword = "비밀번호가 일치하지 않습니다.";
+    }
+
+    if (!isPrivacyAgreed) {
+      newErrors.privacy = "이용약관 및 개인정보처리방침에 동의해야 합니다.";
     }
 
     setValidationErrors(newErrors);
@@ -111,6 +116,30 @@ const Signup = () => {
         {validationErrors.confirmPassword && (
           <ErrorText>{validationErrors.confirmPassword}</ErrorText>
         )}
+        <CheckboxWrapper>
+          <input
+            type="checkbox"
+            id="privacy"
+            checked={isPrivacyAgreed}
+            onChange={(e) => setIsPrivacyAgreed(e.target.checked)}
+          />
+          <label htmlFor="privacy">
+            <span>
+              만 14세 이상이며,{" "}
+              <Link to="/terms" target="_blank" rel="noopener noreferrer">
+                이용약관
+              </Link>{" "}
+              및{" "}
+              <Link to="/privacy" target="_blank" rel="noopener noreferrer">
+                개인정보처리방침
+              </Link>
+              에 동의합니다.
+            </span>
+          </label>
+        </CheckboxWrapper>
+        {validationErrors.privacy && (
+          <ErrorText>{validationErrors.privacy}</ErrorText>
+        )}
         <LoginButton type="submit" disabled={isLoading}>
           {isLoading ? (
             <CircularProgress size="18px" color="inherit" />
@@ -123,9 +152,7 @@ const Signup = () => {
           <DividerText>또는</DividerText>
           <Line />
         </Divider>
-        <GoogleLoginButton>
-          <GoogleSVG width={20} height={20} /> 구글로 시작하기
-        </GoogleLoginButton>
+        <GoogleLoginButton />
         <BottomText>
           이미 계정이 있으신가요? <LoginLink to="/login">로그인</LoginLink>
         </BottomText>
@@ -177,6 +204,25 @@ const Input = styled.input`
   }
 `;
 
+const CheckboxWrapper = styled.div`
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  font-size: 12.5px;
+  margin-top: 10px;
+
+  input[type="checkbox"] {
+    width: 16px;
+    height: 16px;
+    accent-color: #50bcff;
+  }
+
+  a {
+    color: #50bcff;
+    text-decoration: underline;
+  }
+`;
+
 const LoginButton = styled.button`
   padding: 13px;
   border: none;
@@ -185,6 +231,7 @@ const LoginButton = styled.button`
   color: white;
   font-size: 15px;
   font-weight: 600;
+  margin-top: 12px;
   cursor: ${({ disabled }) => (disabled ? "default" : "pointer")};
 `;
 
@@ -204,20 +251,6 @@ const Line = styled.div`
 const DividerText = styled.span`
   font-size: 13px;
   color: #999;
-`;
-
-const GoogleLoginButton = styled.button`
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  gap: 3px;
-  padding: 12px;
-  border: 1px solid #ddd;
-  border-radius: 999px;
-  background-color: white;
-  color: #111;
-  font-size: 14px;
-  cursor: pointer;
 `;
 
 const BottomText = styled.div`
