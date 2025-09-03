@@ -23,15 +23,6 @@ app.use((req, res, next) => {
   next();
 });
 
-// app.use(
-//   cors({
-//     origin: ["https://pickq.im", "https://www.pickq.im"],
-//     credentials: true,
-//   })
-// );
-
-// app.options("*", cors());
-
 app.use(express.json());
 
 app.use("/api/tests", testsRoutes);

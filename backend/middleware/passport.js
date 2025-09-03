@@ -23,7 +23,7 @@ passport.use(
     {
       clientID: process.env.GOOGLE_CLIENT_ID,
       clientSecret: process.env.GOOGLE_CLIENT_SECRET,
-      callbackURL: "http://localhost:5000/api/users/auth/google/callback",
+      callbackURL: "https://pickq.onrender.com/api/users/auth/google/callback",
     },
 
     async function verify(accessToken, refreshToken, profile, done) {
