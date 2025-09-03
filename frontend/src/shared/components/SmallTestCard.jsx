@@ -44,7 +44,7 @@ const Card = styled.div`
   }
 
   @media (max-width: 640px) {
-    height: 310px;
+    height: 295px;
     border-radius: 0px;
   }
 `;

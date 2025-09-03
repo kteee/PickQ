@@ -88,6 +88,10 @@ const Layout = styled.div`
   display: grid;
   grid-template-rows: 75px auto;
   grid-template-columns: 100%;
+
+  @media (max-width: 640px) {
+    grid-template-rows: 65px auto;
+  }
 `;
 
 const Main = styled.main`

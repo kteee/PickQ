@@ -34,7 +34,7 @@ const Wrapper = styled.div`
     align-items: flex-end;
     height: 55px;
     padding: 0px 18px;
-    margin: 10px 0;
+    margin: 5px 0;
   }
 `;
 

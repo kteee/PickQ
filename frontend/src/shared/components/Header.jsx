@@ -63,6 +63,10 @@ const Logo = styled.div`
   @media (max-width: 1024px) {
     font-size: 28px;
   }
+
+  @media (max-width: 640px) {
+    font-size: 26px;
+  }
 `;
 
 const RightSection = styled.div`

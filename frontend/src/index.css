@@ -6,8 +6,12 @@
   font-style: normal;
 }
 
-body {
+html,
+body,
+#root {
   margin: 0;
+  height: 100%;
+  scrollbar-gutter: stable;
   font-family: "Noto Sans KR", sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;

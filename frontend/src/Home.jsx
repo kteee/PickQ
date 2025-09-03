@@ -161,7 +161,8 @@ const SectionTitle = styled.div`
   color: #2e3238;
 
   @media (max-width: 640px) {
-    margin-top: 20px;
+    font-size: 22px;
+    margin-top: 28px;
     padding: 0px 18px;
   }
 `;

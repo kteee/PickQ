@@ -85,7 +85,6 @@ const Wrapper = styled.div`
 
   @media (max-width: 1024px) {
     padding: 0 18px;
-    max-width: calc(100vw - 18px);
   }
 
   @media (max-width: 640px) {
@@ -131,7 +130,8 @@ const SectionTitle = styled.div`
   align-items: center;
 
   @media (max-width: 640px) {
-    margin: 0px 12px;
+    margin-left: 14px;
+    font-size: 22px;
   }
 `;
 
@@ -154,7 +154,7 @@ const ShuffleButton = styled.button`
   }
 
   @media (max-width: 640px) {
-    margin: 0px 12px;
+    margin-right: 14px;
   }
 `;
 
@@ -207,6 +207,10 @@ const RandomList = styled.div`
     .swiper-button-prev,
     .swiper-button-next {
       top: 150px;
+    }
+
+    .swiper-pagination {
+      bottom: 10px;
     }
   }
 `;
