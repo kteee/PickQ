@@ -24,6 +24,7 @@ const FooterContainer = styled.footer`
   border-top: 1px solid #eee;
 
   @media (max-width: 640px) {
+    font-size: 11px;
     flex-direction: column;
     gap: 8px;
     align-items: flex-start;

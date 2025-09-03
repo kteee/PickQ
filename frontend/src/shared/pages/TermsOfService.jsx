@@ -166,6 +166,10 @@ const Layout = styled.div`
   line-height: 1.6;
   font-size: 14.5px;
   color: #333;
+
+  @media (max-width: 640px) {
+    padding: 0 18px;
+  }
 `;
 
 const Title = styled.h1`
