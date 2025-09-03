@@ -25,9 +25,6 @@ const FooterContainer = styled.footer`
 
   @media (max-width: 640px) {
     font-size: 8px;
-    flex-direction: column;
-    gap: 8px;
-    align-items: flex-start;
     padding: 0 18px;
   }
 `;
@@ -37,6 +34,12 @@ const FooterContents = styled.div`
   margin: 32px auto;
   display: flex;
   justify-content: space-between;
+
+  @media (max-width: 640px) {
+    flex-direction: column;
+    align-items: center;
+    row-gap: 12px;
+  }
 `;
 
 const FooterLeft = styled.div`

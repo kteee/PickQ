@@ -42,6 +42,11 @@ const LoginBtn = styled.button`
   &:hover {
     background-color: rgb(248, 248, 251);
   }
+
+  @media (max-width: 1024px) {
+    font-size: 14px;
+    padding: 6px 14px;
+  }
 `;
 
 const ProfileSection = styled.div`

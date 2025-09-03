@@ -56,6 +56,7 @@ const PsyTestResult = () => {
         <TestResultFooter
           id={result.testId.shortId}
           title={result.testId.title}
+          image={result.testId.image}
         />
       </QuizResultContents>
     </QuizContainer>

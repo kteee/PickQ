@@ -140,7 +140,7 @@ const getResultById = async (req, res, next) => {
   try {
     result = await Result.findById(resultId).populate(
       "testId",
-      "title shortId psytestResults"
+      "title shortId image psytestResults"
     );
     if (!result) {
       const error = new HttpError("해당 테스트 결과를 찾을 수 없습니다.", 404);

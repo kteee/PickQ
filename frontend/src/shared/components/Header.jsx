@@ -59,6 +59,10 @@ const Logo = styled.div`
   user-select: none;
   color: #26a6f0e3;
   -webkit-tap-highlight-color: transparent;
+
+  @media (max-width: 1024px) {
+    font-size: 28px;
+  }
 `;
 
 const RightSection = styled.div`
