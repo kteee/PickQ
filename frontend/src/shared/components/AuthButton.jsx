@@ -31,12 +31,12 @@ export default AuthButton;
 
 const LoginBtn = styled.button`
   font-family: "Noto Sans KR", sans-serif;
-  font-size: 15px;
-  padding: 7px 15px;
+  font-size: 14px;
+  padding: 8px 17px;
   background-color: rgb(255, 255, 255);
   border: 1px solid rgb(209, 213, 219);
   border-radius: 20px;
-  color: rgb(13, 17, 23);
+  color: rgb(21, 27, 35);
   cursor: pointer;
 
   &:hover {

@@ -286,6 +286,11 @@ const HeaderTitle = styled.h2`
   font-weight: 600;
   margin-left: 5px;
   margin-bottom: 10px;
+
+  @media (max-width: 640px) {
+    margin-top: 25px;
+    font-size: 22px;
+  }
 `;
 
 const Section = styled.form`

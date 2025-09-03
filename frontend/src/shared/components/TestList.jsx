@@ -24,12 +24,12 @@ export default TestList;
 
 const ListWrapper = styled.div`
   display: grid;
-  margin: 0px auto 50px auto;
+  margin: 0px auto 60px auto;
   grid-template-columns: 1fr 1fr 1fr;
-  gap: 30px;
+  gap: 26px;
 
   // 태블릿
-  @media (max-width: 780px) {
+  @media (max-width: 800px) {
     grid-template-columns: 1fr 1fr;
   }
 

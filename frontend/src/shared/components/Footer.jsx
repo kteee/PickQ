@@ -19,9 +19,11 @@ const Footer = () => {
 export default Footer;
 
 const FooterContainer = styled.footer`
+  width: 100%;
   font-size: 14px;
   color: #3b3b3b;
   border-top: 1px solid #eee;
+  box-sizing: border-box;
 
   @media (max-width: 640px) {
     font-size: 8px;
@@ -34,6 +36,12 @@ const FooterContents = styled.div`
   margin: 32px auto;
   display: flex;
   justify-content: space-between;
+  box-sizing: border-box;
+
+  @media (max-width: 1024px) {
+    padding: 0 18px;
+    max-width: 100vw;
+  }
 
   @media (max-width: 640px) {
     flex-direction: column;

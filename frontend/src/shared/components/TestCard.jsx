@@ -46,9 +46,9 @@ const CardWrapper = styled.div`
 
 const Image = styled.img`
   width: 100%;
-  height: 200px;
+  height: 180px;
   object-fit: cover;
-  border-radius: 10px;
+  border-radius: 20px;
 
   &:hover {
     box-shadow: rgba(0, 0, 0, 0.2) 0px 0px 8px -3px;
@@ -73,10 +73,10 @@ const CardContent = styled.div`
 `;
 
 const Title = styled.h3`
-  font-size: 17px;
-  font-weight: 500;
-  color: rgb(10, 10, 10);
-  margin: 10px 2px 2px 4px;
+  font-size: 20px;
+  font-weight: 700;
+  color: #2e3238;
+  margin: 10px 2px 4px 4px;
 
   @media (max-width: 640px) {
     font-size: 18.5px;
@@ -85,9 +85,10 @@ const Title = styled.h3`
 `;
 
 const Description = styled.p`
-  font-size: 15px;
-  color: rgb(113, 113, 130);
-  margin: 2px 2px 22px 4px;
+  font-size: 16px;
+  font-weight: 500;
+  color: #6c7889;
+  margin: 2px 2px 28px 4px;
 
   @media (max-width: 640px) {
     font-size: 16px;

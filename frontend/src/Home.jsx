@@ -6,7 +6,7 @@ import { useHttpClient } from "./shared/hooks/http-hook";
 import CategoryBar from "./shared/components/CategoryBar";
 import RandomTestSection from "./shared/components/RandomTestSection";
 import TestList from "./shared/components/TestList";
-import SmallTestCard from "./shared/components/SmallTestCard";
+import TestCard from "./shared/components/TestCard";
 import Footer from "./shared/components/Footer";
 
 const Home = () => {
@@ -66,7 +66,7 @@ const Home = () => {
               setRandomTests={setRandomTests}
             />
             <TestSection>
-              <SectionTitle>전체 컨텐츠</SectionTitle>
+              <SectionTitle>카테고리</SectionTitle>
               <CategoryBar
                 selectedCategory={selectedCategory}
                 setSelectedCategory={setSelectedCategory}
@@ -92,13 +92,13 @@ const Home = () => {
                   {searchFiltered.length > 0 ? (
                     <SearchResultList>
                       {searchFiltered.map((test) => (
-                        <SmallTestCard
+                        <TestCard
                           key={test.shortId}
-                          isSearchMode={isSearchMode}
-                          id={test.shortId}
+                          shortId={test.shortId}
                           category={test.category}
                           image={test.image}
                           title={test.title}
+                          description={test.description}
                         />
                       ))}
                     </SearchResultList>
@@ -127,11 +127,14 @@ const HomeContents = styled.div`
   width: 100%;
   box-sizing: border-box;
   row-gap: 15px;
+
+  @media (max-width: 1024px) {
+    max-width: 100vw;
+  }
 `;
 
 const TestSection = styled.div`
   width: 100%;
-
   max-width: 1000px;
   min-height: 800px;
   margin: 0 auto;
@@ -150,15 +153,15 @@ const TestSection = styled.div`
 
 const SectionTitle = styled.div`
   display: flex;
-
-  align-items: center;
-  margin-top: 26px;
-  padding-left: 2px;
-  font-size: 21px;
+  font-size: 26px;
   font-weight: 600;
-  color: rgb(54, 54, 54);
+  align-items: center;
+  margin-top: 24px;
+  padding-left: 2px;
+  color: #2e3238;
 
   @media (max-width: 640px) {
+    margin-top: 20px;
     padding: 0px 18px;
   }
 `;
@@ -168,28 +171,23 @@ const SearchSection = styled.div`
   max-width: 1000px;
   margin: 0 auto;
   box-sizing: border-box;
-
-  @media (max-width: 1000px) {
-    padding: 0 18px;
-    margin: 0px;
-  }
 `;
 
 const SectionHeader = styled.div`
   display: flex;
   justify-content: space-between;
-  font-size: 20.5px;
-  font-weight: 500;
-  color: rgb(10, 10, 10);
-  margin-top: 28px;
-  margin-bottom: 35px;
+  font-size: 25px;
+  font-weight: 600;
+  color: #2e3238;
+  margin-top: 25px;
+  margin-bottom: 30px;
 
   @media (max-width: 640px) {
     width: 100%;
-    font-size: 20px;
+    font-size: 23px;
     font-weight: 600;
-    margin-top: 19px;
-    margin-bottom: 20px;
+    margin-top: 23px;
+    margin-bottom: 10px;
   }
 `;
 
@@ -216,8 +214,7 @@ const SearchResultList = styled.div`
 
   @media (max-width: 640px) {
     grid-template-columns: 1fr;
-    gap: 18px;
-    padding: 0 18px;
+    gap: 2px;
     margin-top: 0px;
   }
 `;

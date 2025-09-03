@@ -1,7 +1,7 @@
 import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
 
-const SmallTestCard = ({ id, category, image, title, isSearchMode }) => {
+const SmallTestCard = ({ id, category, image, title }) => {
   const navigate = useNavigate();
 
   const handleCardClick = () => {
@@ -13,41 +13,39 @@ const SmallTestCard = ({ id, category, image, title, isSearchMode }) => {
   };
 
   return (
-    <Card $image={image} $isSearchMode={isSearchMode} onClick={handleCardClick}>
-      <CardText>{title}</CardText>
-    </Card>
+    <CardWrapper>
+      <Card $image={image} onClick={handleCardClick}>
+        <CardText>{title}</CardText>
+      </Card>
+    </CardWrapper>
   );
 };
 
 export default SmallTestCard;
 
+const CardWrapper = styled.div`
+  width: 100%;
+  height: 85%;
+`;
+
 const Card = styled.div`
-  height: ${({ $isSearchMode }) => ($isSearchMode ? "240px" : "180px")};
-  border-radius: 8px;
-  display: flex;
-  align-items: flex-end;
-  justify-content: flex-start;
+  width: 100%;
+  height: 100%;
+  border-radius: 20px;
   background-image: url(${({ $image }) => $image});
   background-size: cover;
   background-position: center;
+  display: flex;
+  align-items: flex-end;
   cursor: pointer;
 
   &:hover {
     box-shadow: rgba(0, 0, 0, 0.2) 0px 0px 8px -3px;
   }
 
-  @media (max-width: 1000px) {
-    height: ${({ $isSearchMode }) => ($isSearchMode ? "100%" : "160px")};
-    width: ${({ $isSearchMode }) => ($isSearchMode ? "auto" : "35%")};
-    aspect-ratio: ${({ $isSearchMode }) => ($isSearchMode ? "4 / 3" : "unset")};
-    flex-shrink: 0;
-    scroll-snap-align: start;
-  }
-
-  @media (max-width: 650px) {
-    width: ${({ $isSearchMode }) => ($isSearchMode ? "100%" : "45%")};
-    aspect-ratio: ${({ $isSearchMode }) =>
-      $isSearchMode ? "16 / 9" : "unset"};
+  @media (max-width: 640px) {
+    height: 310px;
+    border-radius: 0px;
   }
 `;
 
@@ -56,9 +54,14 @@ const CardText = styled.div`
   -webkit-line-clamp: 1;
   -webkit-box-orient: vertical;
   overflow: hidden;
+  font-size: 17px;
   width: 100%;
-  background: rgba(0, 0, 0, 0.432);
+  background: rgba(0, 0, 0, 0.363);
   color: #ffffff;
-  padding: 6px 10px;
-  border-radius: 0px 0px 8px 8px;
+  padding: 8px 14px;
+  border-radius: 0px 0px 20px 20px;
+
+  @media (max-width: 640px) {
+    border-radius: 0px;
+  }
 `;

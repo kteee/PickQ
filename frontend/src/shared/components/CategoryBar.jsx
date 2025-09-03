@@ -24,7 +24,7 @@ export default CategoryBar;
 const Wrapper = styled.div`
   display: flex;
   max-width: 1020px;
-  margin: 24px auto 30px auto;
+  margin: 28px auto 35px auto;
   height: fit-content;
   justify-content: space-between;
   align-items: center;
@@ -51,9 +51,9 @@ const Category = styled.div`
 
 const CategoryItem = styled.button`
   font-family: "Noto Sans KR", sans-serif;
-  font-size: 14.5px;
+  font-size: 15px;
   font-weight: 500;
-  padding: 8px 15px;
+  padding: 9px 16px;
   border: none;
   border-radius: 20px;
   color: ${({ selected }) => (selected ? "#ffffff" : "#343434")};
