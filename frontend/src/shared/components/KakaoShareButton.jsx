@@ -2,7 +2,7 @@ import { useEffect } from "react";
 import styled from "styled-components";
 const { Kakao } = window;
 
-const KakaoShareButton = ({ title }) => {
+const KakaoShareButton = ({ title, image }) => {
   const resultUrl = window.location.href;
 
   useEffect(() => {
@@ -16,6 +16,7 @@ const KakaoShareButton = ({ title }) => {
       content: {
         title: `${title} 결과`,
         description: "지금 바로 피큐에 접속하여 결과를 확인해보세요!",
+        imageUrl: `https://pickq.im/${image}`,
         link: {
           mobileWebUrl: resultUrl,
           webUrl: resultUrl,

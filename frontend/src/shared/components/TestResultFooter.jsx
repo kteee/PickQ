@@ -2,7 +2,7 @@ import styled from "styled-components";
 import { useNavigate } from "react-router-dom";
 import KakaoShareButton from "./KakaoShareButton";
 
-const QuizResultFooter = ({ id, title }) => {
+const QuizResultFooter = ({ id, title, image }) => {
   const navigate = useNavigate();
   return (
     <>
@@ -24,7 +24,7 @@ const QuizResultFooter = ({ id, title }) => {
       </Button>
       <ResultShare>
         <div>카카오톡 공유하기</div>
-        <KakaoShareButton title={title} />
+        <KakaoShareButton title={title} image={image} />
       </ResultShare>
     </>
   );
