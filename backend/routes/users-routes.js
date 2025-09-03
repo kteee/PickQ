@@ -49,7 +49,7 @@ router.get(
   (req, res) => {
     const { token, userId, isNew } = req.user;
     res.redirect(
-      `http://localhost:3000/oauth2/redirect?token=${token}&userId=${userId}&isNew=${isNew}`
+      `https://www.pickq.im/oauth2/redirect?token=${token}&userId=${userId}&isNew=${isNew}`
     );
   }
 );
