@@ -23,7 +23,7 @@ const app = express();
 
 app.use(
   cors({
-    origin: "https://pickq.im",
+    origin: ["https://pickq.im", "https://www.pickq.im"],
     credentials: true,
   })
 );
