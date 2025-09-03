@@ -1,7 +1,6 @@
 require("./middleware/passport");
 const express = require("express");
 const mongoose = require("mongoose");
-const cors = require("cors");
 
 const testsRoutes = require("./routes/tests-routes");
 const commentsRoutes = require("./routes/comments-routes");
@@ -11,24 +10,27 @@ const HttpError = require("./models/http-error");
 
 const app = express();
 
-// app.use((req, res, next) => {
-//   res.setHeader("Access-Control-Allow-Origin", "*");
-//   res.setHeader(
-//     "Access-Control-Allow-Headers",
-//     "Origin, X-Requested-With, Content-Type, Accept, Authorization"
-//   );
-//   res.setHeader("Access-Control-Allow-Methods", "GET, POST, PATCH, DELETE");
-//   next();
-// });
+app.use((req, res, next) => {
+  res.setHeader("Access-Control-Allow-Origin", "https://www.pickq.im");
+  res.setHeader(
+    "Access-Control-Allow-Headers",
+    "Origin, X-Requested-With, Content-Type, Accept, Authorization"
+  );
+  res.setHeader(
+    "Access-Control-Allow-Methods",
+    "GET, POST, PATCH, DELETE, OPTION"
+  );
+  next();
+});
 
-app.use(
-  cors({
-    origin: ["https://pickq.im", "https://www.pickq.im"],
-    credentials: true,
-  })
-);
+// app.use(
+//   cors({
+//     origin: ["https://pickq.im", "https://www.pickq.im"],
+//     credentials: true,
+//   })
+// );
 
-app.options("*", cors());
+// app.options("*", cors());
 
 app.use(express.json());
 
