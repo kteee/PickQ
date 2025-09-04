@@ -33,7 +33,6 @@ const QuizResultFooter = ({ id, title, image }) => {
 export default QuizResultFooter;
 
 const Button = styled.button`
-  font-family: "Noto Sans KR", sans-serif;
   font-size: 19px;
   font-weight: 600;
   width: 100%;

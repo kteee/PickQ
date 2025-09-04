@@ -159,7 +159,6 @@ const QuestionText = styled.div`
 `;
 
 const OptionButton = styled.button`
-  font-family: "Noto Sans KR", sans-serif;
   font-size: 17px;
   width: 100%;
   display: flex;

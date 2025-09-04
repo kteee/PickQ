@@ -36,7 +36,6 @@ const Text = styled.p`
   margin-top: 20px;
   font-size: 18px;
   color: #555;
-  font-family: "Noto Sans KR", sans-serif;
 `;
 
 export default Loading;

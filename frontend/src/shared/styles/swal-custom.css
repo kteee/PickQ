@@ -3,7 +3,7 @@
 }
 
 .swal-big-title {
-  font-family: "Noto Sans KR", sans-serif;
+  font-family: "Pretendard Variable", Pretendard, -apple-system;
   font-size: 20px;
   font-weight: 500;
   padding-top: 30px;
@@ -15,16 +15,16 @@
 }
 
 .swal-title {
+  font-family: "Pretendard Variable", Pretendard, -apple-system;
   font-size: 16px;
   font-weight: 300;
   padding-top: 30px;
   color: rgb(39, 39, 39);
   font-weight: 500;
-  font-family: "Noto Sans KR", sans-serif;
 }
 
 .swal-confirm {
-  font-family: "Noto Sans KR", sans-serif;
+  font-family: "Pretendard Variable", Pretendard, -apple-system;
   font-size: 14.5px;
   font-weight: 400;
   padding: 7px 14px;
@@ -32,7 +32,7 @@
 }
 
 .swal-cancel {
-  font-family: "Noto Sans KR", sans-serif;
+  font-family: "Pretendard Variable", Pretendard, -apple-system;
   font-size: 14.5px;
   font-weight: 400;
   padding: 7px 14px;

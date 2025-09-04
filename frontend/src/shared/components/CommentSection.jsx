@@ -195,7 +195,6 @@ const InputBox = styled.div`
 `;
 
 const TextareaInput = styled.textarea`
-  font-family: "Noto Sans KR", sans-serif;
   font-size: 14px;
   line-height: 1.5;
   height: 53px;
@@ -214,7 +213,6 @@ const ButtonWrapper = styled.div`
 `;
 
 const SubmitButton = styled.button`
-  font-family: "Noto Sans KR", sans-serif;
   background-color: ${({ disable }) => (disable ? "#acdbf8" : " #50bcff")};
   color: white;
   border: none;

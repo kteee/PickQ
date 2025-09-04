@@ -253,7 +253,6 @@ const QuestionText = styled.div`
 `;
 
 const OptionButton = styled.button`
-  font-family: "Noto Sans KR", sans-serif;
   font-size: 17px;
   width: 100%;
   display: flex;
@@ -307,7 +306,6 @@ const ButtonWrapper = styled.div`
 `;
 
 const NextButton = styled.button`
-  font-family: "Noto Sans KR", sans-serif;
   font-size: 19px;
   font-weight: 600;
   width: 100%;
@@ -334,7 +332,6 @@ const SubjectiveWrapper = styled.div`
 `;
 
 const SubjectiveInput = styled.input`
-  font-family: "Noto Sans KR", sans-serif;
   padding: 14px 16px;
   font-size: 17px;
   border: 1.5px solid #cbd5e1;
@@ -357,7 +354,6 @@ const SubjectiveInput = styled.input`
 `;
 
 const SubmitButton = styled.button`
-  font-family: "Noto Sans KR", sans-serif;
   padding: 14px;
   font-size: 17px;
   font-weight: 500;

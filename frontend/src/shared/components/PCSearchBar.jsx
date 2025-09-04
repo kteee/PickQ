@@ -49,7 +49,7 @@ export default PCSearchBar;
 const SearchBar = styled.div`
   position: relative;
   width: 230px;
-  margin-right: 38px;
+  margin-right: 45px;
 
   @media (max-width: 640px) {
     display: none;
@@ -57,9 +57,8 @@ const SearchBar = styled.div`
 `;
 
 const SearchInput = styled.input`
-  font-family: "Noto Sans KR", sans-serif;
-  font-size: 14px;
-  padding: 8px 16px 8px 42px;
+  font-size: 15px;
+  padding: 10px 16px 10px 42px;
   border: 1px solid rgb(209, 213, 219);
   border-radius: 20px;
   outline: none;
@@ -86,7 +85,7 @@ const SearchIcon = styled(Search)`
 
 const ClearIcon = styled(Clear)`
   position: absolute;
-  right: -1px;
+  right: -18px;
   top: 50%;
   transform: translateY(-50%);
   background: none;

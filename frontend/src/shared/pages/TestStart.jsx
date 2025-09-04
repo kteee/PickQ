@@ -127,7 +127,6 @@ const CategoryItem = styled.div`
 `;
 
 const StartButton = styled.button`
-  font-family: "Noto Sans KR", sans-serif;
   font-size: 19px;
   font-weight: 600;
   background-color: #5cc3ff;

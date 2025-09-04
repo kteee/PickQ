@@ -71,7 +71,6 @@ const QuizContainer = styled.div`
 `;
 
 const QuizResultContents = styled.div`
-  font-family: "Noto Sans KR", sans-serif;
   display: flex;
   align-items: center;
   flex-direction: column;

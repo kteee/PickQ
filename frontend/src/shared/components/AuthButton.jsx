@@ -30,9 +30,8 @@ const AuthButton = () => {
 export default AuthButton;
 
 const LoginBtn = styled.button`
-  font-family: "Noto Sans KR", sans-serif;
-  font-size: 14px;
-  padding: 8px 17px;
+  font-size: 15px;
+  padding: 10px 17px;
   background-color: rgb(255, 255, 255);
   border: 1px solid rgb(209, 213, 219);
   border-radius: 20px;

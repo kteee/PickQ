@@ -100,7 +100,6 @@ const SearchInputWrapper = styled.div`
 `;
 
 const SearchInput = styled.input`
-  font-family: "Noto Sans KR", sans-serif;
   font-size: 15px;
   width: 100%;
   box-sizing: border-box;

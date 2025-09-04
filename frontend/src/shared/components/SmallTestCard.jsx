@@ -25,7 +25,7 @@ export default SmallTestCard;
 
 const CardWrapper = styled.div`
   width: 100%;
-  height: 85%;
+  height: 100%;
 `;
 
 const Card = styled.div`
@@ -54,11 +54,11 @@ const CardText = styled.div`
   -webkit-line-clamp: 1;
   -webkit-box-orient: vertical;
   overflow: hidden;
-  font-size: 17px;
+  font-size: 18px;
   width: 100%;
   background: rgba(0, 0, 0, 0.363);
   color: #ffffff;
-  padding: 8px 14px;
+  padding: 9px 14px;
   border-radius: 0px 0px 20px 20px;
 
   @media (max-width: 640px) {

@@ -50,10 +50,9 @@ const Category = styled.div`
 `;
 
 const CategoryItem = styled.button`
-  font-family: "Noto Sans KR", sans-serif;
-  font-size: 15px;
-  font-weight: 500;
-  padding: 9px 16px;
+  font-size: 15.5px;
+  font-weight: 600;
+  padding: 11px 16px;
   border: none;
   border-radius: 20px;
   color: ${({ selected }) => (selected ? "#ffffff" : "#343434")};

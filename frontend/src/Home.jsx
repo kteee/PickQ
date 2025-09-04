@@ -66,7 +66,7 @@ const Home = () => {
               setRandomTests={setRandomTests}
             />
             <TestSection>
-              <SectionTitle>카테고리</SectionTitle>
+              <SectionTitle>전체 카테고리</SectionTitle>
               <CategoryBar
                 selectedCategory={selectedCategory}
                 setSelectedCategory={setSelectedCategory}
@@ -153,7 +153,7 @@ const TestSection = styled.div`
 
 const SectionTitle = styled.div`
   display: flex;
-  font-size: 26px;
+  font-size: 25px;
   font-weight: 600;
   align-items: center;
   margin-top: 24px;
