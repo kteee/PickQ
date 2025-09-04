@@ -88,8 +88,8 @@ const RandomTestSection = ({ loadedTests, randomTests, setRandomTests }) => {
                   },
 
                   1000: {
-                    slidesPerView: 3.2,
-                    spaceBetween: 23,
+                    slidesPerView: 3.3,
+                    spaceBetween: 25,
                   },
                 }}
               >
@@ -116,7 +116,7 @@ export default RandomTestSection;
 
 const Wrapper = styled.div`
   width: 100%;
-  height: 255px;
+  height: 250px;
   margin-top: 40px;
   margin-bottom: 28px;
   box-sizing: border-box;
@@ -175,7 +175,7 @@ const HeaderRight = styled.div`
 const SectionTitle = styled.div`
   display: flex;
   justify-content: center;
-  font-size: 25px;
+  font-size: 24px;
   font-weight: 600;
   align-items: center;
 

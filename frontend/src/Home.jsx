@@ -153,7 +153,7 @@ const TestSection = styled.div`
 
 const SectionTitle = styled.div`
   display: flex;
-  font-size: 25px;
+  font-size: 24px;
   font-weight: 600;
   align-items: center;
   margin-top: 24px;

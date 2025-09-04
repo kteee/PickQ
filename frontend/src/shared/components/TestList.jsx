@@ -26,7 +26,7 @@ const ListWrapper = styled.div`
   display: grid;
   margin: 0px auto 60px auto;
   grid-template-columns: 1fr 1fr 1fr;
-  gap: 26px;
+  gap: 28px;
 
   // 태블릿
   @media (max-width: 800px) {

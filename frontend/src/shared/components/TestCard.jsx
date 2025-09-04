@@ -74,9 +74,9 @@ const CardContent = styled.div`
 
 const Title = styled.h3`
   font-size: 21px;
-  font-weight: 700;
+  font-weight: 600;
   color: #2e3238;
-  margin: 13px 2px 4px 4px;
+  margin: 14px 2px 5px 4px;
 
   @media (max-width: 640px) {
     font-size: 18.5px;
@@ -88,7 +88,7 @@ const Description = styled.p`
   font-size: 16.5px;
   font-weight: 500;
   color: #6c7889;
-  margin: 2px 2px 28px 4px;
+  margin: 2px 2px 25px 4px;
 
   @media (max-width: 640px) {
     font-size: 16px;
