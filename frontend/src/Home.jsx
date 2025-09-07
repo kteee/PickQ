@@ -4,16 +4,18 @@ import styled from "styled-components";
 import { toast } from "sonner";
 import { useHttpClient } from "./shared/hooks/http-hook";
 import CategoryBar from "./shared/components/CategoryBar";
-import RandomTestSection from "./shared/components/RandomTestSection";
+import RecommendedSection from "./shared/components/RecommendedSection";
 import TestList from "./shared/components/TestList";
 import TestCard from "./shared/components/TestCard";
 import Footer from "./shared/components/Footer";
+import RandomSection from "./shared/components/RandomSection";
 
 const Home = () => {
   const location = useLocation();
   const { isLoading, error, sendRequest, clearError } = useHttpClient();
 
   const [loadedTests, setLoadedTests] = useState([]);
+  const [recommendedTests, setRecommendedTests] = useState([]);
   const [randomTests, setRandomTests] = useState([]);
   const [selectedCategory, setSelectedCategory] = useState("all");
 
@@ -41,7 +43,9 @@ const Home = () => {
           `${process.env.REACT_APP_BACKEND_URL}/tests`
         );
         setLoadedTests(responseData.data);
-        setRandomTests(getRandomTests(responseData.data, 4));
+        setRecommendedTests(
+          responseData.data.filter((test) => test.recommend === true)
+        );
       } catch (err) {}
     };
 
@@ -60,13 +64,13 @@ const Home = () => {
       <HomeContents $isSearchMode={isSearchMode}>
         {!isSearchMode ? (
           <>
-            <RandomTestSection
+            <RecommendedSection
               loadedTests={loadedTests}
-              randomTests={randomTests}
-              setRandomTests={setRandomTests}
+              recommendedTests={recommendedTests}
             />
-            <TestSection>
-              <SectionTitle>전체 카테고리</SectionTitle>
+            <RandomSection loadedTests={loadedTests} />
+            <TestListSection>
+              <SectionTitle>전체 콘텐츠</SectionTitle>
               <CategoryBar
                 selectedCategory={selectedCategory}
                 setSelectedCategory={setSelectedCategory}
@@ -77,7 +81,7 @@ const Home = () => {
                   selectedCategory={selectedCategory}
                 />
               )}
-            </TestSection>
+            </TestListSection>
             <Footer />
           </>
         ) : (
@@ -133,7 +137,7 @@ const HomeContents = styled.div`
   }
 `;
 
-const TestSection = styled.div`
+const TestListSection = styled.div`
   width: 100%;
   max-width: 1000px;
   min-height: 800px;
@@ -153,7 +157,7 @@ const TestSection = styled.div`
 
 const SectionTitle = styled.div`
   display: flex;
-  font-size: 24px;
+  font-size: 23px;
   font-weight: 600;
   align-items: center;
   margin-top: 24px;
@@ -180,8 +184,8 @@ const SectionHeader = styled.div`
   font-size: 25px;
   font-weight: 600;
   color: #2e3238;
-  margin-top: 25px;
-  margin-bottom: 30px;
+  margin-top: 30px;
+  margin-bottom: 35px;
 
   @media (max-width: 640px) {
     width: 100%;

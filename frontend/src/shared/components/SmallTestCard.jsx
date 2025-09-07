@@ -31,7 +31,7 @@ const CardWrapper = styled.div`
 const Card = styled.div`
   width: 100%;
   height: 100%;
-  border-radius: 20px;
+  border-radius: 8px;
   background-image: url(${({ $image }) => $image});
   background-size: cover;
   background-position: center;
@@ -59,7 +59,7 @@ const CardText = styled.div`
   background: rgba(0, 0, 0, 0.363);
   color: #ffffff;
   padding: 9px 14px;
-  border-radius: 0px 0px 20px 20px;
+  border-radius: 0px 0px 8px 8px;
 
   @media (max-width: 640px) {
     border-radius: 0px;

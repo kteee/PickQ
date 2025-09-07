@@ -1,64 +1,62 @@
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 import styled from "styled-components";
 import SmallTestCard from "./SmallTestCard";
 import { Swiper, SwiperSlide } from "swiper/react";
 import { Navigation, Pagination } from "swiper/modules";
-import RefreshRoundedIcon from "@mui/icons-material/RefreshRounded";
 import { motion, AnimatePresence } from "framer-motion";
 import "swiper/css";
 import "swiper/css/navigation";
 import "swiper/css/pagination";
 
-const RandomTestSection = ({ loadedTests, randomTests, setRandomTests }) => {
+const RecommendedSection = ({ recommendedTests }) => {
   const prevRef = useRef(null);
   const nextRef = useRef(null);
   const swiperRef = useRef(null);
 
-  const handleShuffle = () => {
-    setRandomTests(getRandomTests(loadedTests, 4));
-  };
+  const [isBeginning, setIsBeginning] = useState(true);
+  const [isEnd, setIsEnd] = useState(false);
 
-  const getRandomTests = (arr, n) => {
-    if (arr.length <= n) return arr;
-    const shuffled = [...arr].sort(() => 0.5 - Math.random());
-    return shuffled.slice(0, n);
+  const updateNavigation = (swiper) => {
+    setIsBeginning(swiper.isBeginning);
+    setIsEnd(swiper.isEnd);
   };
 
   useEffect(() => {
-    if (
-      swiperRef.current &&
-      swiperRef.current.params &&
-      prevRef.current &&
-      nextRef.current
-    ) {
-      swiperRef.current.params.navigation.prevEl = prevRef.current;
-      swiperRef.current.params.navigation.nextEl = nextRef.current;
-      swiperRef.current.navigation.init();
-      swiperRef.current.navigation.update();
+    console.log(recommendedTests);
+    const swiper = swiperRef.current;
+    if (swiper && swiper.params && prevRef.current && nextRef.current) {
+      swiper.params.navigation.prevEl = prevRef.current;
+      swiper.params.navigation.nextEl = nextRef.current;
+      swiper.navigation.init();
+      swiper.navigation.update();
+      updateNavigation(swiper);
+
+      swiper.on("slideChange", () => updateNavigation(swiper));
+      console.log(recommendedTests);
     }
-  }, [randomTests]);
+  }, [recommendedTests]);
 
   return (
     <Wrapper>
       <RandomSection>
+        <SectionSubTitle>가볍고 재밌게 즐겨요!</SectionSubTitle>
         <SectionHeader>
           <HeaderLeft>
-            <SectionTitle>추천 콘텐츠</SectionTitle>
+            <SectionTitle>이번주 추천 콘텐츠 모음</SectionTitle>
           </HeaderLeft>
           <HeaderRight>
-            <ShuffleButton onClick={handleShuffle}>
-              <RefreshRoundedIcon
-                sx={{ width: 18, height: 18, color: "gray", mt: 0.5 }}
-              />
-            </ShuffleButton>
-            <NavButton ref={prevRef}>{"<"}</NavButton>
-            <NavButton ref={nextRef}>{">"}</NavButton>
+            <NavButton ref={prevRef} disabled={isBeginning}>
+              {"<"}
+            </NavButton>
+            <NavButton ref={nextRef} disabled={isEnd}>
+              {">"}
+            </NavButton>
           </HeaderRight>
         </SectionHeader>
         <RandomList>
           <AnimatePresence mode="wait">
             <motion.div
-              key={JSON.stringify(randomTests)}
+              key={JSON.stringify(recommendedTests)}
               initial={{ opacity: 0, y: 10 }}
               animate={{ opacity: 1, y: 0 }}
               exit={{ opacity: 0, y: -10 }}
@@ -88,12 +86,13 @@ const RandomTestSection = ({ loadedTests, randomTests, setRandomTests }) => {
                   },
 
                   1000: {
-                    slidesPerView: 3.3,
+                    slidesPerView: 3,
+                    slidesPerGroup: 3,
                     spaceBetween: 25,
                   },
                 }}
               >
-                {randomTests.map((test) => (
+                {recommendedTests.map((test) => (
                   <SwiperSlide key={test.shortId}>
                     <SmallTestCard
                       id={test.shortId}
@@ -112,12 +111,12 @@ const RandomTestSection = ({ loadedTests, randomTests, setRandomTests }) => {
   );
 };
 
-export default RandomTestSection;
+export default RecommendedSection;
 
 const Wrapper = styled.div`
   width: 100%;
-  height: 250px;
-  margin-top: 40px;
+  height: 290px;
+  margin-top: 38px;
   margin-bottom: 28px;
   box-sizing: border-box;
 
@@ -138,8 +137,14 @@ const RandomSection = styled.div`
   flex-direction: column;
   max-width: 1000px;
   height: 100%;
-  align-items: center;
   margin: 0px auto;
+`;
+
+const SectionSubTitle = styled.div`
+  font-size: 19px;
+  font-weight: 500;
+  margin: 9px 0px 9px 0px;
+  color: #757575;
 `;
 
 const SectionHeader = styled.div`
@@ -150,7 +155,7 @@ const SectionHeader = styled.div`
   font-size: 21px;
   font-weight: 600;
   color: #2e3238;
-  margin-bottom: 27px;
+  margin-bottom: 21px;
 
   @media (max-width: 640px) {
     font-size: 20px;
@@ -162,20 +167,20 @@ const SectionHeader = styled.div`
 
 const HeaderLeft = styled.div`
   display: flex;
+  flex-direction: column;
   align-items: center;
-  gap: 7px;
 `;
 
 const HeaderRight = styled.div`
   display: flex;
   align-items: center;
-  gap: 7px;
+  gap: 6px;
 `;
 
 const SectionTitle = styled.div`
   display: flex;
   justify-content: center;
-  font-size: 24px;
+  font-size: 23px;
   font-weight: 600;
   align-items: center;
 
@@ -185,29 +190,10 @@ const SectionTitle = styled.div`
   }
 `;
 
-const ShuffleButton = styled.button`
-  box-sizing: content-box;
-  width: 25px;
-  height: 25px;
-  padding: 2px;
-  background-color: rgb(255, 255, 255);
-  border: none;
-  border-radius: 50px;
-  cursor: pointer;
-
-  &:hover {
-    background-color: rgb(248, 248, 251);
-  }
-
-  @media (max-width: 640px) {
-    margin-right: 14px;
-  }
-`;
-
 const NavButton = styled.button`
   box-sizing: content-box;
-  width: 26px;
-  height: 26px;
+  width: 27px;
+  height: 28px;
   padding: 0px 1px 3px 1px;
   font-size: 18px;
   background: rgb(255, 255, 255);
@@ -218,6 +204,11 @@ const NavButton = styled.button`
 
   &:hover {
     background: rgb(248, 248, 251);
+  }
+
+  &:disabled {
+    opacity: 0.5;
+    cursor: default;
   }
 `;
 

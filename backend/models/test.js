@@ -43,6 +43,7 @@ const testSchema = new Schema(
     description: { type: String },
     subject: { type: String },
     image: { type: String },
+    recommend: { type: Boolean },
 
     // 퀴즈
     answerType: {

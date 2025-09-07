@@ -5,12 +5,17 @@ const Footer = () => {
   return (
     <FooterContainer>
       <FooterContents>
-        <FooterLeft>
+        <FooterTop>
           <Logo>PickQ</Logo>
+          <FooterDescription>
+            PickQ는 다양한 퀴즈와 심리테스트 콘텐츠를 제공하는 서비스입니다.
+          </FooterDescription>
+        </FooterTop>
+        <FooterBottom>
           <FooterLink to="/terms">이용약관</FooterLink>
           <FooterLink to="/privacy">개인정보처리방침</FooterLink>
-        </FooterLeft>
-        <FooterRight>문의: kte02320@gmail.com</FooterRight>
+          <div>문의: kte02320@gmail.com</div>
+        </FooterBottom>
       </FooterContents>
     </FooterContainer>
   );
@@ -20,7 +25,7 @@ export default Footer;
 
 const FooterContainer = styled.footer`
   width: 100%;
-  font-size: 14px;
+  font-size: 13.5px;
   color: #3b3b3b;
   border-top: 1px solid #eee;
   box-sizing: border-box;
@@ -35,6 +40,7 @@ const FooterContents = styled.div`
   max-width: 1000px;
   margin: 32px auto;
   display: flex;
+  flex-direction: column;
   justify-content: space-between;
   box-sizing: border-box;
 
@@ -50,15 +56,29 @@ const FooterContents = styled.div`
   }
 `;
 
-const FooterLeft = styled.div`
+const FooterTop = styled.div`
   display: flex;
   align-items: center;
-  gap: 9px;
+  gap: 10px;
+  margin-bottom: 15px;
 `;
 
-const FooterRight = styled.div`
+const FooterDescription = styled.div`
   font-size: 13.5px;
   color: #3b3b3b;
+  margin-right: 10px;
+
+  @media (max-width: 640px) {
+    display: block;
+    margin: 8px 0;
+    font-size: 11px;
+  }
+`;
+
+const FooterBottom = styled.div`
+  display: flex;
+  align-items: center;
+  gap: 12px;
 `;
 
 const Logo = styled.div`
@@ -73,7 +93,6 @@ const Logo = styled.div`
 
 const FooterLink = styled(Link)`
   color: #333;
-  font-size: 13.5px;
   text-decoration: none;
 
   &:hover {

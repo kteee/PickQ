@@ -12,9 +12,8 @@ const PrivacyPolicy = () => {
       <Layout>
         <Title>개인정보처리방침</Title>
         <Paragraph>
-          픽큐(PickQ)(이하 ‘본 사이트’)는 개인정보 보호법에 따라 이용자의
-          개인정보를 보호하고 권익을 보호하기 위해 아래와 같은 방침을
-          수립합니다.
+          PickQ (이하 ‘본 사이트’)는 개인정보 보호법에 따라 이용자의 개인정보를
+          보호하고 권익을 보호하기 위해 아래와 같은 방침을 수립합니다.
         </Paragraph>
         <Section>
           <SectionTitle>1. 수집하는 개인정보 항목</SectionTitle>
@@ -68,7 +67,6 @@ const PrivacyPolicy = () => {
               <li>
                 다만, 아래의 경우 예외로 합니다.
                 <ul>
-                  <li>이용자가 사전에 동의한 경우</li>
                   <li>법령에 따라 요구되는 경우</li>
                 </ul>
               </li>
@@ -83,8 +81,7 @@ const PrivacyPolicy = () => {
           <List>
             <li>Google OAuth: 소셜 로그인 기능 제공</li>
             <li>
-              기타 클라우드 서비스 (AWS, MongoDB 등) 사용 시, 해당 서버에 정보가
-              저장될 수 있음
+              기타 클라우드 서비스 사용 시, 해당 서버에 정보가 저장될 수 있음
             </li>
           </List>
         </Section>

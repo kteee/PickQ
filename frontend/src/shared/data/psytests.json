@@ -6,6 +6,7 @@
     "description": "테토남/에겐남 나는 어떤 유형?",
     "subject": "성격",
     "image": "/assets/test01.png",
+    "recommend": true,
     "psytestQuestions": [
       {
         "question": "나는 외출할 때 ",
@@ -121,6 +122,7 @@
     "description": "테토녀/에겐녀 나는 어떤 유형?",
     "subject": "성격",
     "image": "/assets/test02.png",
+    "recommend": true,
     "psytestQuestions": [
       {
         "question": "나는 외출할 때 ",
