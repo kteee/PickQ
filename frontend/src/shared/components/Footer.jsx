@@ -79,6 +79,10 @@ const FooterBottom = styled.div`
   display: flex;
   align-items: center;
   gap: 12px;
+
+  @media (max-width: 640px) {
+    font-size: 11px;
+  }
 `;
 
 const Logo = styled.div`

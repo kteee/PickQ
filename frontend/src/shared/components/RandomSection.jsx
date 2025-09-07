@@ -50,6 +50,11 @@ const Wrapper = styled.div`
   max-width: 1000px;
   margin: 20px auto 20px auto;
   box-sizing: border-box;
+
+  @media (max-width: 640px) {
+    margin: 5px 0px;
+    padding: 0 18px;
+  }
 `;
 
 const Box = styled.div`
@@ -59,6 +64,10 @@ const Box = styled.div`
   border-radius: 8px;
   padding: 24px 25px;
   background-color: #f9f9f9;
+
+  @media (max-width: 640px) {
+    align-items: center;
+  }
 `;
 
 const SubTitle = styled.div`
@@ -73,6 +82,11 @@ const BoxInline = styled.div`
   display: flex;
   justify-content: space-between;
   align-items: center;
+
+  @media (max-width: 640px) {
+    margin-top: 7px;
+    flex-direction: column;
+  }
 `;
 
 const BoxText = styled.div`
@@ -86,7 +100,7 @@ const ButtonGroup = styled.div`
   gap: 12px;
 
   @media (max-width: 640px) {
-    flex-direction: column;
+    margin-top: 20px;
   }
 `;
 

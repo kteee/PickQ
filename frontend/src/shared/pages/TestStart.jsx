@@ -80,7 +80,8 @@ const QuizStartContents = styled.div`
   width: 70%;
 
   @media (max-width: 640px) {
-    width: 90%;
+    width: 100%;
+    margin: 0px;
   }
 `;
 
@@ -89,6 +90,10 @@ const QuizImage = styled.img`
   margin: 10px auto;
   border-radius: 4px;
   object-fit: contain;
+
+  @media (max-width: 640px) {
+    margin: 0px;
+  }
 `;
 
 const QuizTitle = styled.h2`
@@ -97,7 +102,9 @@ const QuizTitle = styled.h2`
   margin: 12px 2px 12px 2px;
 
   @media (max-width: 640px) {
-    font-size: 19px;
+    font-size: 21px;
+    padding: 0px 16px;
+    margin-top: 20px;
   }
 `;
 
@@ -105,6 +112,11 @@ const QuizDescription = styled.p`
   font-size: 16px;
   color: rgb(113, 113, 130);
   margin: 2px 2px;
+
+  @media (max-width: 640px) {
+    font-size: 17px;
+    padding: 0px 16px;
+  }
 `;
 
 const QuizCategory = styled.div`
@@ -112,6 +124,10 @@ const QuizCategory = styled.div`
   gap: 6px;
   color: rgb(3, 2, 19);
   margin: 30px 0 8px 0;
+
+  @media (max-width: 640px) {
+    padding: 0px 16px;
+  }
 `;
 
 const CategoryItem = styled.div`
@@ -139,5 +155,6 @@ const StartButton = styled.button`
 
   @media (max-width: 640px) {
     font-size: 17px;
+    margin: 20px 16px 0px 16px;
   }
 `;

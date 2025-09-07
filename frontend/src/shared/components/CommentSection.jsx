@@ -175,6 +175,10 @@ export default CommentSection;
 
 const Container = styled.div`
   margin-top: 38px;
+
+  @media (max-width: 640px) {
+    margin: 38px 16px 0px 16px;
+  }
 `;
 
 const Title = styled.h3`

@@ -84,7 +84,11 @@ const RecommendedSection = ({ recommendedTests }) => {
                     slidesPerView: 2,
                     spaceBetween: 16,
                   },
-
+                  820: {
+                    slidesPerView: 3,
+                    slidesPerGroup: 3,
+                    spaceBetween: 25,
+                  },
                   1000: {
                     slidesPerView: 3,
                     slidesPerGroup: 3,
@@ -121,14 +125,13 @@ const Wrapper = styled.div`
   box-sizing: border-box;
 
   @media (max-width: 1024px) {
-    padding: 0 18px;
+    max-width: 100vw;
   }
 
   @media (max-width: 640px) {
+    margin-top: 20px;
+    margin-bottom: 5px;
     height: auto;
-    padding: 0;
-    width: 100%;
-    margin-top: 5px;
   }
 `;
 
@@ -138,6 +141,15 @@ const RandomSection = styled.div`
   max-width: 1000px;
   height: 100%;
   margin: 0px auto;
+
+  @media (max-width: 1000px) {
+    padding: 0 18px;
+    margin: 0px;
+  }
+
+  @media (max-width: 640px) {
+    padding: 0;
+  }
 `;
 
 const SectionSubTitle = styled.div`
@@ -145,12 +157,18 @@ const SectionSubTitle = styled.div`
   font-weight: 500;
   margin: 9px 0px 9px 0px;
   color: #757575;
+
+  @media (max-width: 640px) {
+    font-size: 18px;
+    margin: 0px;
+    padding: 0px 16px;
+  }
 `;
 
 const SectionHeader = styled.div`
   display: flex;
   justify-content: space-between;
-  width: 100%;
+  max-width: 100%;
   gap: 10px;
   font-size: 21px;
   font-weight: 600;
@@ -158,10 +176,9 @@ const SectionHeader = styled.div`
   margin-bottom: 21px;
 
   @media (max-width: 640px) {
-    font-size: 20px;
-    font-weight: 600;
-    margin-top: 25px;
-    margin-bottom: 22px;
+    margin-top: 5px;
+    margin-bottom: 15px;
+    padding: 0px 16px;
   }
 `;
 
@@ -185,8 +202,8 @@ const SectionTitle = styled.div`
   align-items: center;
 
   @media (max-width: 640px) {
-    margin-left: 14px;
-    font-size: 22px;
+    font-size: 24px;
+    font-weight: 600;
   }
 `;
 
