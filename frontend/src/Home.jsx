@@ -166,9 +166,8 @@ const SectionTitle = styled.div`
 
   @media (max-width: 640px) {
     font-size: 23px;
-    margin-top: 28px;
     padding: 0px 16px;
-    margin-top: 10px;
+    margin-top: 5px;
   }
 `;
 

@@ -39,10 +39,9 @@ const RecommendedSection = ({ recommendedTests }) => {
   return (
     <Wrapper>
       <RandomSection>
-        <SectionSubTitle>지금 딱 하기 좋은 콘텐츠</SectionSubTitle>
         <SectionHeader>
           <HeaderLeft>
-            <SectionTitle>이번주 추천 콘텐츠 모음</SectionTitle>
+            <SectionTitle>이번주 추천 콘텐츠</SectionTitle>
           </HeaderLeft>
           <HeaderRight>
             <NavButton ref={prevRef} disabled={isBeginning}>
@@ -119,8 +118,8 @@ export default RecommendedSection;
 
 const Wrapper = styled.div`
   width: 100%;
-  height: 290px;
-  margin-top: 38px;
+  height: 260px;
+  margin-top: 45px;
   margin-bottom: 28px;
   box-sizing: border-box;
 
@@ -129,7 +128,7 @@ const Wrapper = styled.div`
   }
 
   @media (max-width: 640px) {
-    margin-top: 0px;
+    margin-top: 15px;
     margin-bottom: 5px;
     height: auto;
   }
@@ -148,7 +147,7 @@ const RandomSection = styled.div`
   }
 
   @media (max-width: 640px) {
-    padding: 0;
+    padding: 0 16px;
   }
 `;
 
@@ -159,10 +158,9 @@ const SectionSubTitle = styled.div`
   color: #757575;
 
   @media (max-width: 640px) {
-    /* font-size: 18px;
+    font-size: 18px;
     margin: 0px;
-    padding: 0px 16px; */
-    display: none;
+    padding: 0px 16px;
   }
 `;
 
@@ -177,10 +175,8 @@ const SectionHeader = styled.div`
   margin-bottom: 21px;
 
   @media (max-width: 640px) {
-    /* margin-top: 5px;
+    margin-top: 5px;
     margin-bottom: 15px;
-    padding: 0px 16px; */
-    display: none;
   }
 `;
 
@@ -204,7 +200,7 @@ const SectionTitle = styled.div`
   align-items: center;
 
   @media (max-width: 640px) {
-    font-size: 24px;
+    font-size: 23px;
     font-weight: 600;
   }
 `;
@@ -228,6 +224,10 @@ const NavButton = styled.button`
   &:disabled {
     opacity: 0.5;
     cursor: default;
+  }
+
+  @media (max-width: 640px) {
+    display: none;
   }
 `;
 

@@ -52,7 +52,7 @@ const Wrapper = styled.div`
   box-sizing: border-box;
 
   @media (max-width: 640px) {
-    margin: 20px 0px;
+    margin: 15px 0px;
     padding: 0 18px;
   }
 `;
