@@ -97,7 +97,7 @@ const QuizImage = styled.img`
 `;
 
 const QuizTitle = styled.h2`
-  font-size: 19px;
+  font-size: 20px;
   font-weight: 500;
   margin: 12px 2px 12px 2px;
 
@@ -109,7 +109,7 @@ const QuizTitle = styled.h2`
 `;
 
 const QuizDescription = styled.p`
-  font-size: 16px;
+  font-size: 17px;
   color: rgb(113, 113, 130);
   margin: 2px 2px;
 
@@ -123,7 +123,7 @@ const QuizCategory = styled.div`
   display: flex;
   gap: 6px;
   color: rgb(3, 2, 19);
-  margin: 30px 0 8px 0;
+  margin: 32px 0 8px 0;
 
   @media (max-width: 640px) {
     padding: 0px 16px;
@@ -131,11 +131,11 @@ const QuizCategory = styled.div`
 `;
 
 const CategoryItem = styled.div`
-  font-size: 12.5px;
+  font-size: 14px;
   border: 1px solid #eceef2;
   background-color: #eceef2;
   border-radius: 12px;
-  padding: 2px 7px;
+  padding: 3px 9px;
 
   @media (max-width: 640px) {
     font-size: 14px;
