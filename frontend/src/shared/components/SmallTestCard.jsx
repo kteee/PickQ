@@ -45,7 +45,7 @@ const Card = styled.div`
 
   @media (max-width: 640px) {
     height: 295px;
-    border-radius: 0px;
+    border-radius: 8px;
   }
 `;
 
@@ -62,7 +62,6 @@ const CardText = styled.div`
   border-radius: 0px 0px 8px 8px;
 
   @media (max-width: 640px) {
-    border-radius: 0px;
     font-size: 19px;
     padding: 10px 14px;
   }

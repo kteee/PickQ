@@ -61,7 +61,6 @@ const CategoryItem = styled.button`
     selected ? "#50bcff" : "rgb(245, 245, 247)"};
 
   @media (max-width: 640px) {
-    font-size: 15px;
     padding: 9px 14px;
   }
 `;
