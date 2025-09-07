@@ -37,7 +37,7 @@ const ListWrapper = styled.div`
   @media (max-width: 640px) {
     background-color: #f6f7f9;
     grid-template-columns: 1fr;
-    gap: 12px;
+    gap: 15px;
     margin-bottom: 13px;
   }
 `;

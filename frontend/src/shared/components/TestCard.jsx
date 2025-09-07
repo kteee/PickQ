@@ -79,7 +79,7 @@ const Title = styled.h3`
   margin: 14px 2px 5px 4px;
 
   @media (max-width: 640px) {
-    font-size: 18.5px;
+    font-size: 19px;
     margin: 4px 2px 2px 3px;
   }
 `;
@@ -91,7 +91,7 @@ const Description = styled.p`
   margin: 2px 2px 25px 4px;
 
   @media (max-width: 640px) {
-    font-size: 16px;
-    margin: 2px 2px 8px 3px;
+    font-size: 17px;
+    margin: 2px 2px 12px 3px;
   }
 `;

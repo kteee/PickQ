@@ -151,19 +151,6 @@ const RandomSection = styled.div`
   }
 `;
 
-const SectionSubTitle = styled.div`
-  font-size: 19px;
-  font-weight: 500;
-  margin: 9px 0px 9px 0px;
-  color: #757575;
-
-  @media (max-width: 640px) {
-    font-size: 18px;
-    margin: 0px;
-    padding: 0px 16px;
-  }
-`;
-
 const SectionHeader = styled.div`
   display: flex;
   justify-content: space-between;
@@ -175,8 +162,8 @@ const SectionHeader = styled.div`
   margin-bottom: 21px;
 
   @media (max-width: 640px) {
-    margin-top: 5px;
-    margin-bottom: 15px;
+    margin-top: 8px;
+    margin-bottom: 18px;
   }
 `;
 

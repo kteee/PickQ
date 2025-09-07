@@ -7,10 +7,10 @@ const Footer = () => {
       <FooterContents>
         <FooterTop>
           <Logo>PickQ</Logo>
-          <FooterDescription>
-            PickQ는 다양한 퀴즈와 심리테스트 콘텐츠를 제공하는 서비스입니다.
-          </FooterDescription>
         </FooterTop>
+        <FooterDescription>
+          PickQ는 다양한 퀴즈와 심리테스트 콘텐츠를 제공하는 서비스입니다.
+        </FooterDescription>
         <FooterBottom>
           <FooterLink to="/terms">이용약관</FooterLink>
           <FooterLink to="/privacy">개인정보처리방침</FooterLink>
@@ -31,7 +31,6 @@ const FooterContainer = styled.footer`
   box-sizing: border-box;
 
   @media (max-width: 640px) {
-    font-size: 8px;
     padding: 0 18px;
   }
 `;
@@ -60,18 +59,17 @@ const FooterTop = styled.div`
   display: flex;
   align-items: center;
   gap: 10px;
-  margin-bottom: 15px;
 `;
 
 const FooterDescription = styled.div`
-  font-size: 13.5px;
+  font-size: 14.5px;
   color: #3b3b3b;
-  margin-right: 10px;
+  margin: 15px 0px;
 
   @media (max-width: 640px) {
     display: block;
     margin: 8px 0;
-    font-size: 11px;
+    font-size: 13.5px;
   }
 `;
 
@@ -81,7 +79,7 @@ const FooterBottom = styled.div`
   gap: 12px;
 
   @media (max-width: 640px) {
-    font-size: 11px;
+    font-size: 13px;
   }
 `;
 
