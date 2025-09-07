@@ -33,7 +33,7 @@ const Wrapper = styled.div`
     background-color: #ffffff;
     align-items: flex-end;
     height: 55px;
-    padding: 0px 18px;
+    padding: 0px 16px;
     margin: 5px 0;
   }
 `;
@@ -61,7 +61,7 @@ const CategoryItem = styled.button`
     selected ? "#50bcff" : "rgb(245, 245, 247)"};
 
   @media (max-width: 640px) {
-    font-size: 14.5px;
-    padding: 8px 14px;
+    font-size: 15px;
+    padding: 9px 14px;
   }
 `;

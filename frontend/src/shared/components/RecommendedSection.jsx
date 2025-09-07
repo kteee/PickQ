@@ -39,7 +39,7 @@ const RecommendedSection = ({ recommendedTests }) => {
   return (
     <Wrapper>
       <RandomSection>
-        <SectionSubTitle>가볍고 재밌게 즐겨요!</SectionSubTitle>
+        <SectionSubTitle>지금 딱 하기 좋은 콘텐츠</SectionSubTitle>
         <SectionHeader>
           <HeaderLeft>
             <SectionTitle>이번주 추천 콘텐츠 모음</SectionTitle>
@@ -129,7 +129,7 @@ const Wrapper = styled.div`
   }
 
   @media (max-width: 640px) {
-    margin-top: 20px;
+    margin-top: 0px;
     margin-bottom: 5px;
     height: auto;
   }
@@ -159,9 +159,10 @@ const SectionSubTitle = styled.div`
   color: #757575;
 
   @media (max-width: 640px) {
-    font-size: 18px;
+    /* font-size: 18px;
     margin: 0px;
-    padding: 0px 16px;
+    padding: 0px 16px; */
+    display: none;
   }
 `;
 
@@ -176,9 +177,10 @@ const SectionHeader = styled.div`
   margin-bottom: 21px;
 
   @media (max-width: 640px) {
-    margin-top: 5px;
+    /* margin-top: 5px;
     margin-bottom: 15px;
-    padding: 0px 16px;
+    padding: 0px 16px; */
+    display: none;
   }
 `;
 

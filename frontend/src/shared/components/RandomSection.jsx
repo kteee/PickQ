@@ -52,7 +52,7 @@ const Wrapper = styled.div`
   box-sizing: border-box;
 
   @media (max-width: 640px) {
-    margin: 5px 0px;
+    margin: 20px 0px;
     padding: 0 18px;
   }
 `;
@@ -67,6 +67,7 @@ const Box = styled.div`
 
   @media (max-width: 640px) {
     align-items: center;
+    padding: 20px 25px;
   }
 `;
 
@@ -76,6 +77,10 @@ const SubTitle = styled.div`
   color: #2e2e2e;
   margin-top: 3px;
   margin-bottom: 8px;
+
+  @media (max-width: 640px) {
+    font-size: 18px;
+  }
 `;
 
 const BoxInline = styled.div`
@@ -93,6 +98,10 @@ const BoxText = styled.div`
   font-size: 17px;
   font-weight: 500;
   color: #555;
+
+  @media (max-width: 640px) {
+    font-size: 16px;
+  }
 `;
 
 const ButtonGroup = styled.div`
@@ -120,5 +129,10 @@ const PlayButton = styled.button`
 
   &:hover {
     background-color: #50bcff;
+  }
+
+  @media (max-width: 640px) {
+    font-size: 13px;
+    padding: 8px 10px;
   }
 `;

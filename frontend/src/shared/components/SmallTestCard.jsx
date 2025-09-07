@@ -63,5 +63,7 @@ const CardText = styled.div`
 
   @media (max-width: 640px) {
     border-radius: 0px;
+    font-size: 19px;
+    padding: 10px 14px;
   }
 `;
