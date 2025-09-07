@@ -69,7 +69,7 @@ const FooterDescription = styled.div`
   @media (max-width: 640px) {
     display: block;
     margin: 8px 0;
-    font-size: 11px;
+    font-size: 12px;
   }
 `;
 
@@ -79,7 +79,7 @@ const FooterBottom = styled.div`
   gap: 12px;
 
   @media (max-width: 640px) {
-    font-size: 11px;
+    font-size: 12px;
   }
 `;
 
